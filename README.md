@@ -1,2 +1,4 @@
 # timeseries-f23
-Course materials for Introduction to Time Series, Fall 2023
+
+Source materials for Introduction To Time Series, Fall 2023.
+For the course website see: https://www.stat.berkeley.edu/~ryantibs/timeseries-s23/.
