@@ -22,6 +22,7 @@ knitr::opts_chunk$set(dev = c("png", "pdf"), fig.path = "fig/",
 
 # install.packages("astsa") # From the Shumway and Stoffer book
 # install.packages("fpp3") # From the Hyndman and Athanasopoulos book
+# install.packages("tidyverse")
 # install.packages("devtools") 
 # devtools::install_github("cmu-delphi/epidatasets") # From the CMU Delphi group
 
