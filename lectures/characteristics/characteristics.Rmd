@@ -1,5 +1,5 @@
 ---
-title: 'Stat 154: Characteristics and Examples of Time Series Data'
+title: 'Lecture 1: Characteristics and Examples of Time Series Data'
 output:
   html_document:
     toc: true
