@@ -109,15 +109,15 @@ plot(rnorm(500), type = "l", xlab = "t", ylab = "x_t")
 
 ```{r rw}
 n = 500 
-m = 0.2 # drift
+delta = 0.2 # drift
 
 x = cumsum(rnorm(n))
-y = m * (1:n) + cumsum(rnorm(n))
+y = cumsum(rnorm(n) + delta)
 
 matplot(cbind(x, y), type = "l", col = 1:2, 
         xlab = "t", ylab = "x_t")
 legend("topleft", lty = 1:2, col = 1:2, 
-       legend = paste("delta =", c(0, m)))
+       legend = paste("delta =", c(0, delta)))
 ```
 
 # STL decomposition
