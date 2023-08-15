@@ -161,7 +161,6 @@ Related reading: Chapters 1.1--1.2 of Shumway and Stoffer (SS); Chapters 2.3 and
 \end{figure}
 
 \section{White noise}
-\def\wn{\mathrm{wn}}
 
 \begin{itemize}
 \item The term \emph{white noise} is used a lot in time series in related
@@ -170,12 +169,12 @@ Related reading: Chapters 1.1--1.2 of Shumway and Stoffer (SS); Chapters 2.3 and
   variance. Precisely, 
   \begin{gather*}
   \Cov(x_s, x_t) = 0, \quad \text{for all $s \not= t$} \\
-  \E[x_t] = 0, \; \Var(x_t) = \sigma^2, \quad \text{for all $t$} 
+  \E(x_t) = 0, \; \Var(x_t) = \sigma^2, \quad \text{for all $t$} 
   \end{gather*}
 
 \item (Recall ... for random variables $x,y$, their covariance is 
   \[
-  \Cov(x, y) = \E\Big[ (x- \E[x]) (y - \E[y]) \Big]
+  \Cov(x, y) = \E\Big[ (x - \E[x]) (y - \E[y]) \Big]
   \]
   and $\Cov(x, x) = \Var(x)$. The correlation between $x,y$ is
   \[
