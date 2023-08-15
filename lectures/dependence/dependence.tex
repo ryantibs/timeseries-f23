@@ -89,24 +89,21 @@ Related reading: Chapters 1.3--? of Shumway and Stoffer (SS).
   reduces variance 
 
 \item This last example might have helped you de-rust on some basic facts about
-  expectations and variances. Recall, for constants $a_t$:
-  \[
-  \E\bigg( \sum_{t=1}^k a_t x_t \bigg) = \sum_{t=1}^k a_t \E(x_t)
-  \]
-  and 
-  \begin{align*}
-  \Var\bigg( \sum_{t=1}^k a_t x_t \bigg) 
-  &= \sum_{s,t} a_s a_t \Cov(x_s, x_t) \\
-  &= \sum_{t=1}^k a_t^2 \Var(x_t) + 2 \sum_{s < t} \Cov(x_s, x_t)
-  \end{align*}
+  expectations and variances. Recall, for constants $a_i$ and random variables
+  $x_i$: 
+  \begin{gather*}
+  \E\bigg( \sum_{i=1}^n a_i x_i \bigg) = \sum_{i=1}^n a_i \E(x_i) \\
+  \Var\bigg( \sum_{i=1}^n a_i x_i \bigg) = \sum_{i=1}^n a_i^2 \Var(x_i) + 2
+  \sum_{i < j} \Cov(x_i, x_j) 
+  \end{gather*}
   The last rule can be thought of as a special case of the more general rule,
-  for constants $a_t$ and $b_t$: 
+  for constants $a_i,b_j$, and random variables $x_i,y_j$: 
   \[
-  \Cov\bigg( \sum_{t=1}^k a_t x_t, \sum_{t=1}^\ell b_t y_t \bigg) 
-  = \sum_{s,t} a_s b_t \Cov(x_s, y_t)
+  \Cov\bigg( \sum_{i=1}^n a_i x_i , \sum_{j=1}^m b_j y_j  \bigg) 
+  = \sum_{i,j} a_i b_j \Cov(x_i, y_j)
   \]
-  (To be clear, the sum on the right-hand side above is taken over $s =
-  1,\dots,t$ and $t = 1,\dots,\ell$) 
+  (To be clear, the sum on the right-hand side above is taken over $i =
+  1,\dots,n$ and $j = 1,\dots,m$) 
 
 \item Ok, one last example before moving on: let's consider a random walk with
   drift,
@@ -141,4 +138,19 @@ Related reading: Chapters 1.3--? of Shumway and Stoffer (SS).
   with respect to the 100 repetitions.}
 \label{fig:rw}
 \end{figure}
+
+\section{Covariance and correlation}
+
+\subsection{Auto: one series}
+
+\subsection{Cross: two series}
+
+\section{Stationarity}
+
+\subsection{Strong}
+
+\subsection{Weak}
+
+
+
 \end{document}
