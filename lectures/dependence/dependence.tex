@@ -1,0 +1,144 @@
+\documentclass{article}
+
+\def\ParSkip{} 
+\input{../../common/ryantibs}
+
+\title{Lecture 2: Measures of Dependence and Stationarity \\ \smallskip  
+\large Introduction to Time Series, Fall 2023 \\ \smallskip
+Ryan Tibshirani}
+\date{}
+
+\begin{document}
+\maketitle
+\RaggedRight
+\vspace{-50pt}
+
+Related reading: Chapters 1.3--? of Shumway and Stoffer (SS).
+
+\section{Mean and variance}
+
+\begin{itemize}
+\item Given a sequence $x_t$, $t = 1,2,3,\dots$, we define its \emph{mean 
+    function} (this is viewed as a function of time) by 
+  \[
+  \mu_{x,t} = \E(x_t)
+  \]
+  When it is unambiguous from the context which underlying sequence it refers
+  to, we drop the first subscript and simply denote this by $\mu_t$
+
+\item Moreover, we define its \emph{variance function} by
+  \[
+  \sigma^2_{x,t} = \Var(x_t) = \E[(x_t - \mu_t)^2]
+  \]
+  Again, when the underlying sequence should be clear from the context, we
+  simplify notation and denote this by $\sigma^2_t$
+
+\item The mean and variance functions $\mu_t$ and $\sigma^2_t$ are handy 
+  objects, because they tell us about salient features of the time series---the
+  drift and spread, respectively, that we should expect over time
+
+\item However, in general, they are not enough to characterize the entire
+  distribution of the time series. Why? Two reasons: 
+
+  \begin{enumerate}
+  \item In general, the mean and variance are not enough to characterize the
+    \emph{marginal} distribution of a single variate $x_t$ along the sequence 
+
+  \item Furthermore, they say nothing about the \emph{joint} distribution of
+    two variates $x_s$ and $x_t$ at different times, $s \not= t$. (For example,
+    do they tend to go up and down together, or do they tend to repel, or ... ?) 
+  \end{enumerate}
+
+  The second of these (joint dependence) we will address soon when we talk about
+  autocovariance and stationarity. The first (mean and variance specifying the
+  distribution) we will revisit later when we talk about Gaussian processes  
+
+\item Before moving on though, let's look at some examples. First, let's
+  consider white noise, which recall, refers to a sequence $x_t$, $t =
+  1,2,3,\dots$ of uncorrelated random variables, with zero mean, and constant
+  variance. Precisely,   
+  \begin{gather*}
+  \Cov(x_s, x_t) = 0, \quad \text{for all $s \not= t$} \\
+  \E(x_t) = 0, \; \Var(x_t) = \sigma^2, \quad \text{for all $t$} 
+  \end{gather*}
+  So by definition (this one is kind of vacuous), we have mean function $\mu_t =
+  0$ and variance function $\sigma^2_t = \sigma^2$, which are constant functions
+  (do not vary in time)
+
+\item How about a moving average of white noise, with window length 3? This is 
+  \[
+  y_t = \frac{1}{3} \Big( x_{t-1} + x_t + x_{t+1} \Big)
+  \]
+  Its mean function is
+  \begin{align*}
+  \mu_t &= \E(y_t)  \\
+  &= \frac{1}{3} \Big( \E(x_{t-1}) + \E(x_t) + \E(x_{t+1}) \Big) \\ 
+  &= \frac{1}{3} ( 0 + 0 + 0 ) \\
+  &= 0
+  \end{align*}
+  Its variance function is
+  \begin{align*}
+  \sigma^2_t &= \Var(y_t) \\
+  &= \frac{1}{9} \Big( \Var(x_{t-1}) + \Var(x_t) + \Var(x_{t+1}) +{} \\
+  &\qquad 2 \Cov(x_{t-1}, x_t) + 2 \Cov(x_t, x_{t+1}) + 2 \Cov(x_{t-1}, x_{t+1}) 
+    \Big) \\
+  &= \frac{1}{9} ( \sigma^2 + \sigma^2 + \sigma^2 + 0 + 0 + 0) \\
+  &= \frac{1}{3} \sigma^2
+  \end{align*}
+  So its variance is smaller than that of original sequence. In short, smoothing
+  reduces variance 
+
+\item This last example might have helped you de-rust on some basic facts about
+  expectations and variances. Recall, for constants $a_t$:
+  \[
+  \E\bigg( \sum_{t=1}^k a_t x_t \bigg) = \sum_{t=1}^k a_t \E(x_t)
+  \]
+  and 
+  \begin{align*}
+  \Var\bigg( \sum_{t=1}^k a_t x_t \bigg) 
+  &= \sum_{s,t} a_s a_t \Cov(x_s, x_t) \\
+  &= \sum_{t=1}^k a_t^2 \Var(x_t) + 2 \sum_{s < t} \Cov(x_s, x_t)
+  \end{align*}
+  The last rule can be thought of as a special case of the more general rule,
+  for constants $a_t$ and $b_t$: 
+  \[
+  \Cov\bigg( \sum_{t=1}^k a_t x_t, \sum_{t=1}^\ell b_t y_t \bigg) 
+  = \sum_{s,t} a_s b_t \Cov(x_s, y_t)
+  \]
+  (To be clear, the sum on the right-hand side above is taken over $s =
+  1,\dots,t$ and $t = 1,\dots,\ell$) 
+
+\item Ok, one last example before moving on: let's consider a random walk with
+  drift,
+  \[
+  x_t = \delta + x_{t-1} + \epsilon_t
+  \]
+  for a white noise sequence $\epsilon_t$, $t = 1,2,3\dots$.  Recall, we can
+  equivalently write this as (assuming we start at $x_0 = 0$):
+  \[
+  x_t = \delta t + \sum_{i=1}^t \epsilon_i 
+  \] 
+  From this, we can see that the mean function is 
+  \[
+  \mu_t = \delta t + \sum_{i=1}^t \E(\epsilon_i) = \delta t
+  \]
+  and the variance function is 
+  \[
+  \sigma^2_t = \sum_{i=1}^t \Var(\epsilon_i) + 2 \sum_{i<j} \Cov(\epsilon_i,
+  \epsilon_j) = \sigma^2 t
+  \]
+  So both the mean and the variance grow over time, proportionally to $t$. 
+  Figure \ref{fig:rw} plots example paths over multiple repetitions, for you to
+  get a sense of this
+\end{itemize}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.85\textwidth]{fig/rw-1.pdf}
+\includegraphics[width=0.85\textwidth]{fig/rw-2.pdf}
+\caption{\it Random walk without and with drift, each with 100 sample paths. The
+  darker, thicker line in each plot is the sample mean taken at with time point,
+  with respect to the 100 repetitions.}
+\label{fig:rw}
+\end{figure}
+\end{document}

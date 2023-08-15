@@ -1,0 +1,45 @@
+---
+title: 'Lecture 2: Measures of Dependence and Stationarity'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+    code_folding: show
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(dev = c("png", "pdf"), fig.path = "fig/",
+                     cache = TRUE, autodep = TRUE, cache.comments = TRUE)
+```
+
+# Load packages
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(astsa)
+library(fpp3)
+library(epidatasets)
+```
+
+# Random walk
+
+```{r rw}
+n = 500 # number of time points
+r = 100 # number of repetitions
+delta = 0.2 # drift
+
+x0 = matrix(rnorm(n * r), nrow = n)
+y0 = matrix(rnorm(n * r) + delta, nrow = n)
+
+x = apply(x0, 2, cumsum)
+y = apply(y0, 2, cumsum)
+
+matplot(x, type = "l", lty = 1, col = rgb(0, 0, 0, 0.2),
+        xlab = "t", ylab = "x_t", main = "delta = 0")
+lines(apply(x, 1, mean), lty = 1, lwd = 3, col = 1)
+
+matplot(y, type = "l", lty = 1, col = rgb(0.96, 0.28, 0.24, 0.2),
+        xlab = "t", ylab = "x_t", main = paste("delta =", delta))
+lines(apply(y, 1, mean), lty = 1, lwd = 3, col = 2)
+```
