@@ -2,6 +2,7 @@
 
 \def\ParSkip{} 
 \input{../../common/ryantibs}
+\usepackage{centernot}
 
 \title{Lecture 2: Measures of Dependence and Stationarity \\ \smallskip  
 \large Introduction to Time Series, Fall 2023 \\ \smallskip
@@ -13,7 +14,8 @@ Ryan Tibshirani}
 \RaggedRight
 \vspace{-50pt}
 
-Related reading: Chapters 1.3--? of Shumway and Stoffer (SS).
+Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
+2.8--2.9 of Hyndman and Athanasopoulos (HA).  
 
 \section{Mean and variance}
 
@@ -146,7 +148,7 @@ Related reading: Chapters 1.3--? of Shumway and Stoffer (SS).
 
 \begin{itemize}
 \item The \emph{auto-covariance function} associated with a time series $x_t$,
-  $t=1,2,3,\dots$ is defined as
+  $t = 1,2,3,\dots$ is defined as
   \[
   \gamma_x(s,t) = \Cov(x_s, x_t)
   \]
@@ -183,8 +185,8 @@ Related reading: Chapters 1.3--? of Shumway and Stoffer (SS).
   zero 
 
 \item Recall that uncorrelatedness is not the same as independence! So we can
-  have $\gamma_x(s,t) = 0$ for all $s,t$, even if $x_t$, $t=1,2,3,\dots$ are not
-  independent random variables. However, for a Gaussian sequence,
+  have $\gamma_x(s,t) = 0$ for all $s,t$, even if $x_t$, $t = 1,2,3,\dots$ are
+  not independent random variables. However, for a Gaussian sequence,
   uncorrelatedness implies independence
 
 \item Let's return to our examples. For white noise, the auto-covariance
@@ -201,18 +203,19 @@ Related reading: Chapters 1.3--? of Shumway and Stoffer (SS).
   \gamma(s,t) &= \Cov(y_s, y_t) \\
   &= \Cov \bigg( \frac{1}{3} \Big( x_{s-1} + x_s + x_{s+1} \Big), 
     \frac{1}{3} \Big( x_{t-1} + x_t + x_{t+1} \Big) \bigg) \\
-  &= \begin{cases}
-  \sigma^2 / 9 & s = t-2 \\
-  2\sigma^2 / 9 & s = t-1 \\
-  \sigma^2 / 3 & s = t \\
-  2\sigma^2 / 9 & s = t+1 \\
-  \sigma^2 / 9 & s = t+2 \\
+  &=  \sigma^2 \cdot 
+  \begin{cases}
+  1 / 9 & s = t-2 \\
+  2 / 9 & s = t-1 \\
+  1 / 3 & s = t \\
+  2 / 9 & s = t+1 \\
+  1 / 9 & s = t+2 \\
   0 & \text{otherwise}
   \end{cases}
   \end{align*}
   (You can go through each case carefully, and use the formula for the
   covariance of linear combinations given previously.) The auto-correlation
-  function simply divides this by $\sigma^2$. since the variance function is 
+  function simply divides this by $\sigma^2$, since the variance function is 
   constant, and is hence
   \[
   \rho(s,t) = 
@@ -249,7 +252,7 @@ Related reading: Chapters 1.3--? of Shumway and Stoffer (SS).
   &= \frac{\min\{s, t\}}{\sqrt{st}}
   \end{align*}
 
-\item Figure \ref{fig:autocor} gives a visualization of the auto-correlation
+\item Figure \ref{fig:heatmap} gives a visualization of the auto-correlation
   functions for the moving average and random walk settings. The moving average
   auto-correlation function is presented as a banded matrix (though it is hard
   to see the band since the sequence is of total length $n=500$ and most values
@@ -263,7 +266,7 @@ Related reading: Chapters 1.3--? of Shumway and Stoffer (SS).
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=\textwidth]{fig/autocor-1.pdf}
+\includegraphics[width=\textwidth]{fig/heatmap-1.pdf}
 \caption{\it Heatmaps of the auto-correlation functions for the moving average 
   and random walk examples, for a sequence with $n=500$ time points. The  
   heatmaps are laid out in the same way that we would naturally view a matrix:
@@ -271,14 +274,14 @@ Related reading: Chapters 1.3--? of Shumway and Stoffer (SS).
   right (that is, $s$ increases along the rows, and $t$ increases along the
   columns). Yellow reflects a value of zero, and darker red reflects a larger
   value.} 
-\label{fig:autocor}
+\label{fig:heatmap}
 \end{figure}
 
 \subsection{Cross: two series}
 
 \begin{itemize}
 \item The \emph{cross-covariance function} associated with two time series $x_t$, 
-  $t=1,2,3,\dots$ and $y_t$, $t=1,2,3,\dots$ is defined as
+  $t = 1,2,3,\dots$ and $y_t$, $t = 1,2,3,\dots$ is defined as
   \[
   \gamma_{xy}(s,t) = \Cov(x_s, y_t)
   \]
@@ -294,18 +297,22 @@ Related reading: Chapters 1.3--? of Shumway and Stoffer (SS).
   \]
   By Cauchy-Schwarz, once again, we know that $\rho_{xy}(s,t) \in [-1,1]$
 
-\item Figure \ref{fig:crosscor} shows an example of an \emph{estimated}
+\item Figure \ref{fig:covid} shows an example of an \emph{estimated}
   cross-correlation function for Covid-19 cases (the first series $x_s$) and 
   deaths (the second series $y_t$) in California, which are plotted in Figure
   \ref{fig:covid}. We can see that the cross-correlation is plotted as a
   function of ``lag'', which refers to the value $h = s-t$, and appears to be  
   maximized at a lag of $h = -25$ or so. This makes sense, in that we expect
   cases to be highly correlated with deaths several weeks later (this is also
-  visually apparent in Figure \ref{fig:covid})  
+  visually apparent in Figure \ref{fig:covid}). 
 
-  But wait a minute ... why have we reduced the whole cross-correlation
+\item A bit of nomenclature: we say that cases \emph{lead} deaths, since their
+  cross-correlation is maximized at a negative value of $h$, and conversely, 
+  deaths \emph{lag} cases  
+
+\item  But wait a minute ... why have we reduced the whole cross-correlation 
   function, which is generically a function of two time indexes $s$ and $t$, to
-  be a function of a single number, lag, $h = t-s$? Because that is really the
+  be a function of a single number, lag, $h = s-t$? Because that is really the
   only way it is estimable (unless we have more information than the two time
   series at hand). More on this shortly, but next, we'll cover stationarity,
   which will provide the foundation for this estimation strategy in the first
@@ -315,24 +322,214 @@ Related reading: Chapters 1.3--? of Shumway and Stoffer (SS).
 \begin{figure}[p]
 \centering
 \includegraphics[width=0.85\textwidth]{fig/covid-1.pdf}
-\caption{\it  Covid-19 cases and deaths, in the state of California.}
+\caption{\it Covid-19 cases and deaths, in the state of California.}
 \label{fig:covid}
 
-\medskip
 \includegraphics[width=0.875\textwidth]{fig/covid-2.pdf}
 \caption{\it Cross-correlation function for Covid-19 cases and deaths in
   California, as plotted above. This is estimated by the \texttt{ccf()} function
   in R.}   
-\label{fig:crosscor}
+\label{fig:covid}
 \end{figure}
 
 \section{Stationarity}
+\def\eqd{\overset{d}{=}}
 
 \subsection{Strong}
 
+\begin{itemize}
+\item Stationarity is an important concept in time series. There are actually
+  two forms. The first is \emph{strong stationarity} of a time series $x_t$,
+  $t = 1,2,3,\dots$, defined by the property:
+  \[
+  (x_{t_1}, x_{t_2}, \dots, x_{t_k}) \eqd (x_{t_1+h}, x_{t_2+h}, \dots,
+  x_{t_k+h}), \quad \text{for all $k \geq 1$, all $t_1,\dots,t_k$, and all
+    $h$}  
+  \]
+  Here $\eqd$ means equality in distribution. In other words, strong
+  stationarity means that any collection of variates along the series has the
+  same joint distribution after we shift the time indices forward or backwards
+  in time  
+
+\item As its name suggests, this is a very strong property, in fact, so strong 
+  that it'll rarely be useful for most applications. (For example, it is not
+  even really possible to assess whether it holds given a single time series)  
+
+\item But before moving on, let's look at some implications of strong 
+  stationarity. First, just taking $k=1$, we learn that
+  \[
+  x_s \eqd x_t, \quad \text{for all $s,t$}
+  \]
+  In particular, taking the mean of each side above, we see that $\mu_{s,t} =
+  \mu_{x,t}$, that is, the mean function must take on a constant value, not
+  varying with $t$
+
+\item Second, taking $k=2$, we learn that 
+  \[
+  (x_s, x_t) \eqd (x_{s+h}, x_{t+h}), \quad \text{for all $s,t$}
+  \]
+  Therefore, taking the covariance of each side above, we see that
+  $\gamma_x(s,t) = \gamma_x(s+h, t+h)$, that is, the auto-covariance function 
+  must be invariant to shifts, and depend only on the lag $h = s-t$ 
+\end{itemize}
+
 \subsection{Weak}
 
-\section{Estimation}
+\begin{itemize}
+\item The second form of stationarity is directly motivated by the implications
+  of strong stationarity given at the end of the last subsection. We saw that
+  strong stationarity implies that the mean function must be constant, and the
+  auto-covariance function must be invariant to shifts. So why not simply
+  define a notion based on these two properties?
+
+\item \emph{Weak stationarity} of a time series $x_t$, $t = 1,2,3,\dots$ is
+  defined precisely in this way, by the conditions: 
+ \begin{gather*}
+  \mu_{x,t} = \mu, \quad \text{for all $t$} \\
+  \gamma_x(s,t) = \gamma_x(s+h, t+h), \quad \text{for all $s,t,h$} 
+  \end{gather*}
+  Note that the second condition (take $h=0$) also implies that the variance
+  function is constant: $\sigma_{x,t} = \sigma$ for all $t$
+
+\item As we have already discussed, strong stationarity implies weak
+  stationarity, but the opposite is not true in general (can you think of an 
+  example?). However, it \emph{is} true in the special case that the series is a 
+  Gaussian process. We'll summarize this in the next display:
+  \begin{align*}
+  \text{strong stationarity} &\implies \text{weak stationarity} \\
+  \text{strong stationarity} &\centernot\impliedby \text{weak stationarity}   
+  \quad \text{(in general)} \\
+  \text{strong stationarity} &\impliedby \text{weak stationarity}  
+  \quad \text{(for a Gaussian process)} 
+  \end{align*}
+
+\item Because the weak form is the much more commonly-used form of stationarity, 
+  hereafter, we'll use the term \emph{stationary} to refer to weakly stationary
+
+\item Under stationarity, we will adopt the convention of writing the
+  auto-covariance function as a function of just \emph{one} argument, the lag
+  $h = s-t$: 
+  \[
+  \gamma_x(h) := \gamma_x(t, t+h)
+  \]
+  Here we use $:=$ to emphasize that we are \emph{defining} the quantity on the
+  left-hand side, and the value of $t$ on the right-hand side is arbitrary
+  (under stationarity, any value of $t$ will result in the same auto-covariance) 
+
+\item Note that, under stationarity, we have $\gamma_x(0) = \sigma^2$, the
+  variance (which is constant over time) 
+
+\item Note also that, under stationarity, the auto-correlation function must
+  depend only on the lag $h = s-t$, since it is defined as $\rho_x(s, t) =
+  \gamma_x(s, t) / ( \sigma_{x,s} \, \sigma_{x,t} )$, where the numerator can  
+  only depend on $s-t$, and the denominator must be constant. Hence, under
+  stationarity, we will similarly abbreviate the auto-correlation function by:
+  \[
+  \rho_x(h) := \rho_x(t, t+h)
+  \]
+
+\item Let's return to our examples. White noise is clearly stationary---the mean 
+  function is identically zero, the variance function is constant, and the
+  auto-covariance is zero whenever $s \not= t$. A moving average of white noise 
+  is also stationary---the mean function is again identically zero, and the
+  auto-covariance derived above is ``symmetric around the diagonal'', i.e., only
+  a function of the lag $h = s-t$, which we rewrite below to emphasize this:   
+  \[
+  \gamma(h) = \sigma^2 \cdot
+  \begin{cases}
+  1 / 9 & h = \pm 2 \\
+  2 / 9 & h = \pm 1 \\
+  1 / 3 & h = 0 \\
+  0 & \text{otherwise}
+  \end{cases}
+  \]
+
+\item A random walk is \emph{not} stationary ... even when the drift is zero,
+  $\delta = 0$. Why? For one, recall, the variance function is non-constant: it
+  increases over time, $\sigma^2_{x,t} = \sigma^2 t$. For another, recall, the 
+  cross-covariance function is not symmetric around the diagonal: it is
+  $\gamma(s,t) = \sigma^2 \min\{s,t\}$ 
+
+\item Before leaving this section to discuss estimation, we note a
+  generalization of stationarity called \emph{trend stationarity}: this means
+  that $x_t$, $t = 1,2,3,\dots$ is of the form 
+  \[ 
+  x_t = \theta_t + w_t
+  \]
+  where $\theta_t$, $t = 1,2,3,\dots$ is a fixed (nonrandom) sequence and $w_t$,
+  $t = 1,2,3,\dots$ is stationary. Intuitively, we think of $x_t$ as being
+  ``stationary around the trend $\theta_t$''. While the mean function of such a
+  sequence $x_t$ need not be constant (since $\theta_t$ need not be constant),
+  it is not hard to check that the auto-covariance function satisfies
+  \[
+  \gamma_x(s,t) = \gamma_w(s,t)
+  \]
+  and because the right-hand side is invariant to shifts, so must be the
+  left-hand side 
+\end{itemize}
+
+\section{Covariance estimation}
+
+\begin{itemize}
+\item How do we go about estimating the auto-covariance (or auto-correlation)
+  function from a single time series $x_t$, $t = 1,\dots,n$? Well, estimation is 
+  not really possible unless we assume stationarity
+
+\item Under this assumption, it is reasonable to consider the \emph{sample 
+    auto-covariance function}, defined as 
+  \[
+  \hat\gamma(h) = \frac{1}{n} \sum_{t=1}^{n-h} (x_{t+h} - \bar{x})(x_t -
+  \bar{x}),
+  \]
+  where \smash{$\bar{x} = \frac{1}{n} \sum_{t=1}^n x_t$} is the sample mean
+
+\item We should note that the sample auto-covariance function is always
+  well-defined and can always be computed from data, whether or not the
+  stationarity assumption is (approximately) true. But if stationarity is far
+  from being true, then the sample auto-covariance function defined above will
+  not be very meaningful 
+
+\item Analogously, the \emph{sample auto-correlation function} is defined as 
+  \[
+  \hat\rho(h) = \frac{\hat\gamma(h)}{\hat\gamma(0)}
+  \]
+  Note that the denominator here is the sample variance
+
+\item The \texttt{acf()} function in R estimates the auto-covariance
+  (\texttt{type = ''covariance''}) or auto-correlation (\texttt{type =
+    correlation}) function according to the formulas given above. An example is
+  given in Figure \ref{fig:speech}, for the speech data that we saw in the last 
+  lecture. We can see strong patterns here, which makes sense, because the
+  original time series appears to be a sequence of repeating short signals 
+
+\item The plot produced by \texttt{acf()}, by default, also places dotted lines
+  at \smash{$\pm 2/\sqrt{n}$} (where $n$ is the length of the given time
+  series). These lines are a tool to hint at statistical significance: under
+  some assumptions, for a white noise sequence, the sample auto-correlation at
+  any finite lag will be approximately normally distributed with mean zero and
+  standard deviation \smash{$1/\sqrt{n}$}, for large $n$. (See Appendix A of SS
+  for details)  
+
+\item The \texttt{ccf()} function in R estimates the cross-covariance or
+  cross-correlation in a manner that is completely analogous to the formulas
+  above (for auto-covariance or auto-correlation). These estimates rest on a
+  concept called \emph{joint stationarity} between two time series, which you'll
+  explore on the homwork. Recall, an example of estimated cross-correlation by
+  \texttt{ccf()} was already given in Figure \ref{fig:covid} for the Covid-19 data
+\end{itemize}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.875\textwidth]{fig/speech-1.pdf}
+\caption{\it Vocal response data measured from the syllable ``aaa $\cdots$ hhh''
+  (from SS).}  
+\label{fig:covid}
+
+\includegraphics[width=0.875\textwidth]{fig/speech-2.pdf}
+\caption{\it Auto-correlation function for the speech data, as plotted
+  above. This is estimated by the \texttt{acf()} function in R.}   
+\label{fig:speech}
+\end{figure}
 
 \section{Gaussian processes}
 
