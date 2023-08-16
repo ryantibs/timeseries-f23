@@ -297,14 +297,14 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   \]
   By Cauchy-Schwarz, once again, we know that $\rho_{xy}(s,t) \in [-1,1]$
 
-\item Figure \ref{fig:covid} shows an example of an \emph{estimated}
+\item Figure \ref{fig:covid-ccf} shows an example of an \emph{estimated} 
   cross-correlation function for Covid-19 cases (the first series $x_s$) and 
   deaths (the second series $y_t$) in California, which are plotted in Figure
-  \ref{fig:covid}. We can see that the cross-correlation is plotted as a
+  \ref{fig:covid-ts}. We can see that the cross-correlation is plotted as a
   function of ``lag'', which refers to the value $h = s-t$, and appears to be  
   maximized at a lag of $h = -25$ or so. This makes sense, in that we expect
   cases to be highly correlated with deaths several weeks later (this is also
-  visually apparent in Figure \ref{fig:covid}). 
+  visually apparent in Figure \ref{fig:covid-ts}). 
 
 \item A bit of nomenclature: we say that cases \emph{lead} deaths, since their
   cross-correlation is maximized at a negative value of $h$, and conversely, 
@@ -323,13 +323,13 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
 \centering
 \includegraphics[width=0.85\textwidth]{fig/covid-1.pdf}
 \caption{\it Covid-19 cases and deaths, in the state of California.}
-\label{fig:covid}
+\label{fig:covid-ts}
 
 \includegraphics[width=0.875\textwidth]{fig/covid-2.pdf}
 \caption{\it Cross-correlation function for Covid-19 cases and deaths in
   California, as plotted above. This is estimated by the \texttt{ccf()} function
   in R.}   
-\label{fig:covid}
+\label{fig:covid-ccf}
 \end{figure}
 
 \section{Stationarity}
@@ -498,9 +498,10 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
 \item The \texttt{acf()} function in R estimates the auto-covariance
   (\texttt{type = ''covariance''}) or auto-correlation (\texttt{type =
     correlation}) function according to the formulas given above. An example is
-  given in Figure \ref{fig:speech}, for the speech data that we saw in the last 
-  lecture. We can see strong patterns here, which makes sense, because the
-  original time series appears to be a sequence of repeating short signals 
+  given in Figure \ref{fig:speech-acf}, for the speech data that we saw in the
+  last lecture, plotted again in Figure \ref{fig:speech-ts}. We can see strong
+  patterns here in the sample auto-correlation, which makes sense, because the
+  original time series appears to be a sequence of repeating short signals  
 
 \item The plot produced by \texttt{acf()}, by default, also places dotted lines
   at \smash{$\pm 2/\sqrt{n}$} (where $n$ is the length of the given time
@@ -515,7 +516,8 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   above (for auto-covariance or auto-correlation). These estimates rest on a
   concept called \emph{joint stationarity} between two time series, which you'll
   explore on the homwork. Recall, an example of estimated cross-correlation by
-  \texttt{ccf()} was already given in Figure \ref{fig:covid} for the Covid-19 data
+  \texttt{ccf()} was already given in Figure \ref{fig:covid-ccf} for the
+  Covid-19 data 
 \end{itemize}
 
 \begin{figure}[p]
@@ -523,14 +525,69 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
 \includegraphics[width=0.875\textwidth]{fig/speech-1.pdf}
 \caption{\it Vocal response data measured from the syllable ``aaa $\cdots$ hhh''
   (from SS).}  
-\label{fig:covid}
+\label{fig:speech-ts}
 
 \includegraphics[width=0.875\textwidth]{fig/speech-2.pdf}
 \caption{\it Auto-correlation function for the speech data, as plotted
   above. This is estimated by the \texttt{acf()} function in R.}   
-\label{fig:speech}
+\label{fig:speech-acf}
 \end{figure}
+
+%\section{Pre-whitening}
 
 \section{Gaussian processes}
 
+\begin{itemize}
+\item A times series $x_t$, $t = 1,2,3,\dots$ is said to be a \emph{Gaussian
+    process} provided that  
+  \[
+  (x_{t_1}, x_{t_2}, \dots, x_{t_k}) \; \text{has a multivariate Gaussian
+    distribution}, \quad \text{for all $k \geq 1$, and all $t_1,\dots,t_k$} 
+  \]
+
+\item Recall, if the random vector $(x_{t_1}, x_{t_2}, \dots, x_{t_k})$ has a 
+  multivariate Gaussian distribution, then it is defined by a mean vector $\mu
+  \in \R^k$ and covariance matrix $\Gamma \in \R^{k \times k}$. We denote the 
+  associated normal distribution by $N(\mu, \Gamma)$, and its density is (get
+  ready for some linear algebra notation ...):
+  \[
+  f(x) = \frac{1}{\sqrt{(2\pi)^k \det \Gamma}} \exp \Big( -
+  \frac{1}{2} (x - \mu)^\T \Gamma^{-1} ( x - \mu ) \Big) 
+  \]
+  Here $\Gamma^{-1}$ is the inverse of the matrix $\Gamma$, $\det \Gamma$ is its
+  determinant, and $(x-\mu)^\T$ is the transpose of the vector $x-\mu$.
+  By convention we treat all vectors as column vectors. (If some of this looks
+  foreign to you, then you should review your linear algebra notes ... it is
+  pretty darn hard to understand aspects of multivariate Gaussians without 
+  linear algebra) 
+
+\item For a Gaussian process, the above display describes the density of a
+  collection $(x_{t_1}, x_{t_2}, \dots, x_{t_k})$ variates along the sequence,
+  but importantly---even though our notation doesn't reflect this, because
+  otherwise it would be too cumbersome---the mean vector $\mu$ and covariance
+  matrix $\Gamma$ here can depend on the time points $t_1,\dots,t_k$. Note that
+  here the mean vector $\mu$ has $i\th$ entry
+  \[
+  \mu_{x.t_i} = \E(x_{t_i})
+  \]
+  and the covariance matrix $\Gamma$ has, as the element in its $i\th$ row and
+  $j\th$ column, 
+  \[
+  \gamma_x(t_i, t_j) = \Cov(x_{t_i}, x_{t_j})
+  \]
+
+\item Gaussian processes and weak stationarity are a special combination. If
+  $x_t$, $t = 1,2,3,\dots$ is a weakly stationary Gaussian process, then (by
+  weak stationarity) the mean vector $\mu$ and covariance matrix $\Gamma$
+  associated with $(x_{t_1}, x_{t_2}, \dots, x_{t_k})$ are the same as those
+  associated with $(x_{t_1+h}, x_{t_2+h}, \dots, x_{t_k+h})$, for any $h$. But
+  by Gaussianity this actually implies that
+  \[
+  (x_{t_1}, x_{t_2}, \dots, x_{t_k}) \eqd (x_{t_1+h}, x_{t_2+h}, \dots,
+  x_{t_k+h}),
+  \]
+  for any $h$, which implies strong stationarity. This proves the claim we made
+  above, that for Gaussian processes, weak and strong stationarity are the same
+  concept 
+\end{itemize}
 \end{document}
