@@ -1,0 +1,207 @@
+---
+title: 'Homework 1: [YOUR NAME HERE]'
+subtitle: 'Introduction to Time Series, Fall 2023'
+date: 'Due Tuesday September 10 at 5pm'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(cache = TRUE, autodep = TRUE, cache.comments = TRUE)
+```
+
+The total number of points possible for this homework is XYZ. The number of 
+points for each question is written below, and questions marked as "bonus" are 
+optional. Submit the **knitted html file** from this Rmd to Gradescope. 
+
+If you collaborated with anybody for this homework, put their names here:
+
+# Correlation and independence
+
+1. (XY pts)
+Give an example to show that two random variables can be uncorrelated but not 
+independent. You must explicitly prove that they are not independent (for this, 
+you may invoke any property that you know is equivalent to independence).
+
+SOLUTION GOES HERE
+
+2. (XY pts)
+If $(X,Y)$ has a multivariate Gaussian distribution, and $X,Y$ are uncorrelated: 
+$\mathrm{Cov}(X,Y) = 0$, then show that $X,Y$ are independent.
+
+SOLUTION GOES HERE
+
+3. (XY pts)
+Give an example to show that two random variables $X,Y$ can be marginally 
+Gaussian (meaning, $X$ is Gaussian, and $Y$ is Gaussian) and uncorrelated but
+*not* independent. Hint: $(X,Y)$ cannot be multivariate Gaussian in this case.
+
+SOLUTION GOES HERE
+
+# Random walks
+
+4. (XY pts)
+Let $x_t$, $t = 1,2,3,\dots$ be a random walk with drift: 
+\[
+x_t = \delta + x_{t-1} + \epsilon_t,
+\]
+where (say) $\epsilon_t \sim N(0,\sigma^2)$ for $t = 1,2,3,\dots$. Suppose that
+both $\delta$ and $\sigma^2$ are unknown. Devise a test statistic for the null
+hypothesis that $\delta = 0$. This should be based on a standard test that you 
+know (have learned in a past course) for testing whether the mean of Gaussian is
+zero, with unknown variance, based on i.i.d.\ samples from this Gaussian.  
+
+    State what the null distribution is for this test statistic, and how you 
+would compute it in R (a function name is sufficient if the test statistic is 
+implemented as a function in base R). Hint: consider taking differences along 
+the sequence ... after that, what you want sounds like "c-test", or "p-test",
+or "$\phi$-test", or ...
+
+SOLUTION GOES HERE
+
+5. (XY pts)
+Simulate a random walk of length 100 *without* drift, i.e., $\delta = 0$, and 
+compute the test statistic you devised in Q4 and report its value. Then repeat,
+but using a large nonzero value $\delta$.
+
+```{r}
+# CODE GOES HERE
+```
+
+6. (XY pts)
+Simulate 100 random walks each of length 500, with nonzero drift, and plot them 
+on the same plot using transparent coloring, following the code used in the 
+lecture notes from week 2 ("Measures of dependence and stationarity"). Calculate
+the sample mean $\hat\mu_t$ at each time $t$, across the repetitions, and plot 
+as a dark line on the same plot. Then, calculate the sample standard deviation 
+$\hat\sigma_t$ at each time $t$, and plot the mean plus or minus one standard 
+deviation: $\hat\mu_t \pm \hat\sigma_t$, as dark dotted lines on the same plot.
+Describe what you see (you should see that both the mean and variance
+increase over time).
+
+```{r}
+# CODE GOES HERE
+```
+
+# Stationarity
+
+7. (XY pts)
+Compute the mean, variance, auto-covariance, and auto-correlation functions for
+the process
+\[
+x_t = w_t w_{t-1},
+\]
+where each $w_t \sim N(0, \sigma^2)$, independently. Is $x_t$, $t = 1,2,3,\dots$ 
+stationary?
+
+SOLUTION GOES HERE
+
+8. (XY pts)
+Repeat the same calculations in Q7, but where each $w_t \sim N(\mu, \sigma^2)$,
+independently, for $\mu \not= 0$.
+
+SOLUTION GOES HERE
+
+9. (XY pts)
+Simulate the processes from Q7 (with  $\mu = 0$) and Q8 (with $\mu \not= 0$) and 
+plot the results. Compute the sample mean and sample variance for each simulated
+process and check that it is close to the population mean and variance from Q7 
+and Q8. Compute and plot the sample auto-correlation function using `acf()` and 
+check again that it agrees with the population auto-correlation function from Q7
+and Q8.
+
+```{r}
+# CODE GOES HERE
+```
+
+10. (XY pts)
+Give an example of a weakly stationary process that is not strongly stationary.
+
+SOLUTION GOES HERE
+
+11. (Bonus)
+A function $\kappa$ is said to be *positive semidefinite* (PSD) provided that
+\[
+\sum_{i,j=1}^n a_i a_j \kappa(t_i - t_j) \geq 0, \quad \text{for all $n \geq 1$, 
+all $a_1,\dots,a_n$, and all $t_1,\dots,t_n$}.
+\]
+Prove that is $x_t$, $t = 1,2,3,\dots$ is stationary, and $\gamma_x(h)$ is its
+auto-covariance function (as a function of lag $h$), then $\gamma_x$ is PSD.
+You may use any equivalences between PSD and other linear-algebraic properties 
+that you want, as long as you state clearly what you are using.
+
+SOLUTION GOES HERE
+
+# Joint stationarity
+\def\eqd{\overset{d}{=}}
+
+Notions of joint stationarity, between two time series, can be defined in an
+analogous way to how we defined stationarity in lecture. We say that two time
+series $x_t$, $t = 1,2,3,\dots$ and $y_t$, $t = 1,2,3,\dots$ are *strongly
+jointly stationary* provided that:
+\begin{multline*}
+(x_{s_1}, x_{s_2}, \dots, x_{s_k}, y_{t_1}, y_{t_2}, \dots, y_{t_\ell}) 
+\eqd (x_{s_1+h}, x_{s_2+h}, \dots, x_{s_k+h}, y_{t_1+h}, y_{t_2+h}, \dots, 
+y_{t_\ell+h}), \\ \text{for all $k,\ell \geq 1$, all $s_1,\dots,s_k$ and
+$t_1,\dots,t_\ell$, and all $h$}.
+\end{multline*}
+Here $\eqd$ means equality in distribution. In other words, any collection of
+variates from the two sequences has the same joint distribution after we shift
+the time indices forward or backwards in time. Meanwhile, we say that $x_t$, 
+$t = 1,2,3,\dots$ and $y_t$, $t = 1,2,3,\dots$ are *weakly jointly stationary*
+or simply *jointly stationary* provided that each series is stationary, and:
+\[
+\gamma_{xy}(s,t) = \gamma_{xy}(s+h, t+h), \quad \text{for all $s,t,h$}.
+\]
+Here $\gamma_{xy}$ is the cross-covariance function between $x,y$. In other 
+words, the cross-covariance function must be invariant to shifts forward or 
+backwards in time, and is only a function of the lag $h = s-t$. For jointly
+stationary series, we can hence abbreviate their cross-covariance function by
+$\gamma_{xy}(h)$. 
+
+SOLUTION GOES HERE
+
+12. (XY pts)
+Give an example of two time series that are weakly jointly stationary but not 
+strongly jointly stationary. 
+
+SOLUTION GOES HERE
+
+13. (XY pts)
+If $x_t$, $t = 1,2,3,\dots$ and $y_t$, $t = 1,2,3,\dots$ form a *joint Gaussian
+process*, which means that any collection $(x_{s_1}, x_{s_2}, \dots, x_{s_k}, 
+y_{t_1}, y_{t_2}, \dots, y_{t_\ell})$ of variates along the series has a 
+multivariate Gaussian distribution, then prove that weak joint stationarity 
+implies strong joint stationarity.
+
+SOLUTION GOES HERE
+
+14. (XY pts)
+Write down explicit formulas that shows how to estimate the cross-covariance 
+and cross-correlation function of two finite time series $t = 1,\dots,n$ and 
+$y_t$, $t = 1,\dots,n$, under the assumption of joint stationarity. Hint: these
+should be analogous to the *sample auto-covariance and sample auto-correlation 
+functions* that we covered in lecture.
+
+SOLUTION GOES HERE
+
+15. (XY pts) 
+Following the code used in the lecture notes from week 2 ("Measures of 
+dependence and stationarity"), use the `ccf()` function to compute and plot 
+the sample cross-correlation function between Covid-19 cases and deaths, 
+separately, for each of Florida, Georgia, New York, Pennsylvania, and Texas. 
+(The lecture code does this for California.) Comment on what you find: do the
+cross-correlation patterns look similar across different states? 
+
+    Also, follow the lecture code to plot the case and death signals together, 
+on the same plot, for each state (the lecture code provides a way to do this so
+that they are scaled dynamically to attain the same min and max, and hence look 
+nice when plotted together). Comment on whether the estimated cross-correlation
+patterns agree with what you see visually between the case and death signals.
+
+```{r}
+# CODE GOES HERE
+```
