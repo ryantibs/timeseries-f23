@@ -23,8 +23,9 @@ If you collaborated with anybody for this homework, put their names here:
 
 1. (3 pts)
 Give an example to show that two random variables can be uncorrelated but not 
-independent. You must explicitly prove that they are uncorrelated but not independent (for the latter, 
-you may invoke any property that you know is equivalent to independence).
+independent. You must explicitly prove that they are uncorrelated but not
+independent (for the latter, you may invoke any property that you know is
+equivalent to independence).
 
 SOLUTION GOES HERE
 
@@ -101,8 +102,7 @@ SOLUTION GOES HERE
 
 8. (3 pts)
 Repeat the same calculations in Q7, but where each $w_t \sim N(\mu, \sigma^2)$,
-independently, for $\mu \not= 0$. Is $x_t$, $t = 1,2,3,\dots$ 
-stationary?
+independently, for $\mu \not= 0$. Is $x_t$, $t = 1,2,3,\dots$ stationary?
 
 SOLUTION GOES HERE
 

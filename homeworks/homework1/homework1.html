@@ -245,59 +245,59 @@ div.tocify {
 </div>
 
 
-<p>The total number of points possible for this homework is XYZ. The number of points for each question is written below, and questions marked as “bonus” are optional. Submit the <strong>knitted html file</strong> from this Rmd to Gradescope.</p>
+<p>The total number of points possible for this homework is 41. The number of points for each question is written below, and questions marked as “bonus” are optional. Submit the <strong>knitted html file</strong> from this Rmd to Gradescope.</p>
 <p>If you collaborated with anybody for this homework, put their names here:</p>
 <div id="correlation-and-independence" class="section level1">
 <h1>Correlation and independence</h1>
 <ol style="list-style-type: decimal">
-<li>(XY pts) Give an example to show that two random variables can be uncorrelated but not independent. You must explicitly prove that they are not independent (for this, you may invoke any property that you know is equivalent to independence).</li>
+<li>(3 pts) Give an example to show that two random variables can be uncorrelated but not independent. You must explicitly prove that they are uncorrelated but not independent (for the latter, you may invoke any property that you know is equivalent to independence).</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="2" style="list-style-type: decimal">
-<li>(XY pts) If <span class="math inline">\((X,Y)\)</span> has a multivariate Gaussian distribution, and <span class="math inline">\(X,Y\)</span> are uncorrelated: <span class="math inline">\(\mathrm{Cov}(X,Y) = 0\)</span>, then show that <span class="math inline">\(X,Y\)</span> are independent.</li>
+<li>(2 pts) If <span class="math inline">\((X,Y)\)</span> has a multivariate Gaussian distribution, and <span class="math inline">\(X,Y\)</span> are uncorrelated: <span class="math inline">\(\mathrm{Cov}(X,Y) = 0\)</span>, then show that <span class="math inline">\(X,Y\)</span> are independent.</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="3" style="list-style-type: decimal">
-<li>(XY pts) Give an example to show that two random variables <span class="math inline">\(X,Y\)</span> can be marginally Gaussian (meaning, <span class="math inline">\(X\)</span> is Gaussian, and <span class="math inline">\(Y\)</span> is Gaussian) and uncorrelated but <em>not</em> independent. Hint: <span class="math inline">\((X,Y)\)</span> cannot be multivariate Gaussian in this case.</li>
+<li>(3 pts) Give an example to show that two random variables <span class="math inline">\(X,Y\)</span> can be marginally Gaussian (meaning, <span class="math inline">\(X\)</span> is Gaussian, and <span class="math inline">\(Y\)</span> is Gaussian) and uncorrelated but <em>not</em> independent. Hint: <span class="math inline">\((X,Y)\)</span> cannot be multivariate Gaussian in this case.</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 </div>
 <div id="random-walks" class="section level1">
 <h1>Random walks</h1>
 <ol start="4" style="list-style-type: decimal">
-<li><p>(XY pts) Let <span class="math inline">\(x_t\)</span>, <span class="math inline">\(t = 1,2,3,\dots\)</span> be a random walk with drift: <span class="math display">\[
+<li><p>(4 pts) Let <span class="math inline">\(x_t\)</span>, <span class="math inline">\(t = 1,2,3,\dots\)</span> be a random walk with drift: <span class="math display">\[
 x_t = \delta + x_{t-1} + \epsilon_t,
 \]</span> where (say) <span class="math inline">\(\epsilon_t \sim N(0,\sigma^2)\)</span> for <span class="math inline">\(t = 1,2,3,\dots\)</span>. Suppose that both <span class="math inline">\(\delta\)</span> and <span class="math inline">\(\sigma^2\)</span> are unknown. Devise a test statistic for the null hypothesis that <span class="math inline">\(\delta = 0\)</span>. This should be based on a standard test that you know (have learned in a past course) for testing whether the mean of Gaussian is zero, with unknown variance, based on i.i.d. samples from this Gaussian.</p>
 <p>State what the null distribution is for this test statistic, and how you would compute it in R (a function name is sufficient if the test statistic is implemented as a function in base R). Hint: consider taking differences along the sequence … after that, what you want sounds like “c-test”, or “p-test”, or “<span class="math inline">\(\phi\)</span>-test”, or …</p></li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="5" style="list-style-type: decimal">
-<li>(XY pts) Simulate a random walk of length 100 <em>without</em> drift, i.e., <span class="math inline">\(\delta = 0\)</span>, and compute the test statistic you devised in Q4 and report its value. Then repeat, but using a large nonzero value <span class="math inline">\(\delta\)</span>.</li>
+<li>(2 pts) Simulate a random walk of length 100 <em>without</em> drift, i.e., <span class="math inline">\(\delta = 0\)</span>, and compute the test statistic you devised in Q4 and report its value. Then repeat, but using a large nonzero value <span class="math inline">\(\delta\)</span>.</li>
 </ol>
 <pre class="r"><code># CODE GOES HERE</code></pre>
 <ol start="6" style="list-style-type: decimal">
-<li>(XY pts) Simulate 100 random walks each of length 500, with nonzero drift, and plot them on the same plot using transparent coloring, following the code used in the lecture notes from week 2 (“Measures of dependence and stationarity”). Calculate the sample mean <span class="math inline">\(\hat\mu_t\)</span> at each time <span class="math inline">\(t\)</span>, across the repetitions, and plot as a dark line on the same plot. Then, calculate the sample standard deviation <span class="math inline">\(\hat\sigma_t\)</span> at each time <span class="math inline">\(t\)</span>, and plot the mean plus or minus one standard deviation: <span class="math inline">\(\hat\mu_t \pm \hat\sigma_t\)</span>, as dark dotted lines on the same plot. Describe what you see (you should see that both the mean and variance increase over time).</li>
+<li>(4 pts) Simulate 100 random walks each of length 500, with nonzero drift, and plot them on the same plot using transparent coloring, following the code used in the lecture notes from week 2 (“Measures of dependence and stationarity”). Calculate the sample mean <span class="math inline">\(\hat\mu_t\)</span> at each time <span class="math inline">\(t\)</span>, across the repetitions, and plot as a dark line on the same plot. Then, calculate the sample standard deviation <span class="math inline">\(\hat\sigma_t\)</span> at each time <span class="math inline">\(t\)</span>, and plot the mean plus or minus one standard deviation: <span class="math inline">\(\hat\mu_t \pm \hat\sigma_t\)</span>, as dark dotted lines on the same plot. Describe what you see (you should see that both the mean and variance increase over time).</li>
 </ol>
 <pre class="r"><code># CODE GOES HERE</code></pre>
 </div>
 <div id="stationarity" class="section level1">
 <h1>Stationarity</h1>
 <ol start="7" style="list-style-type: decimal">
-<li>(XY pts) Compute the mean, variance, auto-covariance, and auto-correlation functions for the process <span class="math display">\[
+<li>(3 pts) Compute the mean, variance, auto-covariance, and auto-correlation functions for the process <span class="math display">\[
 x_t = w_t w_{t-1},
 \]</span> where each <span class="math inline">\(w_t \sim N(0, \sigma^2)\)</span>, independently. Is <span class="math inline">\(x_t\)</span>, <span class="math inline">\(t = 1,2,3,\dots\)</span> stationary?</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="8" style="list-style-type: decimal">
-<li>(XY pts) Repeat the same calculations in Q7, but where each <span class="math inline">\(w_t \sim N(\mu, \sigma^2)\)</span>, independently, for <span class="math inline">\(\mu \not= 0\)</span>.</li>
+<li>(3 pts) Repeat the same calculations in Q7, but where each <span class="math inline">\(w_t \sim N(\mu, \sigma^2)\)</span>, independently, for <span class="math inline">\(\mu \not= 0\)</span>. Is <span class="math inline">\(x_t\)</span>, <span class="math inline">\(t = 1,2,3,\dots\)</span> stationary?</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="9" style="list-style-type: decimal">
-<li>(XY pts) Simulate the processes from Q7 (with <span class="math inline">\(\mu = 0\)</span>) and Q8 (with <span class="math inline">\(\mu \not= 0\)</span>) and plot the results. Compute the sample mean and sample variance for each simulated process and check that it is close to the population mean and variance from Q7 and Q8. Compute and plot the sample auto-correlation function using <code>acf()</code> and check again that it agrees with the population auto-correlation function from Q7 and Q8.</li>
+<li>(3 pts) Simulate the processes from Q7 (with <span class="math inline">\(\mu = 0\)</span>) and Q8 (with <span class="math inline">\(\mu \not= 0\)</span>) and plot the results. Compute the sample mean and sample variance for each simulated process and check that it is close to the population mean and variance from Q7 and Q8. Compute and plot the sample auto-correlation function using <code>acf()</code> and check again that it agrees with the population auto-correlation function from Q7 and Q8.</li>
 </ol>
 <pre class="r"><code># CODE GOES HERE</code></pre>
 <ol start="10" style="list-style-type: decimal">
-<li>(XY pts) Give an example of a weakly stationary process that is not strongly stationary.</li>
+<li>(2 pts) Give an example of a weakly stationary process that is not strongly stationary.</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="11" style="list-style-type: decimal">
@@ -320,19 +320,19 @@ $t_1,\dots,t_\ell$, and all $h$}.
 \]</span> Here <span class="math inline">\(\gamma_{xy}\)</span> is the cross-covariance function between <span class="math inline">\(x,y\)</span>. In other words, the cross-covariance function must be invariant to shifts forward or backwards in time, and is only a function of the lag <span class="math inline">\(h = s-t\)</span>. For jointly stationary series, we can hence abbreviate their cross-covariance function by <span class="math inline">\(\gamma_{xy}(h)\)</span>.</p>
 <p>SOLUTION GOES HERE</p>
 <ol start="12" style="list-style-type: decimal">
-<li>(XY pts) Give an example of two time series that are weakly jointly stationary but not strongly jointly stationary.</li>
+<li>(2 pts) Give an example of two time series that are weakly jointly stationary but not strongly jointly stationary.</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="13" style="list-style-type: decimal">
-<li>(XY pts) If <span class="math inline">\(x_t\)</span>, <span class="math inline">\(t = 1,2,3,\dots\)</span> and <span class="math inline">\(y_t\)</span>, <span class="math inline">\(t = 1,2,3,\dots\)</span> form a <em>joint Gaussian process</em>, which means that any collection <span class="math inline">\((x_{s_1}, x_{s_2}, \dots, x_{s_k}, y_{t_1}, y_{t_2}, \dots, y_{t_\ell})\)</span> of variates along the series has a multivariate Gaussian distribution, then prove that weak joint stationarity implies strong joint stationarity.</li>
+<li>(3 pts) If <span class="math inline">\(x_t\)</span>, <span class="math inline">\(t = 1,2,3,\dots\)</span> and <span class="math inline">\(y_t\)</span>, <span class="math inline">\(t = 1,2,3,\dots\)</span> form a <em>joint Gaussian process</em>, which means that any collection <span class="math inline">\((x_{s_1}, x_{s_2}, \dots, x_{s_k}, y_{t_1}, y_{t_2}, \dots, y_{t_\ell})\)</span> of variates along the series has a multivariate Gaussian distribution, then prove that weak joint stationarity implies strong joint stationarity.</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="14" style="list-style-type: decimal">
-<li>(XY pts) Write down explicit formulas that shows how to estimate the cross-covariance and cross-correlation function of two finite time series <span class="math inline">\(t = 1,\dots,n\)</span> and <span class="math inline">\(y_t\)</span>, <span class="math inline">\(t = 1,\dots,n\)</span>, under the assumption of joint stationarity. Hint: these should be analogous to the <em>sample auto-covariance and sample auto-correlation functions</em> that we covered in lecture.</li>
+<li>(3 pts) Write down explicit formulas that shows how to estimate the cross-covariance and cross-correlation function of two finite time series <span class="math inline">\(t = 1,\dots,n\)</span> and <span class="math inline">\(y_t\)</span>, <span class="math inline">\(t = 1,\dots,n\)</span>, under the assumption of joint stationarity. Hint: these should be analogous to the <em>sample auto-covariance and sample auto-correlation functions</em> that we covered in lecture.</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="15" style="list-style-type: decimal">
-<li><p>(XY pts) Following the code used in the lecture notes from week 2 (“Measures of dependence and stationarity”), use the <code>ccf()</code> function to compute and plot the sample cross-correlation function between Covid-19 cases and deaths, separately, for each of Florida, Georgia, New York, Pennsylvania, and Texas. (The lecture code does this for California.) Comment on what you find: do the cross-correlation patterns look similar across different states?</p>
+<li><p>(4 pts) Following the code used in the lecture notes from week 2 (“Measures of dependence and stationarity”), use the <code>ccf()</code> function to compute and plot the sample cross-correlation function between Covid-19 cases and deaths, separately, for each of Florida, Georgia, New York, Pennsylvania, and Texas. (The lecture code does this for California.) Comment on what you find: do the cross-correlation patterns look similar across different states?</p>
 <p>Also, follow the lecture code to plot the case and death signals together, on the same plot, for each state (the lecture code provides a way to do this so that they are scaled dynamically to attain the same min and max, and hence look nice when plotted together). Comment on whether the estimated cross-correlation patterns agree with what you see visually between the case and death signals.</p></li>
 </ol>
 <pre class="r"><code># CODE GOES HERE</code></pre>
