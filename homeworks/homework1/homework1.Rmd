@@ -13,7 +13,7 @@ output:
 knitr::opts_chunk$set(cache = TRUE, autodep = TRUE, cache.comments = TRUE)
 ```
 
-The total number of points possible for this homework is XYZ. The number of 
+The total number of points possible for this homework is 41. The number of 
 points for each question is written below, and questions marked as "bonus" are 
 optional. Submit the **knitted html file** from this Rmd to Gradescope. 
 
@@ -21,20 +21,20 @@ If you collaborated with anybody for this homework, put their names here:
 
 # Correlation and independence
 
-1. (XY pts)
+1. (3 pts)
 Give an example to show that two random variables can be uncorrelated but not 
-independent. You must explicitly prove that they are not independent (for this, 
+independent. You must explicitly prove that they are uncorrelated but not independent (for the latter, 
 you may invoke any property that you know is equivalent to independence).
 
 SOLUTION GOES HERE
 
-2. (XY pts)
+2. (2 pts)
 If $(X,Y)$ has a multivariate Gaussian distribution, and $X,Y$ are uncorrelated: 
 $\mathrm{Cov}(X,Y) = 0$, then show that $X,Y$ are independent.
 
 SOLUTION GOES HERE
 
-3. (XY pts)
+3. (3 pts)
 Give an example to show that two random variables $X,Y$ can be marginally 
 Gaussian (meaning, $X$ is Gaussian, and $Y$ is Gaussian) and uncorrelated but
 *not* independent. Hint: $(X,Y)$ cannot be multivariate Gaussian in this case.
@@ -43,7 +43,7 @@ SOLUTION GOES HERE
 
 # Random walks
 
-4. (XY pts)
+4. (4 pts)
 Let $x_t$, $t = 1,2,3,\dots$ be a random walk with drift: 
 \[
 x_t = \delta + x_{t-1} + \epsilon_t,
@@ -62,7 +62,7 @@ or "$\phi$-test", or ...
 
 SOLUTION GOES HERE
 
-5. (XY pts)
+5. (2 pts)
 Simulate a random walk of length 100 *without* drift, i.e., $\delta = 0$, and 
 compute the test statistic you devised in Q4 and report its value. Then repeat,
 but using a large nonzero value $\delta$.
@@ -71,7 +71,7 @@ but using a large nonzero value $\delta$.
 # CODE GOES HERE
 ```
 
-6. (XY pts)
+6. (4 pts)
 Simulate 100 random walks each of length 500, with nonzero drift, and plot them 
 on the same plot using transparent coloring, following the code used in the 
 lecture notes from week 2 ("Measures of dependence and stationarity"). Calculate
@@ -88,7 +88,7 @@ increase over time).
 
 # Stationarity
 
-7. (XY pts)
+7. (3 pts)
 Compute the mean, variance, auto-covariance, and auto-correlation functions for
 the process
 \[
@@ -99,13 +99,14 @@ stationary?
 
 SOLUTION GOES HERE
 
-8. (XY pts)
+8. (3 pts)
 Repeat the same calculations in Q7, but where each $w_t \sim N(\mu, \sigma^2)$,
-independently, for $\mu \not= 0$.
+independently, for $\mu \not= 0$. Is $x_t$, $t = 1,2,3,\dots$ 
+stationary?
 
 SOLUTION GOES HERE
 
-9. (XY pts)
+9. (3 pts)
 Simulate the processes from Q7 (with  $\mu = 0$) and Q8 (with $\mu \not= 0$) and 
 plot the results. Compute the sample mean and sample variance for each simulated
 process and check that it is close to the population mean and variance from Q7 
@@ -117,7 +118,7 @@ and Q8.
 # CODE GOES HERE
 ```
 
-10. (XY pts)
+10. (2 pts)
 Give an example of a weakly stationary process that is not strongly stationary.
 
 SOLUTION GOES HERE
@@ -164,13 +165,13 @@ $\gamma_{xy}(h)$.
 
 SOLUTION GOES HERE
 
-12. (XY pts)
+12. (2 pts)
 Give an example of two time series that are weakly jointly stationary but not 
 strongly jointly stationary. 
 
 SOLUTION GOES HERE
 
-13. (XY pts)
+13. (3 pts)
 If $x_t$, $t = 1,2,3,\dots$ and $y_t$, $t = 1,2,3,\dots$ form a *joint Gaussian
 process*, which means that any collection $(x_{s_1}, x_{s_2}, \dots, x_{s_k}, 
 y_{t_1}, y_{t_2}, \dots, y_{t_\ell})$ of variates along the series has a 
@@ -179,7 +180,7 @@ implies strong joint stationarity.
 
 SOLUTION GOES HERE
 
-14. (XY pts)
+14. (3 pts)
 Write down explicit formulas that shows how to estimate the cross-covariance 
 and cross-correlation function of two finite time series $t = 1,\dots,n$ and 
 $y_t$, $t = 1,\dots,n$, under the assumption of joint stationarity. Hint: these
@@ -188,7 +189,7 @@ functions* that we covered in lecture.
 
 SOLUTION GOES HERE
 
-15. (XY pts) 
+15. (4 pts) 
 Following the code used in the lecture notes from week 2 ("Measures of 
 dependence and stationarity"), use the `ccf()` function to compute and plot 
 the sample cross-correlation function between Covid-19 cases and deaths, 
