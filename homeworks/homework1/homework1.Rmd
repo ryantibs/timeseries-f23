@@ -163,8 +163,6 @@ backwards in time, and is only a function of the lag $h = s-t$. For jointly
 stationary series, we can hence abbreviate their cross-covariance function by
 $\gamma_{xy}(h)$. 
 
-SOLUTION GOES HERE
-
 12. (2 pts)
 Give an example of two time series that are weakly jointly stationary but not 
 strongly jointly stationary. 
@@ -182,7 +180,7 @@ SOLUTION GOES HERE
 
 14. (3 pts)
 Write down explicit formulas that shows how to estimate the cross-covariance 
-and cross-correlation function of two finite time series $t = 1,\dots,n$ and 
+and cross-correlation function of two finite time series $x_t$, $t = 1,\dots,n$ and 
 $y_t$, $t = 1,\dots,n$, under the assumption of joint stationarity. Hint: these
 should be analogous to the *sample auto-covariance and sample auto-correlation 
 functions* that we covered in lecture.
