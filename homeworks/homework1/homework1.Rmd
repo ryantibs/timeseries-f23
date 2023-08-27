@@ -177,10 +177,10 @@ SOLUTION GOES HERE
 
 14. (3 pts)
 Write down explicit formulas that shows how to estimate the cross-covariance 
-and cross-correlation function of two finite time series $x_t$, $t = 1,\dots,n$ and 
-$y_t$, $t = 1,\dots,n$, under the assumption of joint stationarity. Hint: these
-should be analogous to the *sample auto-covariance and sample auto-correlation 
-functions* that we covered in lecture.
+and cross-correlation function of two finite time series $x_t$, $t = 1,\dots,n$ 
+and $y_t$, $t = 1,\dots,n$, under the assumption of joint stationarity. Hint: 
+these should be entirely analogous to the *sample auto-covariance and sample 
+auto-correlation functions* that we covered in lecture.
 
 SOLUTION GOES HERE
 
