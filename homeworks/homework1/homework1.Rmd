@@ -3,10 +3,7 @@ title: 'Homework 1: [YOUR NAME HERE]'
 subtitle: 'Introduction to Time Series, Fall 2023'
 date: 'Due Tuesday September 5 at 5pm'
 output:
-  html_document:
-    toc: true
-    toc_float: true
-    df_print: paged
+  html_document
 ---
 
 ```{r, include=FALSE}
