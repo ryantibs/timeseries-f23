@@ -3,6 +3,7 @@
 \def\ParSkip{} 
 \input{../../common/ryantibs}
 \usepackage{centernot}
+\usepackage{cprotect}
 
 \title{Lecture 2: Measures of Dependence and Stationarity \\ \smallskip  
 \large Introduction to Time Series, Fall 2023 \\ \smallskip
@@ -326,8 +327,8 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
 \label{fig:covid-ts}
 
 \includegraphics[width=0.875\textwidth]{fig/covid-2.pdf}
-\caption{\it Cross-correlation function for Covid-19 cases and deaths in
-  California, as plotted above. This is estimated by the \texttt{ccf()} function
+\cprotect\caption{\it Cross-correlation function for Covid-19 cases and deaths in
+  California, as plotted above. This is estimated by the \verb|ccf()| function 
   in R.}   
 \label{fig:covid-ccf}
 \end{figure}
@@ -495,16 +496,16 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   \]
   Note that the denominator here is the sample variance
 
-\item The \texttt{acf()} function in R estimates the auto-covariance
-  (\texttt{type = ``covariance''}) or auto-correlation (\texttt{type =
-    ``correlation''}) function according to the formulas given above. An example
-  is given in Figure \ref{fig:speech-acf}, for the speech data that we saw in
-  the last lecture, plotted again in Figure \ref{fig:speech-ts}. We can see
-  strong patterns here in the sample auto-correlation, which makes sense,
-  because the original time series appears to be a sequence of repeating short
-  signals   
+\item The \verb|acf()| function in R estimates the auto-covariance
+  (\verb|type = "covariance"|) or auto-correlation 
+  (\verb|type = "correlation"|) function according to the formulas given
+  above. An example is given in Figure \ref{fig:speech-acf}, for the speech data
+  that we saw in the last lecture, plotted again in Figure
+  \ref{fig:speech-ts}. We can see strong patterns here in the sample
+  auto-correlation, which makes sense, because the original time series appears
+  to be a sequence of repeating short signals   
 
-\item The plot produced by \texttt{acf()}, by default, also places dotted lines
+\item The plot produced by \verb|acf()|, by default, also places dotted lines 
   at \smash{$\pm 2/\sqrt{n}$} (where $n$ is the length of the given time
   series). These lines are a tool to hint at statistical significance: under
   some assumptions, for a white noise sequence, the sample auto-correlation at
@@ -512,13 +513,13 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   standard deviation \smash{$1/\sqrt{n}$}, for large $n$. (See Appendix A of SS
   for details)  
 
-\item The \texttt{ccf()} function in R estimates the cross-covariance or
+\item The \verb|ccf()| function in R estimates the cross-covariance or
   cross-correlation in a manner that is completely analogous to the formulas
   above (for auto-covariance or auto-correlation). These estimates rest on a
   concept called \emph{joint stationarity} between two time series, which you'll
   explore on the homework. Recall, an example of estimated cross-correlation by 
-  \texttt{ccf()} was already given in Figure \ref{fig:covid-ccf} for the
-  Covid-19 data 
+  \verb|ccf()| was already given in Figure \ref{fig:covid-ccf} for the Covid-19
+  data  
 \end{itemize}
 
 \begin{figure}[p]
@@ -529,8 +530,8 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
 \label{fig:speech-ts}
 
 \includegraphics[width=0.875\textwidth]{fig/speech-2.pdf}
-\caption{\it Auto-correlation function for the speech data, as plotted
-  above. This is estimated by the \texttt{acf()} function in R.}   
+\cprotect\caption{\it Auto-correlation function for the speech data, as plotted 
+  above. This is estimated by the \verb|acf()| function in R.}   
 \label{fig:speech-acf}
 \end{figure}
 
