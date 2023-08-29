@@ -35,13 +35,16 @@ y0 = matrix(rnorm(n * r) + delta, nrow = n)
 x = apply(x0, 2, cumsum)
 y = apply(y0, 2, cumsum)
 
+mu_x = apply(x, 1, mean)
+mu_y = apply(y, 1, mean)
+
 matplot(x, type = "l", lty = 1, col = rgb(0, 0, 0, 0.2),
         xlab = "t", ylab = "x_t", main = "delta = 0")
-lines(apply(x, 1, mean), lty = 1, lwd = 3, col = 1)
+lines(mu_x, lty = 1, lwd = 3, col = 1)
 
 matplot(y, type = "l", lty = 1, col = rgb(0.96, 0.28, 0.24, 0.2),
         xlab = "t", ylab = "x_t", main = paste("delta =", delta))
-lines(apply(y, 1, mean), lty = 1, lwd = 3, col = 2)
+lines(mu_y, lty = 1, lwd = 3, col = 2)
 ```
 
 # Auto-correlation heatmaps
