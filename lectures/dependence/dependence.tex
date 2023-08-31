@@ -216,16 +216,16 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   \end{align*}
   (You can go through each case carefully, and use the formula for the
   covariance of linear combinations given previously.) The auto-correlation
-  function simply divides this by $\sigma^2$, since the variance function is 
+  function simply divides this by $\sigma^2 / 3$, since the variance function is 
   constant, and is hence
   \[
   \rho(s,t) = 
   \begin{cases}
-  1 / 9 & s = t-2 \\
-  2 / 9 & s = t-1 \\
-  1 / 3 & s = t \\
-  2 / 9 & s = t+1 \\
-  1 / 9 & s = t+2 \\
+  1 / 3 & s = t-2 \\
+  2 / 3 & s = t-1 \\
+  1 & s = t \\
+  2 / 3 & s = t+1 \\
+  1 / 3 & s = t+2 \\
   0 & \text{otherwise}
   \end{cases}
   \]
