@@ -104,12 +104,13 @@ independently, for $\mu \not= 0$. Is $x_t$, $t = 1,2,3,\dots$ stationary?
 SOLUTION GOES HERE
 
 9. (3 pts)
-Simulate the processes from Q7 (with  $\mu = 0$) and Q8 (with $\mu \not= 0$) and 
-plot the results. Compute the sample mean and sample variance for each simulated
-process and check that it is close to the population mean and variance from Q7 
-and Q8. Compute and plot the sample auto-correlation function using `acf()` and 
-check again that it agrees with the population auto-correlation function from Q7
-and Q8.
+Simulate the processes from Q7 (with $\mu = 0$) and Q8 (with $\mu \not= 0$), 
+yielding two time series of length 500, and plot the results. Compute the sample 
+mean and sample variance for each one (to be clear, this just a sample mean of 
+all data, over all time, and similarly for the variance), and check that these 
+are close to the population mean and variance from Q7 and Q8. Also compute and 
+plot the sample auto-correlation function using `acf()`, and check again that it 
+agrees with the population auto-correlation function from Q7 and Q8.
 
 ```{r}
 # CODE GOES HERE

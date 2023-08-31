@@ -215,7 +215,7 @@ x_t = w_t w_{t-1},
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="9" style="list-style-type: decimal">
-<li>(3 pts) Simulate the processes from Q7 (with <span class="math inline">\(\mu = 0\)</span>) and Q8 (with <span class="math inline">\(\mu \not= 0\)</span>) and plot the results. Compute the sample mean and sample variance for each simulated process and check that it is close to the population mean and variance from Q7 and Q8. Compute and plot the sample auto-correlation function using <code>acf()</code> and check again that it agrees with the population auto-correlation function from Q7 and Q8.</li>
+<li>(3 pts) Simulate the processes from Q7 (with <span class="math inline">\(\mu = 0\)</span>) and Q8 (with <span class="math inline">\(\mu \not= 0\)</span>), yielding two time series of length 500, and plot the results. Compute the sample mean and sample variance for each one (to be clear, this just a sample mean of all data, over all time, and similarly for the variance), and check that these are close to the population mean and variance from Q7 and Q8. Also compute and plot the sample auto-correlation function using <code>acf()</code>, and check again that it agrees with the population auto-correlation function from Q7 and Q8.</li>
 </ol>
 <pre class="r"><code># CODE GOES HERE</code></pre>
 <ol start="10" style="list-style-type: decimal">
@@ -240,7 +240,6 @@ $t_1,\dots,t_\ell$, and all $h$}.
 \end{multline*}\]</span> Here <span class="math inline">\(\overset{d}{=}\)</span> means equality in distribution. In other words, any collection of variates from the two sequences has the same joint distribution after we shift the time indices forward or backwards in time. Meanwhile, we say that <span class="math inline">\(x_t\)</span>, <span class="math inline">\(t = 1,2,3,\dots\)</span> and <span class="math inline">\(y_t\)</span>, <span class="math inline">\(t = 1,2,3,\dots\)</span> are <em>weakly jointly stationary</em> or simply <em>jointly stationary</em> provided that each series is stationary, and: <span class="math display">\[
 \gamma_{xy}(s,t) = \gamma_{xy}(s+h, t+h), \quad \text{for all $s,t,h$}.
 \]</span> Here <span class="math inline">\(\gamma_{xy}\)</span> is the cross-covariance function between <span class="math inline">\(x,y\)</span>. In other words, the cross-covariance function must be invariant to shifts forward or backwards in time, and is only a function of the lag <span class="math inline">\(h = s-t\)</span>. For jointly stationary series, we can hence abbreviate their cross-covariance function by <span class="math inline">\(\gamma_{xy}(h)\)</span>.</p>
-<p>SOLUTION GOES HERE</p>
 <ol start="12" style="list-style-type: decimal">
 <li>(2 pts) Give an example of two time series that are weakly jointly stationary but not strongly jointly stationary.</li>
 </ol>
@@ -250,7 +249,7 @@ $t_1,\dots,t_\ell$, and all $h$}.
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="14" style="list-style-type: decimal">
-<li>(3 pts) Write down explicit formulas that shows how to estimate the cross-covariance and cross-correlation function of two finite time series <span class="math inline">\(t = 1,\dots,n\)</span> and <span class="math inline">\(y_t\)</span>, <span class="math inline">\(t = 1,\dots,n\)</span>, under the assumption of joint stationarity. Hint: these should be analogous to the <em>sample auto-covariance and sample auto-correlation functions</em> that we covered in lecture.</li>
+<li>(3 pts) Write down explicit formulas that shows how to estimate the cross-covariance and cross-correlation function of two finite time series <span class="math inline">\(x_t\)</span>, <span class="math inline">\(t = 1,\dots,n\)</span> and <span class="math inline">\(y_t\)</span>, <span class="math inline">\(t = 1,\dots,n\)</span>, under the assumption of joint stationarity. Hint: these should be entirely analogous to the <em>sample auto-covariance and sample auto-correlation functions</em> that we covered in lecture.</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="15" style="list-style-type: decimal">
