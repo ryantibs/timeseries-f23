@@ -1,0 +1,73 @@
+---
+title: 'Lecture 3: Regression and Smoothing'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+    code_folding: show
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(dev = c("png", "pdf"), fig.path = "fig/",
+                     cache = TRUE, autodep = TRUE, cache.comments = TRUE)
+```
+
+# Load packages
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(astsa)
+library(fpp3)
+library(epidatasets)
+```
+
+# Chicken regression
+
+```{r chicken}
+head(chicken)
+head(time(chicken))
+
+reg = lm(chicken ~ time(chicken))
+coef(reg)
+
+plot(chicken, ylab = "Chicken price (cents per pound)") 
+abline(coef(reg), col = 2)
+```
+# Cardiovascular mortality regression
+
+```{r cardio}
+# Simple regression
+par(mfrow = c(2, 1), mar = c(2, 4, 0.75, 0.5))
+plot(cmort, xlab = "", ylab = "Cardiovascular deaths") 
+plot(part, xlab = "", ylab = "Particulate levels")
+
+reg_part = lm(cmort ~ part)
+coef(reg_part)
+
+par(mfrow = c(1, 1), mar = c(4, 4, 0.5, 0.5))
+plot(part, cmort, xlab = "Particulate levels", ylab = "Cardiovascular deaths")
+abline(coef(reg_part), col = 2, lwd = 2)
+
+# Multiple regression
+
+par(mfrow = c(3, 1), mar = c(2, 4, 0.75, 0.5))
+plot(cmort, xlab = "", ylab = "Cardiovascular deaths") 
+plot(part, xlab = "", ylab = "Particulate levels")
+plot(tempr, xlab = "", ylab = "Temperature)")
+
+reg_tempr = lm(cmort ~ tempr)
+coef(reg_tempr)
+
+reg_joint = lm(cmort ~ part + tempr)
+coef(reg_joint)
+
+par(mfrow = c(1, 2), mar = c(4, 4, 0.5, 2))
+plot(part, cmort, xlab = "Particulate levels", ylab = "Cardiovascular deaths")
+abline(coef(reg_part), col = 2, lwd = 2)
+abline(coef(reg_joint)[c(1,2)], col = 4, lty = 2, lwd = 2)
+
+plot(tempr, cmort, xlab = "Temperature", ylab = "Cardiovascular deaths")
+abline(coef(reg_tempr), col = 2, lwd = 2)
+abline(coef(reg_joint)[c(1,3)], col = 4 , lty = 2, lwd = 2)
+```
