@@ -344,9 +344,9 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   two forms. The first is \emph{strong stationarity} of a time series $x_t$,
   $t = 1,2,3,\dots$, defined by the property:
   \[
-  (x_{t_1}, x_{t_2}, \dots, x_{t_k}) \eqd (x_{t_1+h}, x_{t_2+h}, \dots,
-  x_{t_k+h}), \quad \text{for all $k \geq 1$, all $t_1,\dots,t_k$, and all
-    $h$}  
+  (x_{t_1}, x_{t_2}, \dots, x_{t_k}) \eqd (x_{t_1+\ell}, x_{t_2+\ell}, \dots,
+  x_{t_k+\ell}), \quad \text{for all $k \geq 1$, all $t_1,\dots,t_k$, and all
+    $\ell$}   
   \]
   Here $\eqd$ means equality in distribution. In other words, strong
   stationarity means that any collection of variates along the series has the
@@ -368,11 +368,11 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
 
 \item Second, taking $k=2$, we learn that 
   \[
-  (x_s, x_t) \eqd (x_{s+h}, x_{t+h}), \quad \text{for all $s,t$}
+  (x_s, x_t) \eqd (x_{s+\ell}, x_{t+\ell}), \quad \text{for all $s,t$} 
   \]
   Therefore, taking the covariance of each side above, we see that
-  $\gamma_x(s,t) = \gamma_x(s+h, t+h)$, that is, the auto-covariance function 
-  must be invariant to shifts, and depend only on the lag $h = s-t$ 
+  $\gamma_x(s,t) = \gamma_x(s+\ell, t+\ell)$, that is, the auto-covariance
+  function must be invariant to shifts, and depend only on the lag $h = s-t$  
 \end{itemize}
 
 \subsection{Weak}
@@ -388,9 +388,9 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   defined precisely in this way, by the conditions: 
  \begin{gather*}
   \mu_{x,t} = \mu, \quad \text{for all $t$} \\
-  \gamma_x(s,t) = \gamma_x(s+h, t+h), \quad \text{for all $s,t,h$} 
+  \gamma_x(s,t) = \gamma_x(s+\ell, t+\ell), \quad \text{for all $s,t,\ell$}   
   \end{gather*}
-  Note that the second condition (take $h=0$) also implies that the variance
+  Note that the second condition (take $s=t$) also implies that the variance
   function is constant: $\sigma_{x,t} = \sigma$ for all $t$
 
 \item As we have already discussed, strong stationarity implies weak
@@ -583,14 +583,14 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   $x_t$, $t = 1,2,3,\dots$ is a weakly stationary Gaussian process, then (by
   weak stationarity) the mean vector $\mu$ and covariance matrix $\Gamma$
   associated with $(x_{t_1}, x_{t_2}, \dots, x_{t_k})$ are the same as those
-  associated with $(x_{t_1+h}, x_{t_2+h}, \dots, x_{t_k+h})$, for any $h$. But
-  by Gaussianity this actually implies that
+  associated with $(x_{t_1+\ell}, x_{t_2+\ell}, \dots, x_{t_k+\ell})$, for any
+  $\ell$. But by Gaussianity this actually implies that 
   \[
-  (x_{t_1}, x_{t_2}, \dots, x_{t_k}) \eqd (x_{t_1+h}, x_{t_2+h}, \dots,
-  x_{t_k+h}),
+  (x_{t_1}, x_{t_2}, \dots, x_{t_k}) \eqd (x_{t_1+\ell}, x_{t_2+\ell}, \dots,
+  x_{t_k+\ell}),
   \]
-  for any $h$, which implies strong stationarity. This proves the claim we made
-  above, that for Gaussian processes, weak and strong stationarity are the same
-  concept 
+  for any $\ell$, which implies strong stationarity. This proves the claim we
+  made above, that for Gaussian processes, weak and strong stationarity are the
+  same concept 
 \end{itemize}
 \end{document}
