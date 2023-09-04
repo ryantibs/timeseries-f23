@@ -5,7 +5,7 @@
 \usepackage[normalem]{ulem}
 \usepackage{centernot}
 
-\title{Lecture 3: Regression and Smoothing \\ \smallskip  
+\title{Lecture 3: Linear Regression \\ \smallskip  
 \large Introduction to Time Series, Fall 2023 \\ \smallskip
 Ryan Tibshirani}
 \date{}
@@ -589,33 +589,35 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   response vector $y \in \R^n$ is related to the feature matrix $X \in \R^{n
     \times p}$ by
   \begin{equation}
-  \label{eq:model}
+  \label{eq:model_wn}
   y = X \beta + \epsilon, \quad \text{where $\epsilon \sim \WN(0, \sigma^2 I)$}   
   \end{equation}
   for some unknown coefficient vector $\beta \in \R^p$, and a white noise vector 
   $\epsilon \in \R^n$
 
-\item In \eqref{eq:model}, $\epsilon \sim WN(0, \sigma^2 I)$ is our notation for
-  a white noise vector: the first argument specifies that the mean is zero,
+\item In \eqref{eq:model_wn}, $\epsilon \sim WN(0, \sigma^2 I)$ is our notation
+  for a white noise vector: the first argument specifies that the mean is zero, 
   $\E(\epsilon) = 0$, and the second argument specifies that the covariance
   satisfies $\Cov(\epsilon) = \sigma^2 I$, where $I$ is the $n \times n$
   identity matrix. That is, the components satisfy $\Var(\epsilon_i) = \sigma^2$
   and $\Cov(\epsilon_i, \epsilon_j) = 0$ whenever $i \not= j$
 
-\item Importantly, in \eqref{eq:model}, the feature matrix $X$ is assumed to be
-  \emph{fixed} (not random). Therefore, we can also write \eqref{eq:model} even
-  more compactly as
+\item Importantly, in \eqref{eq:model_wn}, the feature matrix $X$ is assumed to
+  be \emph{fixed} (not random). Therefore, we can also write \eqref{eq:model_wn}
+  even more compactly as 
   \[
   y \sim \WN(X \beta, \sigma^2 I)
   \]
-  This is a fairly strong assumption. We'll go into more why in the next section
-  (when we go even further and assume normality of the error distribution), but
-  for now we'll just emphasize that we are assuming that the mean of the
-  response is truly linear in the features, and that the errors are
-  homoskedastic---they have equal variance regardless of the feature values
 
-\item Ok! So under the model \eqref{eq:model}, what can we say about the least
-  squares estimates in \eqref{eq:coef_mult2}? First, note that these are
+\item Assuming that $X$ is fixed in the context of the above model is a fairly
+  strong condition. We'll go into more why in the next section (when we go even 
+  further and assume normality of the error distribution), but for now we'll
+  just emphasize that we are assuming that the mean of the response is truly
+  linear in the features, and that the errors are homoskedastic---they have
+  equal variance regardless of the feature values 
+
+\item Ok! So under the model \eqref{eq:model_wn}, what can we say about the
+  least squares estimates in \eqref{eq:coef_mult2}? First, note that these are 
   \emph{unbiased} for the true coefficients $\beta$:
   \begin{align*}
   \E(\hbeta) &= \E \big[ (X^\T X)^{-1} X^\T y \big] \\
@@ -640,9 +642,8 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   \[
   \MSE(a^\T \hbeta) = \E\big[ (a^\T \hbeta - a^\T \beta) \big]^2
   \]
-
-\item To be clear, the expectation here is being taken with respect to data from
-  the model \eqref{eq:model}
+  To be clear, the expectation here is being taken with respect to data from the
+  model \eqref{eq:model_wn} 
 
 \item With respect to MSE, how good is the least squares estimator? It is, in a
   certain precise sense, the \emph{best}. It is both unbiased for $a^\T \beta$,
@@ -693,42 +694,65 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   the only unbiased estimators are linear in $y$ anyway.\footnote{See Hansen
     (2022), ``A modern Gauss-Markov theorem'', and then P{\"o}tscher and
     Preinerstorfer (2022), ``A modern Gauss-Markov theorem? Really?'', and
-    Portnoy (2022), ``Linearity  of unbiased linear model estimators'' (2022). A
-    nice, gentle overview is given by Allison (2022), ``Is OLS BLUE or BUE?'', 
-    \url{https://statisticalhorizons.com/is-ols-blue-or-bue/}. A masterful, but 
-    much more mathematical overview is given in Lei and Wooldrige (2022), who
-    also weave in important historical results that have been overlooked, and
-    prove new ones as well.})
+    Portnoy (2022), ``Linearity  of unbiased linear model estimators''. A nice,
+    friendly overview is given by Allison (2022), ``Is OLS BLUE or BUE?'',
+    \url{https://statisticalhorizons.com/is-ols-blue-or-bue/} (this is a blog
+    post). A masterful, but much more mathematical treatment is given in Lei and
+    Wooldrige (2022), who also weave in important historical results that seem
+    to have been overlooked, and prove new ones as well.})
 \end{itemize}
 
 \section{Classical inference}
 
 \subsection{Here comes the assumptions}
 
-% \item For the ``sample version'' of linear regression, we envision having
-%   multiple samples from \eqref{eq:pop_model} with white noise errors: 
-% \begin{equation}
-%   \label{eq:pop_model}
-%   \begin{gathered}
-%   y = \beta_0 + \beta_1 x + \epsilon, \\
-%   \text{where} \quad \E(\epsilon) = 0, \; \Var(\epsilon) = \sigma^2
-%   \end{gathered}
-%   \end{equation}
-%   Here $\epsilon$ is a stochastic error term, and as the model
-%   \eqref{eq:pop_model} states, we assume it has mean zero and finite variance  
-%   $\sigma^2$. To be clear, here $x,y,\epsilon$ are all real-valued (rather than 
-%   multivariate) 
+\def\iidsim{\overset{\text{iid}}{\sim}}
 
-% \item We do not usually assume $\sigma^2$ is known, and the purpose is to
-%   estimate the \emph{regression coefficients} (or parameters) $\beta_0$ and  
-%   $\beta_1$, referred to as the intercept and slope, respectively
-%   \begin{equation}
-%   \label{eq:samp_model}
-%   \begin{gathered}
-%   y_i = \beta_0 + \beta_1 x_i + \epsilon, \quad i = 1,\dots,n \\
-%   \text{where $\epsilon_i$, $i = 1,\dots,n$ is a white noise sequence}
-%   \end{gathered}
-%   \end{equation}
+\begin{itemize}
+\item Now we're going to cover some classical statistical inference for linear
+  regression estimates. For this part, we're going to need to assume:
+  \begin{equation}
+  \label{eq:model_n}
+  y = X \beta + \epsilon, \quad \text{where $\epsilon \sim N(0, \sigma^2 I)$}
+  \end{equation}
+  In comparison to \eqref{eq:model_wn}, note that we have additionally assumed
+  that the errors are multivariate Gaussian (this implies they are independent
+  across observations as well)
+
+\item As before, the feature matrix $X$ is assumed to  be \emph{fixed} (not
+  random). Thus we can write \eqref{eq:model_n} more compactly as  
+  \[
+  y \sim N(X \beta, \sigma^2 I)
+  \]
+
+\item Taking $X$ to be fixed here is a strong assumption. To see this, let's
+  write this out as 
+  \[
+  y_i = x_i^\T \beta + \epsilon_i, \quad \text{where $\epsilon_i \iidsim N(0,  
+  \sigma^2)$}, \quad i=1,\dots,n
+  \]
+  If each $x_i$ were indeed random (which is often the case in practice) then we
+  would need \emph{condition on $x_i$} in order to treat it as fixed. So then,
+  what the above model really says is that each $\epsilon_i | x_i$ is normal
+  with mean zero and variance $\sigma^2$. And for this to be true across all 
+  observations, we need the \emph{errors $\epsilon_i$ and feature vectors $x_i$
+    to be independent}
+
+\item Now we have gotten to the heart of why this is such a strong
+  assumption. For the errors and features to be independent, we cannot have
+  \emph{heteroskedasticity} (error variance depending on the features); we also
+  cannot really have any \emph{omitted variables}, because if they are
+  correlated with $x_i$, then they would appear in the effective error term
+  $\epsilon_i$, and break independence. Can you really make the argument that
+  you have measured \emph{all} of the relevant predictor variables in any given 
+  practical application of linear regression? 
+\end{itemize}
+
+\subsection{t-test for individual coefficients}
+
+\subsection{F-test for subgroups of coefficients}
+
+\subsection{AIC, BIC, AICc, R-squared, R-bar-squared, ...} 
 
 % ASSUMPTIONS!
 % t-test
@@ -742,7 +766,5 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 % Other than that, the classic ones
 
 \section{Forecasting}
-
-\section{Smoothing}
 
 \end{document}
