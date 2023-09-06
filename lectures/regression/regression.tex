@@ -249,7 +249,7 @@ and Athanasopoulos (HA).
   modeling) 
 
 \item Meanwhile, for use cases would that require \emph{inference}, we require
-  lots of assumptions. More on this, later
+  lots of assumptions. More, later
 \end{itemize}
 
 \section{Multiple regression}
@@ -442,7 +442,7 @@ and Athanasopoulos (HA).
   referred to as a \emph{marginal linear regression}
 
 \begin{quote}\it
-**Warning** **Warning** **Warning**
+**Warning** 
 
 There will be a notational clash between $x_i$ as used above and $x_j$ as will
 be used here. Previously, we used $x_i \in \R^p$ to refer to vector containing
@@ -467,6 +467,8 @@ feature for all samples (and try to never mix indices). In other words, the
 $i\th$ row and $j\th$ column of the feature matrix $X$, respectively. So you
 just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 (columns). 
+
+**End warning** 
 \end{quote}
 
 \item Now that we've gotten that important notational piece out of the way, we
@@ -804,10 +806,10 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 
 \item We will not cover this further, in any real detail, because (a) you'll
   likely spend a good amount of time on this when you learn regression in your
-  concepts of statistics class, and (b) we won't really rely on classical
+  concepts of statistics course, and (b) we won't really rely on classical
   inferential tools such as this t-test very much. After all, they rest on the
-  assumption that the model \eqref{eq:model_n} is correct, which as we've
-  discussed already, can be a dubious assumption in practice
+  assumption that the model \eqref{eq:model_n} is correct, which (as we've
+  discussed already) can be a dubious one in practice
 \end{itemize}
 
 \subsection{F-test for subgroups of coefficients}
@@ -852,14 +854,90 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 \begin{itemize}
 \item We will not cover these. These are classical tools for variable/model
   selection. You can read about them in SS and/or HA if you are
-  interested. We'll take a more predictive angle, and simply use
+  interested. We'll take a more predictive angle, and simply rely on
   cross-validation (oriented towards time series)
 \end{itemize}
 
-\section{Diagnostics}
+\subsection{Diagnostics}
 
-% ACF of residuals
-% Other than that, the classic ones
+\begin{itemize}
+\item There are a variety of diagnostic (statistical) tools for evaluating the
+  output of a regression model. One of the most relevant tools to us, in the 
+  time series setting, is to examine the auto-correlation function of the 
+  residuals   
+  \[
+  \hat\epsilon_i = y_i - x_i^\T \hbeta, \quad i = 1,\dots,n
+  \]
+  
+\item Recalling \eqref{eq:model_wn}, one of the assumptions underlying the
+  theory of linear regression (the Gauss-Markov theorem, t-tests, F-tests, etc.)
+  is that the errors $\epsilon_i = y_i - x_i^\T \beta$, $i = 1,\dots,n$ form a 
+  white noise sequence  
+
+\item Thus inspecting the auto-correlation function of residuals gives us a
+  sense of whether this white noise assumption is true or not
+
+\item Figure \ref{fig:cardio_acf} shows the result for the mortality regression
+  example. We see that there are some very clear auto-correlations persisting  
+  through about lag 15. This should have us call into question any classical
+  inferential tools we may want to apply. However, more constructively, it means
+  that we may be able to improve the regression by taking into account the fact
+  that there is structure/information left in the residuals. We will revisit
+  this when we discuss ARIMA models, later 
+
+\item Beyond looking at the auto-correlation of the residuals, there are a
+  variety of classical diagnostics for regression. You can read about these in 
+  many sources, including the R help file for \verb|plot.lm()|, and both the SS
+  and HA books. We will not be able to cover them, for the sake of time, though
+  they are worth being generally aware of, so worth reading up on separately
+  (and/or hopefully you will see them in more detail in another course)
+\end{itemize}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.875\textwidth]{fig/cardio-5.pdf} 
+\caption{Auto-correlation function of the residuals for the linear regression of
+  cardiovascular mortality on particular levels.}
+\label{fig:cardio_acf}
+\end{figure}
+
+\subsection{Correlation vs causation?}
+
+\begin{itemize}
+\item \emph{Correlation is not causation.} Hopefully that's very clear to you in
+  the abstract, and you've been warned of it several times already in previous
+  courses
+
+\item However, in the context of regression, it gets a bit murky. Estimation in
+  regression is, at its core, about correlation (recall, e.g.,
+  \eqref{eq:coef_j_mult}). But causality lurks in the background in the
+  interpretation of regression coefficients (which we have purposefully
+  avoided), and inferential tools like the t-test for individual coefficients as
+  in \eqref{eq:null1}    
+
+\item You have to be very careful to remember that these are predicated on the
+  correctness of the model \eqref{eq:model_n} (with fixed $X$). \emph{It is this
+    model that allows us to translate statements about correlations to ones that
+    look causality.} If this model is wrong (likely!) then these translations
+  break down
+
+\item As already mentioned several times, we are taking a predictive angle and
+  will be mostly focused on evaluating models for their utility in prediction,
+  or forecasting in time series
+
+\item Fundamentally, \emph{correlations} between variables can be useful for
+  forecasting, whether or not they are causal. Everybody would probably agree
+  that they'd prefer a simple causal relationship if they could find one; but
+  that is a much, much harder problem. Focusing on correlations and predictions
+  (and eschewing much of classical inference and interpretation) can be much
+  more tractable, in a sense
+
+\item But at the bottom of it all, \emph{``does the model predict well?''} is
+  simply a different question. And it may not be the question that you want to
+  answer in every application, so having inference tools in your toolkit,
+  understanding when they are valid, and learning about causality, will make you
+  a more well-rounded statistician
+\end{itemize}
 
 \section{Forecasting}
 
