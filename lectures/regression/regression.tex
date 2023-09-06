@@ -5,7 +5,7 @@
 \usepackage[normalem]{ulem}
 \usepackage{centernot}
 
-\title{Lecture 3: Linear Regression \\ \smallskip  
+\title{Lecture 3: Regression and Smoothing \\ \smallskip  
 \large Introduction to Time Series, Fall 2023 \\ \smallskip
 Ryan Tibshirani}
 \date{}
@@ -340,9 +340,10 @@ and Athanasopoulos (HA).
   without intercept. Then all results that we will derive can be translated to
   the model with intercept via the following trick: we redefine each vector
   $x_i$ so that it has a 1 prepended to it:   
-  \[
+  \begin{equation}
+  \label{eq:x_intercept}
   x = (1, x_1, \dots, x_p)
-  \]
+  \end{equation}
   Then we read of results with this new transformation: post-transformation, the
   first entry of $\beta$ serves as the intercept, and the rest serve as the
   coefficients multiplying each $x_j$  
@@ -637,7 +638,7 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   \end{align*}
 
 \item One common way to measure the quality of an estimator is its \emph{mean
-    squared error} (MSE), which for the least squares estimator \smash{$a^T
+    squared error} (MSE), which for the least squares estimator \smash{$a^\T
     \hbeta$} of the contrast $a^\T \beta$, is
   \[
   \MSE(a^\T \hbeta) = \E\big[ (a^\T \hbeta - a^\T \beta) \big]^2
@@ -750,15 +751,110 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 
 \subsection{t-test for individual coefficients}
 
+\begin{itemize}
+\item Under \eqref{eq:model_n}, we can define a \emph{t-test}, based on the
+  least squares estimate \eqref{eq:coef_mult2}, for testing whether or not an 
+  individual coefficient is zero at the population-level: that is, for testing
+  the hypothesis 
+  \begin{equation}
+  \label{eq:null1}
+  H_0 : \beta_j = 0
+  \end{equation}
+
+\item To set us up to discuss this, we first define an estimate of the noise
+  variance $\sigma^2$ in \eqref{eq:model_n}:
+  \begin{align*}
+  \hat\sigma^2 &= \frac{1}{n-p} \|y - X\hbeta\|^2 \\
+  &= \frac{1}{n-p} \sum_{i=1}^n (y_ i - x_i^\T \hbeta)^2 
+  \end{align*}
+  This is the residual sum of squares from linear regression, divided by $n-p$ 
+
+\item We also define the matrix $C = (X^\T X)^{-1}$. Why is this important?
+  Because: 
+  \begin{align*}
+  \Cov(\hbeta) &= \Cov\big( (X^\T X)^{-1} X^\T y \big) \\
+  &= (X^\T X)^{-1} X^\T \Cov(y) X (X^\T X)^{-1} \\
+  &=  (X^\T X)^{-1} X^\T \sigma^2 I X (X^\T X)^{-1} \\
+  &= \sigma^2 X^\T X \\
+  &= \sigma^2 C
+  \end{align*}
+  Note: in the second line we the property of covariance: for a random vector
+  $z$ and matrix $A$ of appropriate dimension, $\Cov(Az) = A \Cov(z)
+  A^\T$. We'll revisit this and related properties on the homework
+
+\item The above result implies that \smash{$\Var(\hbeta_j) = \sigma^2 C_{jj}$},
+  where $C_{jj}$ is the $j\th$ diagonal element of $C$
+
+\item Recall that we also know that \smash{$\E[\hbeta_j] = \beta_j$}, since we
+  already proved unbiasedness, above. Combining two these facts (about the mean 
+  and variance of \smash{$\hbeta_j$}) leads us to define the \emph{t-statistic}  
+  \begin{equation}
+  \label{eq:t_stat}
+  t_j = \frac{\hbeta_j - \beta_j}{\hat\sigma \sqrt{C_{jj}}} 
+  \end{equation}
+  Under \eqref{eq:model_n}, this is has a \emph{t-distribution} with $n-p$
+  degrees of freedom. This can be used to test \eqref{eq:null1}, or form a
+  confidence interval for $\beta_j$. This follows the same general recipe that
+  you have learned (or will learn) about hypothesis testing and confidence
+  intervals in your concepts of statistics class
+
+\item When you call \verb|lm()| in R, and then call \verb|summary()| on its
+  output, you are presented with these t-statistics and associated p-values (for
+  the test that the coefficient is zero, as in \eqref{eq:null1})
+
+\item We will not cover this further, in any real detail, because (a) you'll
+  likely spend a good amount of time on this when you learn regression in your
+  concepts of statistics class, and (b) we won't really rely on classical
+  inferential tools such as this t-test very much. After all, they rest on the
+  assumption that the model \eqref{eq:model_n} is correct, which as we've
+  discussed already, can be a dubious assumption in practice
+\end{itemize}
+
 \subsection{F-test for subgroups of coefficients}
 
-\subsection{AIC, BIC, AICc, R-squared, R-bar-squared, ...} 
+\def\SSE{\mathrm{SSE}}
 
-% ASSUMPTIONS!
-% t-test
-% F-test
-% Evaluation: optimism of training error.
-% AIC, BIC, AICc, CV.
+\begin{itemize}
+\item Even more briefly, we can form an \emph{F-test} for the hypothesis that an
+  entire \emph{group} of coefficients is zero, which (with a loss of generality,
+  just by relabeling the features), we can write as
+  \begin{equation}
+  \label{eq:null2}
+  H_0 : \beta_{k+1} \cdots = \beta_p = 0
+  \end{equation}
+
+\item We define
+  \[
+  \SSE = \sum_{i=1}^n (y_i - x_i^\T \hbeta)^2, \quad \text{and} \quad 
+  \SSE(k) = \sum_{i=1}^n \big( y_i - x_i^\T \hbeta(k) \big)^2
+  \]
+  where \smash{$\hbeta(k) \in \R^k$} denotes the estimated regression
+  coefficients when only the first $k$ features are present
+
+\item We then define the \emph{F-statistic}  
+  \begin{equation}
+  \label{eq:f_stat}
+  F_k = \frac{(\SSE(k) - \SSE) / (p-k)}{\SSE / (n-p)}
+  \end{equation}
+  Under \eqref{eq:model_n} and \eqref{eq:null2}, this has a \emph{central
+    F-distribution} with $p-k$ and $n-p$ degrees of freedom. We can use this to
+  test \eqref{eq:null2}, the hypothesis that all but the first $k$ true
+  coefficients are zero
+
+\item An important special case: when $k = p-1$, we are testing whether $\beta_p
+  = 0$, and it can be shown that the F-statistic $F_p$ in \eqref{eq:f_stat} is
+  equivalent to the t-statistic $t_p$ in \eqref{eq:t_stat} for testing $\beta_p
+  = 0$, from the previous subsection  
+\end{itemize}
+
+\subsection{AIC, BIC, AICc, $R^2$, adjusted $R^2$, ...}
+
+\begin{itemize}
+\item We will not cover these. These are classical tools for variable/model
+  selection. You can read about them in SS and/or HA if you are
+  interested. We'll take a more predictive angle, and simply use
+  cross-validation (oriented towards time series)
+\end{itemize}
 
 \section{Diagnostics}
 
@@ -766,5 +862,16 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 % Other than that, the classic ones
 
 \section{Forecasting}
+
+% Transformations
+% Lagged predictors
+% Error metrics
+% Optimism of training error.
+% Cross-validation
+
+\section{Smoothing}
+
+% HP filter
+% Trend filter
 
 \end{document}
