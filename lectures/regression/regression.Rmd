@@ -34,6 +34,7 @@ coef(reg)
 plot(chicken, ylab = "Chicken price (cents per pound)") 
 abline(coef(reg), col = 2)
 ```
+
 # Cardiovascular mortality regression
 
 ```{r cardio}
