@@ -141,7 +141,7 @@ plot(cmort, xlim = c(min(time(cmort)), max(time(cmort)) + k * delta),
 lines(max(time(cmort)) + (1:k) * delta, yhat, col = 2)
 ```
 
-# Lagged features, split-sample forecasts
+# Slit-sample forecasts
 
 ```{r cardio-split, fig.width=8, fig.height=3.5}
 # To validate them, we can refit the regression on the first half of the time
@@ -169,7 +169,7 @@ legend("topleft", legend = paste("MAE =", round(mae_second_half, 2)),
        bty = "n")
 ```
 
-# Lagged features, cross-validation
+# Cross-validation
 
 ```{r cardio-cv, fig.width=8, fig.height=3.5}
 # Now refit the regression sequentially on the second half, as we walk forward
