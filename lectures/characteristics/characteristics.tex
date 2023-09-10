@@ -212,14 +212,14 @@ Related reading: Chapters 1.1--1.2 of Shumway and Stoffer (SS); Chapters 2.3 and
   both trends (nonconstant mean and variance) and dependence (nonzero
   correlation). But it is an important concept and will serve as a building
   block for more complex models  
-\end{itemize}
 
-\begin{figure}[ht]
+\begin{figure}[t]
 \centering
 \includegraphics[width=0.85\textwidth]{fig/wn-1.pdf}
 \caption{\it Gaussian white noise.}
 \label{fig:wn}
 \end{figure}
+\end{itemize}
 
 \section{Linear filtering}
 
@@ -310,20 +310,20 @@ Related reading: Chapters 1.1--1.2 of Shumway and Stoffer (SS); Chapters 2.3 and
   for some $\delta > 0$. Figure \ref{fig:rw} plots examples of random walks with
   and without drift 
 
-\item By unraveling the last iteration, we can write a random walk with drift
-  equivalently as (assuming we start at $x_0 = 0$):
-  \[
-  x_t = \delta t + \sum_{i=1}^t \epsilon_i 
-  \]
-  Think: what happens to the variance of this as $t$ grows?
-\end{itemize}
-
-\begin{figure}[ht]
+\begin{figure}[t]
 \centering
 \includegraphics[width=0.85\textwidth]{fig/rw-1.pdf}
 \caption{\it Random walk without and with drift.}
 \label{fig:rw}
 \end{figure}
+
+\item By unraveling the last iteration, we can write a random walk with drift
+  equivalently as (assuming we start at $x_0 = 0$):
+  \[
+  x_t = \delta t + \sum_{i=1}^t \epsilon_i 
+  \]
+  Think: what happens to the variance of this as $t$ grows? 
+\end{itemize}
 
 \section{Signal plus noise}
 
@@ -378,12 +378,12 @@ Related reading: Chapters 1.1--1.2 of Shumway and Stoffer (SS); Chapters 2.3 and
 \item Many consider STL to be the most general and robust method for
   decomposition. Figure \ref{fig:stl} gives an example applied to US retail
   employment data 
-\end{itemize}
 
-\begin{figure}[ht]
+\begin{figure}[p]
 \centering
 \includegraphics[width=0.85\textwidth]{fig/stl-1.pdf}
 \caption{\it STL decomposition of US retail employment data (from HA).}  
 \label{fig:stl}
 \end{figure}
+\end{itemize}
 \end{document}

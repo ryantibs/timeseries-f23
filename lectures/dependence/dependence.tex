@@ -130,8 +130,7 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   \]
   So both the mean and the variance grow over time, proportionally to $t$. 
   Figure \ref{fig:rw} plots example paths over multiple repetitions, for you to
-  get a sense of this
-\end{itemize}
+  get a sense of this 
 
 \begin{figure}[p]
 \centering
@@ -142,6 +141,7 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   with respect to the 100 repetitions.}
 \label{fig:rw}
 \end{figure}
+\end{itemize}
 
 \section{Covariance and correlation}
 
@@ -262,8 +262,7 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   distance to the diagonal. This is an important property that we will revisit
   soon (hint: stationarity). Meanwhile, the random walk auto-correlation
   function does \emph{not} have a pattern that persists throughout, and we can
-  see a ``cone'' that grows around the diagonal as time grows
-\end{itemize}
+  see a ``cone'' that grows around the diagonal as time grows 
 
 \begin{figure}[htb]
 \centering
@@ -277,6 +276,7 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   value.} 
 \label{fig:heatmap}
 \end{figure}
+\end{itemize}
 
 \subsection{Cross: two series}
 
@@ -306,20 +306,7 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   function of ``lag'', which refers to the value $h = s-t$, and appears to be  
   maximized at a lag of $h = -25$ or so. This makes sense, in that we expect
   cases to be highly correlated with deaths several weeks later (this is also
-  visually apparent in Figure \ref{fig:covid-ts}). 
-
-\item A bit of nomenclature: we say that cases \emph{lead} deaths, since their
-  cross-correlation is maximized at a negative value of $h$, and conversely, 
-  deaths \emph{lag} cases  
-
-\item  But wait a minute ... why have we reduced the whole cross-correlation 
-  function, which is generically a function of two time indexes $s$ and $t$, to
-  be a function of a single number, lag, $h = s-t$? Because that is really the
-  only way it is estimable (unless we have more information than the two time
-  series at hand). More on this shortly, but next, we'll cover stationarity,
-  which will provide the foundation for this estimation strategy in the first
-  place 
-\end{itemize}
+  visually apparent in Figure \ref{fig:covid-ts})
 
 \begin{figure}[p]
 \centering
@@ -333,6 +320,19 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   in R.}   
 \label{fig:covid-ccf}
 \end{figure}
+
+\item A bit of nomenclature: we say that cases \emph{lead} deaths, since their
+  cross-correlation is maximized at a negative value of $h$, and conversely, 
+  deaths \emph{lag} cases  
+
+\item  But wait a minute ... why have we reduced the whole cross-correlation 
+  function, which is generically a function of two time indexes $s$ and $t$, to
+  be a function of a single number, lag, $h = s-t$? Because that is really the
+  only way it is estimable (unless we have more information than the two time
+  series at hand). More on this shortly, but next, we'll cover stationarity,
+  which will provide the foundation for this estimation strategy in the first
+  place 
+\end{itemize}
 
 \section{Stationarity}
 \def\eqd{\overset{d}{=}}
@@ -506,6 +506,19 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   auto-correlation, which makes sense, because the original time series appears
   to be a sequence of repeating short signals   
 
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.875\textwidth]{fig/speech-1.pdf}
+\caption{\it Vocal response data measured from the syllable ``aaa $\cdots$ hhh''
+  (from SS).}  
+\label{fig:speech-ts}
+
+\includegraphics[width=0.875\textwidth]{fig/speech-2.pdf}
+\cprotect\caption{\it Auto-correlation function for the speech data, as plotted 
+  above. This is estimated by the \verb|acf()| function in R.}   
+\label{fig:speech-acf}
+\end{figure}
+
 \item The plot produced by \verb|acf()|, by default, also places dotted lines 
   at \smash{$\pm 2/\sqrt{n}$} (where $n$ is the length of the given time
   series). These lines are a tool to hint at statistical significance: under
@@ -522,19 +535,6 @@ Related reading: Chapters 1.3--1.5 of Shumway and Stoffer (SS); Chapters
   \verb|ccf()| was already given in Figure \ref{fig:covid-ccf} for the Covid-19
   data  
 \end{itemize}
-
-\begin{figure}[p]
-\centering
-\includegraphics[width=0.875\textwidth]{fig/speech-1.pdf}
-\caption{\it Vocal response data measured from the syllable ``aaa $\cdots$ hhh''
-  (from SS).}  
-\label{fig:speech-ts}
-
-\includegraphics[width=0.875\textwidth]{fig/speech-2.pdf}
-\cprotect\caption{\it Auto-correlation function for the speech data, as plotted 
-  above. This is estimated by the \verb|acf()| function in R.}   
-\label{fig:speech-acf}
-\end{figure}
 
 %\section{Pre-whitening}
 
