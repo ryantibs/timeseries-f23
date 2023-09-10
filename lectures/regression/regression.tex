@@ -15,8 +15,8 @@ Ryan Tibshirani}
 \RaggedRight
 \vspace{-50pt}
 
-Related reading: Chapters 2 of Shumway and Stoffer (SS); Chapter 7 of Hyndman
-and Athanasopoulos (HA).   
+Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
+7 of Hyndman and Athanasopoulos (HA).   
 
 \section{Simple regression}
 
@@ -150,7 +150,14 @@ and Athanasopoulos (HA).
   x_1 = 2001.583, \, x_2 = 2001.667, \, x_3 = 2001.750, \dots
   \end{gather*}
   where we interpret each value of $x$ as a given year plus a fraction,
-  representing the month of the year
+  representing the month of the year 
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=0.875\textwidth]{fig/chicken-1.pdf}
+\caption{\it Linear regression of chicken prices and on time (from SS).} 
+\label{fig:chicken}
+\end{figure}
   
 \item After running \verb|lm()|, the resulting object is a (special) list, with
   a lot of useful  components. Calling \verb|coef()| on the object gives the
@@ -164,16 +171,7 @@ and Athanasopoulos (HA).
   and the bottom panel plots them together, as a scatter plot, toether with the
   fitted line from linear regression. We can imagine, in a future period (beyond
   the end date of these time series), using the estimated regression
-  coefficients to predict mortality from particulate 
-  levels  
-\end{itemize}
-
-\begin{figure}[tb]
-\centering
-\includegraphics[width=0.875\textwidth]{fig/chicken-1.pdf}
-\caption{\it Linear regression of chicken prices and on time (from SS).} 
-\label{fig:chicken}
-\end{figure}
+  coefficients to predict mortality from particulate levels  
 
 \begin{figure}[p]
 \centering
@@ -181,10 +179,12 @@ and Athanasopoulos (HA).
 
 \bigskip\bigskip
 \includegraphics[width=0.875\textwidth]{fig/cardio-2.pdf}
+
 \caption{\it Linear regression of cardiovascular mortality on particulate levels 
   in Los Angeles (from SS).} 
 \label{fig:cardio}
 \end{figure}
+\end{itemize}
 
 \subsection{Prediction: ex-ante and ex-post}
 
@@ -215,7 +215,7 @@ and Athanasopoulos (HA).
     predictors. So we wait until $x_{\text{new}}$ is observed, then issue our
     forecast. For instance, we can make ex-post forecasts in the mortality
     regression example (but cannot easily make ex-ante forecasts unless we 
-    somehow could forecast particular levels into the future)
+    somehow could forecast particulate levels into the future)
   \end{itemize}
 
 \item One way around the circumvent the potential difficulty of making ex-ante
@@ -344,9 +344,9 @@ and Athanasopoulos (HA).
   \label{eq:x_intercept}
   x = (1, x_1, \dots, x_p)
   \end{equation}
-  Then we read of results with this new transformation: post-transformation, the
+  Then we read of results in this new parametrization: post-transformation, the
   first entry of $\beta$ serves as the intercept, and the rest serve as the
-  coefficients multiplying each $x_j$  
+  coefficients multiplying each $x_j$   
 
 \item (There is another way to get rid of the intercept as well, which we'll
   learn when we connect multiple to simple linear regression a bit later, which
@@ -565,20 +565,21 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   temperature is due to the fact that these two are not very correlated (as is
   seen by looking at their time series, which are a bit ``out of phase'' with
   each other) 
-\end{itemize}
 
 \begin{figure}[p]
 \centering
-\includegraphics[width=0.875\textwidth]{fig/cardio-3.pdf} 
+\includegraphics[width=0.875\textwidth]{fig/cardio-mult-1.pdf} 
 
 \bigskip\bigskip
-\includegraphics[width=0.875\textwidth]{fig/cardio-4.pdf}
+\includegraphics[width=0.825\textwidth]{fig/cardio-mult-2.pdf}
+
 \caption{\it Linear regression of cardiovascular mortality on particulate levels
   and temperature (this is multiple regression, with two features) in Los
   Angeles (from SS). The solid red lines denote the estimates from marginal
   regression; the dashed blue from multiple regression.} 
 \label{fig:cardio_mult}
 \end{figure}
+\end{itemize}
 
 \subsection{Interlude: best linear unbiased estimator}
 
@@ -656,7 +657,7 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   a^\T \hbeta = \underbrace{(a^\T X^\T X)^{-1}
     X^\T}_{\textstyle \begin{array}{c} b^\T \end{array}} y  
   \]
-  That is, $\hbeta = b^\T y$, where $b = X (X^\T X)^{-1} a$ 
+  That is, $a^\T \hbeta = b^\T y$, where $b = X (X^\T X)^{-1} a$ 
 
 % \item We could have also done this more explicitly from the equivalent
 %   formulation in \eqref{eq:coef_mult1}:
@@ -697,12 +698,12 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   the only unbiased estimators are linear in $y$ anyway.\footnote{See Hansen
     (2022), ``A modern Gauss-Markov theorem'', and then P{\"o}tscher and
     Preinerstorfer (2022), ``A modern Gauss-Markov theorem? Really?'', and
-    Portnoy (2022), ``Linearity  of unbiased linear model estimators''. A nice,
-    friendly overview is given by Allison (2022), ``Is OLS BLUE or BUE?'',
-    \url{https://statisticalhorizons.com/is-ols-blue-or-bue/} (this is a blog
-    post). A masterful, but much more mathematical treatment is given in Lei and
-    Wooldrige (2022), who also weave in important historical results that seem
-    to have been overlooked, and prove new ones as well.})
+    then Portnoy (2022), ``Linearity  of unbiased linear model estimators''. A
+    nice and friendly overview is given by Allison (2022), ``Is OLS BLUE or
+    BUE?'', \url{https://statisticalhorizons.com/is-ols-blue-or-bue/} (this is a
+    blog post). A masterful, but much more mathematical treatment is given in
+    Lei and Wooldrige (2022), who also weave in important historical results
+    that seem to have been overlooked, and prove new ones as well.}) 
 \end{itemize}
 
 \section{Classical inference}
@@ -853,12 +854,12 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 
 \begin{itemize}
 \item We will not cover these. These are classical tools for variable/model
-  selection. You can read about them in SS and/or HA if you are
-  interested. We'll take a more predictive angle, and simply rely on
-  cross-validation (oriented towards time series)
+  selection. You can read about them in SS (Chapter 2.1) and/or HA (Chapter 7.5) 
+  books if you are interested. We'll take a more predictive angle, and focus
+  instead on tools like cross-validation  
 \end{itemize}
 
-\subsection{Diagnostics}
+\subsection{Diagnostics, transformations}
 
 \begin{itemize}
 \item There are a variety of diagnostic (statistical) tools for evaluating the
@@ -885,21 +886,27 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   that there is structure/information left in the residuals. We will revisit
   this when we discuss ARIMA models, later 
 
-\item Beyond looking at the auto-correlation of the residuals, there are a
-  variety of classical diagnostics for regression. You can read about these in 
-  many sources, including the R help file for \verb|plot.lm()|, and both the SS
-  and HA books. We will not be able to cover them, for the sake of time, though
-  they are worth being generally aware of, so worth reading up on separately
-  (and/or hopefully you will see them in more detail in another course)
-\end{itemize}
-
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.875\textwidth]{fig/cardio-5.pdf} 
+\includegraphics[width=0.875\textwidth]{fig/cardio-mult-3.pdf} 
 \caption{Auto-correlation function of the residuals for the linear regression of
-  cardiovascular mortality on particular levels.}
+  cardiovascular mortality on particulate levels.}
 \label{fig:cardio_acf}
 \end{figure}
+
+\item Beyond looking at the auto-correlation of the residuals, there are a
+  variety of classical diagnostics for regression. You can read about these in 
+  many sources, including the R help file for \verb|plot.lm()|, and the HA book
+  (Chapter 7.3). We will not be able to cover them, for the sake of time,
+  however they are worth being generally aware of, and so worth reading up on
+  separately (and/or hopefully you will see them in more detail in another
+  course)    
+
+\item Finally, closely related to diagnostics, and another classic topic, are
+  transformations--- made either to the response or features---which can improve
+  the regression model. We won't cover them for the sake of time, but you can
+  look at the HA book for details (Chapters 3.1, 5.6, and 7.4)
+\end{itemize}
 
 \subsection{Correlation vs causation?}
 
@@ -939,15 +946,333 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   a more well-rounded statistician
 \end{itemize}
 
-\section{Forecasting}
+\section{Prediction}
 
-\subsection{Transformations}
+\subsection{Lagged predictors}
 
-Response, indicators, lagged features
+\begin{itemize}
+\item In certain situations, as discussed above, ex-ante forecasts may be
+  difficult to obtain. Recall that in the cardiovascular mortality regression 
+  example, where $y_t$ is the number of cardiovascular deaths at time $t$ and
+  $x_t$ is the level of particulate matter at time $t$, a forecast of mortality
+  \smash{$\hat{y}_{t+k}$} at time $t+k$ would only be possible given the
+  particulate level $x_{t+k}$ at time $t+k$, which is not available in advance  
+
+\item One way around this is use \emph{lagged predictors} in the regression,
+  i.e., instead of regressing $y_t$ on $x_t$, we regress $y_t$ on $x_{t-k}$,
+  i.e., we regress deaths each week on particulate levels $k$ weeks earlier:
+  \[
+  y_t \approx \beta_0 + \beta_1 x_{t-k}, \quad t = 1,2,3,\dots
+  \]
+
+\item In doing so, we can make predictions up to $k$ weeks into the future. To
+  be clear, if we've only observed data up through time $t$, then we can still
+  make forecasts
+  \[
+  \hat{y}_{t+i} = \hbeta_0 + \hbeta_1 x_{t+i-k}, \quad i = 1,\dots,k
+  \]
+
+\item Figure \ref{fig:cardio_lagged} gives an example where we do so with $k =
+  4$. We are therefore able to make true, ex-ante forecasts 4 weeks past the end
+  of the time series. However, we are not able to validate these, since don't
+  actually have data past the summer of 1979 in this example 
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.9\textwidth]{fig/cardio-lagged-1.pdf} 
+\caption{Forecasts of cardiovascular mortality made at a 4-week ahead horizon,
+  using particulate level as a lagged predictor. These are prospective
+  forecasts, made at the end of the time series.}
+\label{fig:cardio_lagged}
+
+\bigskip
+\includegraphics[width=0.9\textwidth]{fig/cardio-split-1.pdf} 
+
+\caption{As in the above figure, but pseudo-prospective forecasts on the second
+  half, from a regression model fit only to the first half.} 
+\label{fig:cardio_split}
+\end{figure}
+
+\item As validation, we can refit the lagged regression on the first half of the
+  time series, and use the second half to 4-week ahead make forecasts and
+  compare them to the observed series. This is done in Figure
+  \ref{fig:cardio_split}. It looks OK in terms of its \emph{dynamics}: the trend
+  (rise and fall) in the predictions matches the observed trend fairly well, but
+  pretty soon it appears to be biased upwards, particularly at the trough of
+  each yearly cycle  
+
+\item (A word of warning: pulling this off correctly in R is actually more
+  tricky than you might expect, so study the code in the R notebook carefully
+  ...)   
+
+\item Of course, we can also use more than one lag as a predictor, and use as
+  our working model:
+  \[
+  y_t \approx \beta_0 + \sum_{j=1}^m \beta_j x_{t-k_j}, \quad t = 1,2,3,\dots
+  \]
+  for lags $k_1 < \cdots < k_m$. Note that this model would allow us to make
+  forecasts $k_1$ time steps into the future (a lagged predictor model is
+  limited by its smallest lag)
+
+\item The more lags---the more features, in general---that we include in the
+  working model, the more \emph{expressive} it is, meaning, it is able to
+  capture and propogate more intricate trends. But also, the more
+  \emph{volatile} it can become, meaning, it can make more wild predictions 
+
+\item Thus there is a tradeoff here, often referred to as the
+  \emph{bias-variance tradeoff}. More expressive = lower bias, more volatile =
+  higher variance. This tradeoff generally expresses itself differently in
+  different problems, and is not something we can anticipate precisely in
+  advance. However, fortunately, we can still use generic tools like
+  cross-validation to estimate prediction error (which measures bias and
+  variance in aggregate). We will cover this next
+
+\item Another important general tool to mention is \emph{regularization}, which
+  can often tilt the bias-variance tradeoff in our favor. We will also cover
+  this shortly
+\end{itemize}
 
 \subsection{Error metrics}
 
-\subsection{Cross-validation}
+\def\MSE{\mathrm{MSE}}
+\def\MAE{\mathrm{MAE}}
+\def\MAPE{\mathrm{MAPE}}
+\def\MASE{\mathrm{MASE}}
+
+\begin{itemize}
+\item To evaluate regression models for their predictive accuracy, we'll first
+  have to talk about error metrics: the precise formulae we will be using to 
+  measure this. The most common one is ean squared error (MSE) between 
+  predictions \smash{$\hat{y}_{\text{new},t}$} and unseen observations
+  \smash{$y_{\text{new},t}$}, over test times $t = 1,\dots,N$:
+  \[
+  \MSE = \frac{1}{N} \sum_{t=1}^N \big( y_{\text{new},t} -
+  \hat{y}_{\text{new},t} \big)^2
+  \]
+
+\item Another common one is mean absolute error (MAE), which tends to focus less
+  on extreme errors: 
+  \[
+  \MAE = \frac{1}{N} \sum_{t=1}^N \big| y_{\text{new},t} -
+  \hat{y}_{\text{new},t} \big|
+  \]
+
+\item Note that MSE and MAE are scale-dependent: they depend on the scale of the
+  response and hence are not universally interpretable. This leads some to
+  prefer mean absolute percentage error (MAPE):
+  \[
+  \MAPE = 100 \times \frac{1}{N} \sum_{t=1}^N \frac{| y_{\text{new},t} -
+    \hat{y}_{\text{new},t}|}{ y_{\text{new},t} } 
+  \]
+
+\item While intuitively appealing, MAPE can also have undesirable and erratic
+  behavior if the observation \smash{$y_{\text{new},t}$} is close to
+  zero. (Another problem that is often overlooked is that it assumes the unit
+  of measurement actually has a meaningful zero---e.g., are we using Farenheit 
+  or Celsius for temperature forecasts? This would give potentially very
+  different answers in terms of MAPE) 
+
+\item A nice alternative for forecasting applications, which maintains the
+  scale-free aspect but avoids the zero-pitfall, is mean absolute scaled error 
+  (MASE):  
+  \[
+  \MASE = 100 \times \frac{\frac{1}{N} \sum_{t=1}^N | \hat{y}_{\text{new},t} -
+    y_{\text{new},t} |}{\frac{1}{N-1} \sum_{t=2}^N | y_{\text{new},t} -
+    y_{\text{new},t-1} |}  
+  \]
+  In words, we are normalizing the error of our forecasts by that of a naive
+  method which always predicts the last observation
+
+\item This is \emph{not} just a thought exercise. Error metrics matter in
+  practice! They really, really do. By this, we mean that different metrics
+  might lead you to prefer different forecasting models. We'll return to this in
+  more detail later in the course when we talk about forecast scoring rules
+\end{itemize}
+
+\subsection{Optimism of training error}
+
+\def\TrainErr{\mathrm{TrainErr}}
+
+\begin{itemize}
+\item The cheapest, easiest estimate of prediction error, whether measured by
+  MSE, MAE, MAPE, etc., is to look at \emph{training error}, which is the name
+  we give to the average error we made on the training set that was used to fit
+  the model. For example, for the mean squared error metric, the training error
+  would be
+  \[
+  \TrainErr = \frac{1}{n} \sum_{t=1}^n (\hat{y}_t - y_t)^2
+  \]
+  where $y_t$, $t = 1,\dots,n$ are the responses that were used to fit the model
+  that produced \smash{$\hat{y}_t$}, $t = 1,\dots,n$
+
+\item This, in general, is \emph{not} a good estimate of prediction
+  whatsoever! It can be wrong both in absolute and relative terms
+
+\item That is, for a given model, it is generally \emph{too optimistic} as an
+  estimate of prediction error. Equally, if not more more problematic: it is
+  \emph{more optimistic the more complex the model}. We'll examine these issues
+  on the homework 
+
+\item (Classical optimism theory in regression, which we won't cover, is
+  actually very beautiful; ask about it in office hours if you are curious) 
+\end{itemize}
+
+\subsection{Time series cross-validation}
+
+\def\SplitErr{\mathrm{SplitErr}}
+\def\CVErr{\mathrm{CVErr}}
+
+\begin{itemize}
+\item A better estimate of prediction error is given by \emph{cross-validation}
+  or related techniques
+
+\item Actually, even simpler is called a \emph{split-sample} (also called a
+  \emph{hold-out}) estimate of prediction error: this is what we did in Figure
+  \ref{fig:cardio_split}, where we only fit the model to the first half of the
+  time series, and used the second half to make predictions. Formally, if we
+  just measured MSE (or MAE, or whatever error metric we like) on the second
+  half of the data, starting at time $t_0+1$, then these would be our hold-out
+  estimates of prediction error:
+  \[
+  \SplitErr = \frac{1}{n-t_0} \sum_{t = t_0+1}^n (\hat{y}_t - y_t)^2 
+  \]
+  Critically, the responses $y_t$, $t > t_0$ were \emph{not} used to fit the
+  model that produced the predictions \smash{$\hat{y}_t$}, $t > t_0$. Rather,
+  this model was only fit on data $y_t$, $t \leq t_0$
+
+\item The top left corner of Figure \ref{fig:cardio_split} reports the
+  split-sample MAE, computed precisely in this way 
+
+\item In forecasting, split-sample estimates of prediction error mimic a
+  situation where we would \emph{never refit the model} in the future. However,
+  if we would indeed refit the model in the future (given access to more data),
+  then they are not really appropriate, and are generally pessimistic
+
+\item Enter \emph{time series cross-validation}, where we walk forward in time,
+  refit the model given all data that we would have available at the given
+  forecast date, make a forecast, record the error, and continue. For 1-step
+  ahead forecasts, the cross-validation (CV) error estimate is
+  \[
+  \CVErr = \frac{1}{n-t_0} \sum_{t = t_0+1}^n \big( \hat{y}_{t | t-1} - y_t
+  \big)^2     
+  \]
+  where \smash{$\hat{y}_{t | t-1}$} indicates that this prediction came from a
+  model that was fit on data up through time $t-1$: that is, $y_s$, $s \leq t-1$ 
+
+\item For $k$-step ahead forecasts, the CV error estimate is
+  \[
+  \CVErr = \frac{1}{n-t_0} \sum_{t = t_0+1}^n \big( \hat{y}_{t | t-k} - y_t
+  \big)^2     
+  \]
+  where similarly \smash{$\hat{y}_{t | t-k}$} indicates that this came from a
+  model that was fit on data $y_s$, $s \leq t-k$  
+
+\item Note that in either of the above two displays, we typically do not set
+  $t_0 = 0$, but allow ourselves to fit the initial model (in the first step of 
+  time series CV) on some nontrivial amount of data $y_1, \dots, y_{t_0}$ that
+  we is sometimes call the \emph{burn-in set}
+
+\item CV will be our main tool for \emph{model selection}. Unsure how many lags 
+  to include (or whether to use regularization, or what regularization strength
+  to use, and so on)? Compute CV error estimates for each candidate model, and 
+  select the one that performs best according to the error metric at hand
+
+\item Figure \ref{fig:split_cv} visualizes the split-sample and cross-validation
+  schemes for time series 
+
+\begin{figure}[p]
+\centering
+Split-sample: 
+
+\smallskip
+\includegraphics[width=0.95\textwidth]{split.png}
+
+\bigskip
+Cross-validation, 1-step ahead:
+
+\smallskip
+\includegraphics[width=0.95\textwidth]{cv1.png}
+
+\bigskip
+Cross-validation, 4-steps ahead: 
+
+\smallskip
+\includegraphics[width=0.95\textwidth]{cv4.png}
+
+\medskip
+\caption{Visualization of split-sample and time series cross-validation schemes
+  (from HA).} 
+\label{fig:split_cv}
+\end{figure}
+
+\item Figure \ref{fig:cardio_cv1} then displays the walk-forward predictions
+  from time series cross-validation on the cardiovascular mortality
+  example. (Recall, these are 4-step ahead forecasts, so the CV scheme is as in
+  the bottom panel of Figure \ref{fig:split_cv}.) We can see that the MAE has
+  improved a bit from the split-sample forecasts in Figure
+  \ref{fig:cardio_split} (from about 9.39 to 7.95). However, the forecasts still
+  look biased upwards  
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.9\textwidth]{fig/cardio-cv-1.pdf} 
+\caption{Walk-forward forecasts of cardiovascular mortality, made at a 4-week
+  ahead horizon, using particulate level as a lagged predictor. The regression
+  model is trained on all past.} 
+\label{fig:cardio_cv1}
+
+\bigskip
+\includegraphics[width=0.9\textwidth]{fig/cardio-cv-2.pdf} 
+\caption{As in the above figure, but with the regression model trained on a
+  trailing window of 10 weeks.} 
+\label{fig:cardio_cv2}
+\end{figure}
+\end{itemize}
+
+\subsection{Trailing windows}
+
+\begin{itemize}
+\item It turns out that we can further improve the forecasts in the
+  cardiovascular mortality example by training on a \emph{trailing window},
+  rather than on all past. In other words, to fit the regression model we use to
+  make a forecast at time $t$, instead of solving  
+  \[
+  \min_{\beta_0,\beta_1} \, \sum_{s=1}^{t-1} (y_s - \beta_0 - \beta_1 x_{s-k})^2
+  \]
+  we solve
+  \[
+  \min_{\beta_0,\beta_1} \, \sum_{s={t-w}}^{t-1} (y_s - \beta_0 - \beta_1 x_{s-k})^2
+  \]
+  for a choice of window length $w$
+
+\item Figure \ref{fig:cardio_cv2} shows such forecasts with a window length $w = 
+  10$ (i.e., 10 weeks). We see that it does significantly better, both
+  qualitatively and in terms of MAE
+
+\item Why does this happen? Because the relationship between cardiovascular
+  mortality and particulate level is changing over time. In the language of the
+  last lecture, these two series, cardiovascular mortality and particulate
+  level, are \emph{not jointly stationary}
+
+\item Training on a trailing window helps to hone in on the most relevant
+  (recent) data for prediction. If the window is too long, then the fitted model
+  cannot adapt to nonstationarity as well; if the window is too short, then the
+  fitted model may be too volatile (trained on too little data)
+
+\item The choice of window $w$ should be rigorously examined, just like the 
+  choice and number of lags. To do so, we can use CV, once again---and to
+  reiterate, CV is our main tool to select \emph{tuning parameters} of the
+  working model (the number of lags and the length of the trailing window being
+  two examples) 
+\end{itemize}
+
+
+
+\section{Regularization}
+
+\subsection{Ridge}
+
+\subsection{Lasso}
 
 \section{Smoothing}
 
