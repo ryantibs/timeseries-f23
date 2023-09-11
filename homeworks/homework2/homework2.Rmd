@@ -1,0 +1,126 @@
+---
+title: 'Homework 2: [YOUR NAME HERE]'
+subtitle: 'Introduction to Time Series, Fall 2023'
+date: 'Due Thursday September 21 at 5pm'
+output:
+  html_document
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(cache = TRUE, autodep = TRUE, cache.comments = TRUE)
+```
+
+The total number of points possible for this homework is XY. The number of 
+points for each question is written below, and questions marked as "bonus" are 
+optional. Submit the **knitted html file** from this Rmd to Gradescope. 
+
+If you collaborated with anybody for this homework, put their names here:
+
+# Simple regression
+
+1. (X pts) 
+Derive the population least squares coefficients, which solve 
+\[
+\min_{\beta, \beta_0} \, \mathbb{E} \big[ (y - \beta_0 - \beta_1 x)^2 \big],
+\]
+by differentiating the criterion with respect to each $\beta_j$, setting equal
+to zero, and solving. Repeat the calculation but without intercept (without the
+$\beta_0$ coefficient in the model). 
+
+SOLUTION GOES HERE
+
+2. (X pts)
+As in Q1, now derive the sample least squares coefficients, which solve
+\[
+\min_{\beta, \beta_0} \, \sum_{i=1}^n (y_i - \beta_0 - \beta_1 x_i)^2.
+\]
+Again, repeat the calculation but without intercept (no $\beta_0$ in the model). 
+
+SOLUTION GOES HERE
+
+3. (X pts)
+Prove of disprove: in the model without intercept, is the regression coefficient 
+of $x$ on $y$ the inverse of that from the regression of $y$ on $x$? Answer the 
+question for each of the the population and sample versions.
+
+SOLUTION GOES HERE
+
+4. (X pts)
+Consider the following hypothetical. Let $y$ be the height of a child and $x$ be
+the height of their parent, and consider a regression of $y$ on $x$, performed 
+in in a large population. Suppose that we estimate the regression coefficients 
+separately for male and female parents (two separate regressions) and we find 
+that the slope coefficient from the former regression $\hat\beta_1^{\text{dad}}$ 
+is smaller than that from the latter $\hat\beta_1^{\text{mom}}$. Suppose however
+that we find (in this same population) the sample correlation between a father's 
+height and their child's height is *larger* than that between a mother's height 
+and their child's height. What is a plausible explanation for what is happening 
+here? 
+
+SOLUTION GOES HERE
+
+# Multiple regression
+
+5. (X pts)
+In class, we claimed that the multiple regression coefficients, with respect to
+responses $y_i$ and feature vectors $x_i \in \mathbb{R}^p$, $i = 1,\dots,n$, can 
+be written in two ways: the first is
+\[
+\hat\beta = \bigg( \sum_{i=1}^n x_i x_i^T \bigg)^{-1} \sum_{i=1}^n x_i y_i.
+\]
+The second is 
+\[
+\hat\beta = (X^T X)^{-1} X^T y,
+\]
+where $X \in \mathbb{R}^{n \times p}$ is a feature matrix, with $i^{\text{th}}$ 
+row $x_i$, and $y \in \mathbb{R}^n$ is a response vector, with $i^{\text{th}}$ 
+component $y_i$. Prove that these two expressions are equivalent.
+
+SOLUTION GOES HERE
+
+6. (Bonus)
+Derive the population and sample multiple regression coefficients by solving the
+corresponding least squares problem (differentiating the criterion with respect
+to each $\beta_j$, setting equal to zero, and solving). 
+
+SOLUTION GOES HERE
+
+# Marginal-multiple connection
+
+7. (X pts)
+Consider the simple linear regression of a generic response $y_i$ on a constant 
+predictor $x_i = 1$, $i = 1,\dots,n$, without intercept. Give the exact form of 
+the sample regression coefficient.
+
+SOLUTION GOES HERE
+
+8. (X pts)
+Recall the connection between multiple and marginal regression coefficients, as
+covered in lecture: the $j^{\text{th}}$ multiple regression coefficient can be
+written in general as
+\[
+\hat\beta_j = \frac{(\hat{x}^{-j}_j)^T \hat{y}^{-j}}
+{(\hat{x}^{-j}_j)^T \hat{x}^{-j}_j},
+\]
+which we interpret as the simple linear regression coefficient of $\hat{y}^{-j}$ 
+on $\hat{x}^{-j}$. These are $y$ and $x_j$, respectively, after we regress out
+the contributions of all other features. (See the lecture notes for the precise
+details.)
+
+    Note that we can treat a simple linear regression with an intercept term as
+a multiple regression with two features, where the first feature is always equal 
+to 1. Using the above formula, and the answer from Q7, re-derive the expression 
+for the slope in the simple linear model with intercept: 
+\[
+\hat\beta_1 = \frac{\sum_{i=1}^n (x_i - \bar{x}) (y_i - \bar{y})} 
+  {\sum_{i=1}^n (x_i - \bar{x})^2}.
+\]
+
+SOLUTION GOES HERE
+
+
+
+multivariate cov properties. prove Cov(Ax, By) = ...
+Gauss markov from the pov of psd ordering 
+
+prove as you add features training error goes down
