@@ -18,10 +18,10 @@ If you collaborated with anybody for this homework, put their names here:
 
 # Simple regression
 
-1. (X pts) 
+1. (2 pts) 
 Derive the population least squares coefficients, which solve 
 \[
-\min_{\beta, \beta_0} \, \mathbb{E} \big[ (y - \beta_0 - \beta_1 x)^2 \big],
+\min_{\beta_1, \beta_0} \, \mathbb{E} \big[ (y - \beta_0 - \beta_1 x)^2 \big],
 \]
 by differentiating the criterion with respect to each $\beta_j$, setting equal
 to zero, and solving. Repeat the calculation but without intercept (without the
@@ -29,23 +29,23 @@ $\beta_0$ coefficient in the model).
 
 SOLUTION GOES HERE
 
-2. (X pts)
+2. (2 pts)
 As in Q1, now derive the sample least squares coefficients, which solve
 \[
-\min_{\beta, \beta_0} \, \sum_{i=1}^n (y_i - \beta_0 - \beta_1 x_i)^2.
+\min_{\beta_1, \beta_0} \, \sum_{i=1}^n (y_i - \beta_0 - \beta_1 x_i)^2.
 \]
 Again, repeat the calculation but without intercept (no $\beta_0$ in the model). 
 
 SOLUTION GOES HERE
 
-3. (X pts)
+3. (2 pts)
 Prove of disprove: in the model without intercept, is the regression coefficient 
 of $x$ on $y$ the inverse of that from the regression of $y$ on $x$? Answer the 
 question for each of the the population and sample versions.
 
 SOLUTION GOES HERE
 
-4. (X pts)
+4. (3 pts)
 Consider the following hypothetical. Let $y$ be the height of a child and $x$ be
 the height of their parent, and consider a regression of $y$ on $x$, performed 
 in in a large population. Suppose that we estimate the regression coefficients 
@@ -61,7 +61,7 @@ SOLUTION GOES HERE
 
 # Multiple regression
 
-5. (X pts)
+5. (2 pts)
 In class, we claimed that the multiple regression coefficients, with respect to
 responses $y_i$ and feature vectors $x_i \in \mathbb{R}^p$, $i = 1,\dots,n$, can 
 be written in two ways: the first is
@@ -87,7 +87,7 @@ SOLUTION GOES HERE
 
 # Marginal-multiple connection
 
-7. (X pts)
+7. (1 pts)
 Consider the simple linear regression of a generic response $y_i$ on a constant 
 predictor $x_i = 1$, $i = 1,\dots,n$, without intercept. Give the exact form of 
 the sample regression coefficient.
