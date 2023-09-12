@@ -10,7 +10,7 @@ output:
 knitr::opts_chunk$set(cache = TRUE, autodep = TRUE, cache.comments = TRUE)
 ```
 
-The total number of points possible for this homework is XY. The number of 
+The total number of points possible for this homework is 30. The number of 
 points for each question is written below, and questions marked as "bonus" are 
 optional. Submit the **knitted html file** from this Rmd to Gradescope. 
 
@@ -95,7 +95,7 @@ the sample regression coefficient.
 
 SOLUTION GOES HERE
 
-8. (X pts)
+8. (3 pts)
 Recall the connection between multiple and marginal regression coefficients, as
 covered in lecture: the $j^{\text{th}}$ multiple regression coefficient can be
 written in general as
@@ -121,7 +121,7 @@ SOLUTION GOES HERE
 
 # Covariance calculations
 
-9. (X pts)
+9. (3 pts)
 Let $x \in \mathbb{R}^n$ and $y \in \mathbb{R}^m$ be random vectors, and let 
 $A \in \mathbb{R}^{k \times n}$ and $B \in \mathbb{R}^{\ell \times m}$ be fixed
 matrices. Prove that
@@ -134,7 +134,7 @@ lecture from week 2, "Measures of dependence and stationarity").
 
 SOLUTION GOES HERE
 
-10. (X pts)
+10. (2 pts)
 Suppose that $y = X \beta + \epsilon$, with $X$ and $\beta$ fixed, and where 
 $\epsilon$ is a vector with white noise entries, with variance $\sigma^2$. Use 
 the rule in Q9 to prove that for the sample least squares coefficients, namely, 
@@ -145,7 +145,7 @@ $\hat\beta = (X^T X)^{-1} X^T y$, it holds that
 
 SOLUTION GOES HERE
 
-11. (X pts)
+11. (3 pts)
 An equivalent way to state the Gauss-Markov theorem is as follows. Under the 
 model from Q10, if $\tilde\beta$ is any other unbiased linear estimator of
 $\beta$ (where linearity means that $\tilde\beta = My$ for a fixed matrix $M$)
@@ -162,7 +162,7 @@ SOLUTION GOES HERE
 
 # Cross-validation
 
-12. (X pts)
+12. (3 pts)
 Recall the R code from lecture that performs time series cross-validation to 
 evaluate the mean absolute error (MAE) of predictions from the linear regression
 of cardiovascular mortality on 4-week lagged particulate levels. (The version 
@@ -182,7 +182,7 @@ the plot (and label this as "Training MAE" to clearly differentiate it).
 # CODE GOES HERE
 ```
 
-13. (X pts)
+13. (2 pts)
 Repeat the same exercise as in Q12 but now with multiple lags per variable: use
 lags 4, 8, 12 for each of particulate level and temperature (thus 6 features in 
 total). Did the training MAE go down? Did the cross-validated MAE go down? 
@@ -194,7 +194,7 @@ the predictor matrix by calling `cbind()` on the lagged feature vectors.
 # CODE GOES HERE
 ```
 
-14. (X pts)
+14. (2 pts)
 Repeat once more the same exercise as in the last question but but now with many
 lags per variable: use lags 4, 5, ..., through 50 for each of particulate level 
 and temperature (thus 47 x 2 = 94 features in total). Did the training MAE go 
