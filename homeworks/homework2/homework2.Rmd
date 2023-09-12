@@ -81,7 +81,8 @@ SOLUTION GOES HERE
 6. (Bonus)
 Derive the population and sample multiple regression coefficients by solving the
 corresponding least squares problem (differentiating the criterion with respect
-to each $\beta_j$, setting equal to zero, and solving). 
+to each $\beta_j$, setting equal to zero, and solving). For the sample least
+squares coefficient, deriving either representation in Q5 will be fine.
 
 SOLUTION GOES HERE
 
@@ -104,13 +105,13 @@ written in general as
 \]
 which we interpret as the simple linear regression coefficient of $\hat{y}^{-j}$ 
 on $\hat{x}^{-j}$. These are $y$ and $x_j$, respectively, after we regress out
-the contributions of all other features. (See the lecture notes for the precise
+the contributions of all other features. (See the lecture notes for the precise 
 details.)
 
-    Note that we can treat a simple linear regression with an intercept term as
-a multiple regression with two features, where the first feature is always equal 
-to 1. Using the above formula, and the answer from Q7, re-derive the expression 
-for the slope in the simple linear model with intercept: 
+    Now note that we can treat a simple linear regression with an intercept term 
+as a multiple regression with two features, with the first feature just equal to
+the constant 1.  Using the above formula, and the answer from Q7, re-derive the 
+expression for the slope in the simple linear model with intercept: 
 \[
 \hat\beta_1 = \frac{\sum_{i=1}^n (x_i - \bar{x}) (y_i - \bar{y})} 
   {\sum_{i=1}^n (x_i - \bar{x})^2}.
@@ -118,9 +119,83 @@ for the slope in the simple linear model with intercept:
 
 SOLUTION GOES HERE
 
+# Covariance calculations
 
+9. (X pts)
+Let $x \in \mathbb{R}^n$ and $y \in \mathbb{R}^m$ be random vectors, and let 
+$A \in \mathbb{R}^{k \times n}$ and $B \in \mathbb{R}^{\ell \times m}$ be fixed
+matrices. Prove that
+\[
+\mathrm{Cov}(Ax, By) = A \mathrm{Cov}(x, y) B^T.
+\]
+Prove as a consequence that $\mathrm{Cov}(Ax) = A \mathrm{Cov}(x) A^T$. Hint:
+you may use the rule for covariances of linear combinations (as reviewed in the 
+lecture from week 2, "Measures of dependence and stationarity").
 
-multivariate cov properties. prove Cov(Ax, By) = ...
-Gauss markov from the pov of psd ordering 
+SOLUTION GOES HERE
 
-prove as you add features training error goes down
+10. (X pts)
+Suppose that $y = X \beta + \epsilon$, with $X$ and $\beta$ fixed, and where 
+$\epsilon$ is a vector with white noise entries, with variance $\sigma^2$. Use 
+the rule in Q9 to prove that for the sample least squares coefficients, namely, 
+$\hat\beta = (X^T X)^{-1} X^T y$, it holds that
+\[
+\mathrm{Cov}(\hat\beta) = \sigma^2 (X^T X)^{-1}.
+\]
+
+SOLUTION GOES HERE
+
+11. (X pts)
+An equivalent way to state the Gauss-Markov theorem is as follows. Under the 
+model from Q10, if $\tilde\beta$ is any other unbiased linear estimator of
+$\beta$ (where linearity means that $\tilde\beta = My$ for a fixed matrix $M$)
+then 
+\[
+\mathrm{Cov}(\hat\beta) \lesssim \mathrm{Cov}(\tilde\beta)
+\]
+where $\lesssim$ means less than or equal to in the *PSD (positive semidefinite)
+ordering*. Precisely, $A \lesssim B$ if and only if $B-A$ is a PSD matrix, which
+recall, means $z^T (B-A) z \geq 0$ for all vectors $z$. Prove that this is 
+indeed equivalent to the statement of the Gauss-Markov theorem given in lecture. 
+
+SOLUTION GOES HERE
+
+# Cross-validation
+
+12. (X pts)
+Recall the R code from lecture that performs time series cross-validation to 
+evaluate the mean absolute error (MAE) of predictions from the linear regression
+of cardiovascular mortality on 4-week lagged particulate levels. (The version 
+where the regression is trained on all-past). Adapt this to evaluate the MAE of
+predictions from a multiple linear regression of cardiovascular mortality on 
+4-week lagged particulate levels and 4-week lagged temperature (2 features). 
+Plot the predictions, and print the MAE on the plot, following the lecture code.
+Additionally (all on the same figure), plot the fitted values on the training
+set, and print the MAE on the training set somewhere on the plot (label this as 
+"Training MAE" in order to clearly differentiate it).
+
+```{r}
+# CODE GOES HERE
+```
+
+13. (X pts)
+Repeat the same exercise as in Q12 but now with multiple lags per variable: use
+lags 4, 8, 12 for each of particulate level and temperature (thus 6 features in 
+total). Did the training MAE go down? Did the cross-validated MAE go down? 
+Discuss. Hint: you may find it useful to know that `lm()` can take a predictor
+matrix, as in `lm(y ~ x)` where `x` is a matrix; in this problem, you can form 
+the predictor matrix by calling `cbind()` on the lagged feature vectors.
+
+```{r}
+# CODE GOES HERE
+```
+
+14. (X pts)
+Repeat once more the same exercise as in the last question but but now with many
+lags per variable: use lags 4, 5, ..., through 50 for each of particulate level 
+and temperature (thus 47 x 2 = 94 features in total). Did the training MAE go 
+down? Did the cross-validated MAE go down? Are you surprised? Discuss.
+
+```{r}
+# CODE GOES HERE
+```

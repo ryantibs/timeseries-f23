@@ -172,60 +172,94 @@ pre code {
 <div id="simple-regression" class="section level1">
 <h1>Simple regression</h1>
 <ol style="list-style-type: decimal">
-<li>(X pts) Derive the population least squares coefficients, which solve <span class="math display">\[
-\min_{\beta, \beta_0} \, \mathbb{E} \big[ (y - \beta_0 - \beta_1 x)^2 \big],
+<li>(2 pts) Derive the population least squares coefficients, which solve <span class="math display">\[
+\min_{\beta_1, \beta_0} \, \mathbb{E} \big[ (y - \beta_0 - \beta_1 x)^2 \big],
 \]</span> by differentiating the criterion with respect to each <span class="math inline">\(\beta_j\)</span>, setting equal to zero, and solving. Repeat the calculation but without intercept (without the <span class="math inline">\(\beta_0\)</span> coefficient in the model).</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="2" style="list-style-type: decimal">
-<li>(X pts) As in Q1, now derive the sample least squares coefficients, which solve <span class="math display">\[
-\min_{\beta, \beta_0} \, \sum_{i=1}^n (y_i - \beta_0 - \beta_1 x_i)^2.
+<li>(2 pts) As in Q1, now derive the sample least squares coefficients, which solve <span class="math display">\[
+\min_{\beta_1, \beta_0} \, \sum_{i=1}^n (y_i - \beta_0 - \beta_1 x_i)^2.
 \]</span> Again, repeat the calculation but without intercept (no <span class="math inline">\(\beta_0\)</span> in the model).</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="3" style="list-style-type: decimal">
-<li>(X pts) Prove of disprove: in the model without intercept, is the regression coefficient of <span class="math inline">\(x\)</span> on <span class="math inline">\(y\)</span> the inverse of that from the regression of <span class="math inline">\(y\)</span> on <span class="math inline">\(x\)</span>? Answer the question for each of the the population and sample versions.</li>
+<li>(2 pts) Prove of disprove: in the model without intercept, is the regression coefficient of <span class="math inline">\(x\)</span> on <span class="math inline">\(y\)</span> the inverse of that from the regression of <span class="math inline">\(y\)</span> on <span class="math inline">\(x\)</span>? Answer the question for each of the the population and sample versions.</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="4" style="list-style-type: decimal">
-<li>(X pts) Consider the following hypothetical. Let <span class="math inline">\(y\)</span> be the height of a child and <span class="math inline">\(x\)</span> be the height of their parent, and consider a regression of <span class="math inline">\(y\)</span> on <span class="math inline">\(x\)</span>, performed in in a large population. Suppose that we estimate the regression coefficients separately for male and female parents (two separate regressions) and we find that the slope coefficient from the former regression <span class="math inline">\(\hat\beta_1^{\text{dad}}\)</span> is smaller than that from the latter <span class="math inline">\(\hat\beta_1^{\text{mom}}\)</span>. Suppose however that we find (in this same population) the sample correlation between a father’s height and their child’s height is <em>larger</em> than that between a mother’s height and their child’s height. What is a plausible explanation for what is happening here?</li>
+<li>(3 pts) Consider the following hypothetical. Let <span class="math inline">\(y\)</span> be the height of a child and <span class="math inline">\(x\)</span> be the height of their parent, and consider a regression of <span class="math inline">\(y\)</span> on <span class="math inline">\(x\)</span>, performed in in a large population. Suppose that we estimate the regression coefficients separately for male and female parents (two separate regressions) and we find that the slope coefficient from the former regression <span class="math inline">\(\hat\beta_1^{\text{dad}}\)</span> is smaller than that from the latter <span class="math inline">\(\hat\beta_1^{\text{mom}}\)</span>. Suppose however that we find (in this same population) the sample correlation between a father’s height and their child’s height is <em>larger</em> than that between a mother’s height and their child’s height. What is a plausible explanation for what is happening here?</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 </div>
 <div id="multiple-regression" class="section level1">
 <h1>Multiple regression</h1>
 <ol start="5" style="list-style-type: decimal">
-<li>(X pts) In class, we showed that for the multiple regression coefficients of a response <span class="math inline">\(y_i\)</span> onto a feature vector <span class="math inline">\(x_i \in \mathbb{R}^p\)</span>, <span class="math inline">\(i = 1,\dots,n\)</span>, we have two ways of writing this: the first is <span class="math display">\[
+<li>(2 pts) In class, we claimed that the multiple regression coefficients, with respect to responses <span class="math inline">\(y_i\)</span> and feature vectors <span class="math inline">\(x_i \in \mathbb{R}^p\)</span>, <span class="math inline">\(i = 1,\dots,n\)</span>, can be written in two ways: the first is <span class="math display">\[
 \hat\beta = \bigg( \sum_{i=1}^n x_i x_i^T \bigg)^{-1} \sum_{i=1}^n x_i y_i.
 \]</span> The second is <span class="math display">\[
 \hat\beta = (X^T X)^{-1} X^T y,
-\]</span> where <span class="math inline">\(X \in \mathbb{R}^{n \times p}\)</span> is the feature matrix with <span class="math inline">\(i^{\text{th}}\)</span> row <span class="math inline">\(x_i\)</span>, and <span class="math inline">\(y \in \mathbb{R}^n\)</span> is the response vector with <span class="math inline">\(i^{\text{th}}\)</span> component <span class="math inline">\(y_i\)</span>. Prove that these two are equivalent.</li>
+\]</span> where <span class="math inline">\(X \in \mathbb{R}^{n \times p}\)</span> is a feature matrix, with <span class="math inline">\(i^{\text{th}}\)</span> row <span class="math inline">\(x_i\)</span>, and <span class="math inline">\(y \in \mathbb{R}^n\)</span> is a response vector, with <span class="math inline">\(i^{\text{th}}\)</span> component <span class="math inline">\(y_i\)</span>. Prove that these two expressions are equivalent.</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="6" style="list-style-type: decimal">
-<li>(Bonus) Derive the population and sample multiple regression coefficients by solving the corresponding least squares problem (differentiating the criterion with respect to each <span class="math inline">\(\beta_j\)</span>, setting equal to zero, and solving).</li>
+<li>(Bonus) Derive the population and sample multiple regression coefficients by solving the corresponding least squares problem (differentiating the criterion with respect to each <span class="math inline">\(\beta_j\)</span>, setting equal to zero, and solving). For the sample least squares coefficient, deriving either representation in Q5 will be fine.</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 </div>
 <div id="marginal-multiple-connection" class="section level1">
 <h1>Marginal-multiple connection</h1>
 <ol start="7" style="list-style-type: decimal">
-<li>(X pts) Consider the regression of a generic response <span class="math inline">\(y_i\)</span> onto a constant predictor <span class="math inline">\(x_i = 1\)</span>, <span class="math inline">\(i = 1,\dots,n\)</span>, without intercept. Give the exact form of the sample regression coefficient <span class="math inline">\(\hat\beta\)</span>.</li>
+<li>(1 pts) Consider the simple linear regression of a generic response <span class="math inline">\(y_i\)</span> on a constant predictor <span class="math inline">\(x_i = 1\)</span>, <span class="math inline">\(i = 1,\dots,n\)</span>, without intercept. Give the exact form of the sample regression coefficient.</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="8" style="list-style-type: decimal">
-<li><p>(X pts) Recall the connection between multiple and simple regression coefficients, as covered in lecture: the <span class="math inline">\(j^{\text{th}}\)</span> multiple regression coefficient can be written in general as <span class="math display">\[
+<li><p>(X pts) Recall the connection between multiple and marginal regression coefficients, as covered in lecture: the <span class="math inline">\(j^{\text{th}}\)</span> multiple regression coefficient can be written in general as <span class="math display">\[
 \hat\beta_j = \frac{(\hat{x}^{-j}_j)^T \hat{y}^{-j}}
 {(\hat{x}^{-j}_j)^T \hat{x}^{-j}_j},
 \]</span> which we interpret as the simple linear regression coefficient of <span class="math inline">\(\hat{y}^{-j}\)</span> on <span class="math inline">\(\hat{x}^{-j}\)</span>. These are <span class="math inline">\(y\)</span> and <span class="math inline">\(x_j\)</span>, respectively, after we regress out the contributions of all other features. (See the lecture notes for the precise details.)</p>
-<p>Note that we can treat the simple linear regression with an intercept term as a multiple regression with two features, where the first feature is always equal to 1. Using the above formula, and the result of Q7, re-derive the formula for the slope in the simple linear model with intercept: <span class="math display">\[
+<p>Now note that we can treat a simple linear regression with an intercept term as a multiple regression with two features, with the first feature just equal to the constant 1. Using the above formula, and the answer from Q7, re-derive the expression for the slope in the simple linear model with intercept: <span class="math display">\[
 \hat\beta_1 = \frac{\sum_{i=1}^n (x_i - \bar{x}) (y_i - \bar{y})} 
   {\sum_{i=1}^n (x_i - \bar{x})^2}.
 \]</span></p></li>
 </ol>
 <p>SOLUTION GOES HERE</p>
-<p>multivariate cov properties. prove Cov(Ax, By) = … Gauss markov from the pov of psd ordering</p>
-<p>prove as you add features training error goes down</p>
+</div>
+<div id="covariance-calculations" class="section level1">
+<h1>Covariance calculations</h1>
+<ol start="9" style="list-style-type: decimal">
+<li>(X pts) Let <span class="math inline">\(x \in \mathbb{R}^n\)</span> and <span class="math inline">\(y \in \mathbb{R}^m\)</span> be random vectors, and let <span class="math inline">\(A \in \mathbb{R}^{k \times n}\)</span> and <span class="math inline">\(B \in \mathbb{R}^{\ell \times m}\)</span> be fixed matrices. Prove that <span class="math display">\[
+\mathrm{Cov}(Ax, By) = A \mathrm{Cov}(x, y) B^T.
+\]</span> Prove as a consequence that <span class="math inline">\(\mathrm{Cov}(Ax) = A \mathrm{Cov}(x) A^T\)</span>. Hint: you may use the rule for covariances of linear combinations (as reviewed in the lecture from week 2, “Measures of dependence and stationarity”).</li>
+</ol>
+<p>SOLUTION GOES HERE</p>
+<ol start="10" style="list-style-type: decimal">
+<li>(X pts) Suppose that <span class="math inline">\(y = X \beta + \epsilon\)</span>, with <span class="math inline">\(X\)</span> and <span class="math inline">\(\beta\)</span> fixed, and where <span class="math inline">\(\epsilon\)</span> is a vector with white noise entries, with variance <span class="math inline">\(\sigma^2\)</span>. Use the rule in Q9 to prove that for the sample least squares coefficients, namely, <span class="math inline">\(\hat\beta = (X^T X)^{-1} X^T y\)</span>, it holds that <span class="math display">\[
+\mathrm{Cov}(\hat\beta) = \sigma^2 (X^T X)^{-1}.
+\]</span></li>
+</ol>
+<p>SOLUTION GOES HERE</p>
+<ol start="11" style="list-style-type: decimal">
+<li>(X pts) An equivalent way to state the Gauss-Markov theorem is as follows. Under the model from Q10, if <span class="math inline">\(\tilde\beta\)</span> is any other unbiased linear estimator of <span class="math inline">\(\beta\)</span> (where linearity means that <span class="math inline">\(\tilde\beta = My\)</span> for a fixed matrix <span class="math inline">\(M\)</span>) then <span class="math display">\[
+\mathrm{Cov}(\hat\beta) \lesssim \mathrm{Cov}(\tilde\beta)
+\]</span> where <span class="math inline">\(\lesssim\)</span> means less than or equal to in the <em>PSD (positive semidefinite) ordering</em>. Precisely, <span class="math inline">\(A \lesssim B\)</span> if and only if <span class="math inline">\(B-A\)</span> is a PSD matrix, which recall, means <span class="math inline">\(z^T (B-A) z \geq 0\)</span> for all vectors <span class="math inline">\(z\)</span>. Prove that this is indeed equivalent to the statement of the Gauss-Markov theorem given in lecture.</li>
+</ol>
+<p>SOLUTION GOES HERE</p>
+</div>
+<div id="cross-validation" class="section level1">
+<h1>Cross-validation</h1>
+<ol start="12" style="list-style-type: decimal">
+<li>(X pts) Recall the R code from lecture that performs time series cross-validation to evaluate the mean absolute error (MAE) of predictions from the linear regression of cardiovascular mortality on 4-week lagged particulate levels. (The version where the regression is trained on all-past). Adapt this to evaluate the MAE of predictions from a multiple linear regression of cardiovascular mortality on 4-week lagged particulate levels and 4-week lagged temperature (2 features). Plot the predictions, and print the MAE on the plot, following the lecture code. Additionally (all on the same figure), plot the fitted values on the training set, and print the MAE on the training set somewhere on the plot (label this as “Training MAE” in order to clearly differentiate it).</li>
+</ol>
+<pre class="r"><code># CODE GOES HERE</code></pre>
+<ol start="13" style="list-style-type: decimal">
+<li>(X pts) Repeat the same exercise as in Q12 but now with multiple lags per variable: use lags 4, 8, 12 for each of particulate level and temperature (thus 6 features in total). Did the training MAE go down? Did the cross-validated MAE go down? Discuss. Hint: you may find it useful to know that <code>lm()</code> can take a predictor matrix, as in <code>lm(y ~ x)</code> where <code>x</code> is a matrix; in this problem, you can form the predictor matrix by calling <code>cbind()</code> on the lagged feature vectors.</li>
+</ol>
+<pre class="r"><code># CODE GOES HERE</code></pre>
+<ol start="14" style="list-style-type: decimal">
+<li>(X pts) Repeat once more the same exercise as in the last question but but now with many lags per variable: use lags 4, 5, …, through 50 for each of particulate level and temperature (thus 47 x 2 = 94 features in total). Did the training MAE go down? Did the cross-validated MAE go down? Are you surprised? Discuss.</li>
+</ol>
+<pre class="r"><code># CODE GOES HERE</code></pre>
 </div>
 
 
