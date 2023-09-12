@@ -58,7 +58,7 @@ abline(coef(reg_part), col = 2, lwd = 2)
 par(mfrow = c(3, 1), mar = c(2, 4, 0.75, 0.5))
 plot(cmort, xlab = "", ylab = "Cardiovascular deaths") 
 plot(part, xlab = "", ylab = "Particulate levels")
-plot(tempr, xlab = "", ylab = "Temperature)")
+plot(tempr, xlab = "", ylab = "Temperature")
 
 reg_tempr = lm(cmort ~ tempr)
 coef(reg_tempr)
