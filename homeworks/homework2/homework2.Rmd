@@ -170,9 +170,13 @@ where the regression is trained on all-past). Adapt this to evaluate the MAE of
 predictions from a multiple linear regression of cardiovascular mortality on 
 4-week lagged particulate levels and 4-week lagged temperature (2 features). 
 Plot the predictions, and print the MAE on the plot, following the lecture code.
-Additionally (all on the same figure), plot the fitted values on the training
-set, and print the MAE on the training set somewhere on the plot (label this as 
-"Training MAE" in order to clearly differentiate it).
+
+    Additionally (all drawn on the same figure), plot the fitted values on the 
+training set. By the training set here, we mean what is also called the "burn-in
+set" in the lecture notes, and indexed by times 1 through `t0` in the code. The 
+fitted values should come from the initial regression model that is fit to the 
+burn-in set. Print the MAE from the fitted values the training set somewhere on 
+the plot (and label this as "Training MAE" to clearly differentiate it).
 
 ```{r}
 # CODE GOES HERE
