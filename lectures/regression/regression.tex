@@ -1247,12 +1247,12 @@ Cross-validation, 4-steps ahead:
 
 \item Figure \ref{fig:cardio_cv2} shows such forecasts with a window length $w = 
   10$ (i.e., 10 weeks). We see that it does significantly better, both
-  qualitatively and in terms of MAE
+  qualitatively and in terms of MAE (from about 7.95 to 5.26)
 
 \item Why does this happen? Because the relationship between cardiovascular
   mortality and particulate level is changing over time. In the language of the
   last lecture, these two series, cardiovascular mortality and particulate
-  level, are \emph{not jointly stationary}
+  level, are \emph{not jointly stationary} 
 
 \item Training on a trailing window helps to hone in on the most relevant
   (recent) data for prediction. If the window is too long, then the fitted model
