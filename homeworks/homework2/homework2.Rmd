@@ -10,7 +10,7 @@ output:
 knitr::opts_chunk$set(cache = TRUE, autodep = TRUE, cache.comments = TRUE)
 ```
 
-The total number of points possible for this homework is 30. The number of 
+The total number of points possible for this homework is 35. The number of 
 points for each question is written below, and questions marked as "bonus" are 
 optional. Submit the **knitted html file** from this Rmd to Gradescope. 
 
@@ -145,7 +145,7 @@ $\hat\beta = (X^T X)^{-1} X^T y$, it holds that
 
 SOLUTION GOES HERE
 
-11. (3 pts)
+11. (4 pts)
 An equivalent way to state the Gauss-Markov theorem is as follows. Under the 
 model from Q10, if $\tilde\beta$ is any other unbiased linear estimator of
 $\beta$ (where linearity means that $\tilde\beta = My$ for a fixed matrix $M$)
@@ -199,6 +199,42 @@ Repeat once more the same exercise as in the last question but but now with many
 lags per variable: use lags 4, 5, ..., through 50 for each of particulate level 
 and temperature (thus 47 x 2 = 94 features in total). Did the training MAE go 
 down? Did the cross-validated MAE go down? Are you surprised? Discuss.
+
+```{r}
+# CODE GOES HERE
+```
+
+# More features, the merrier?
+
+15. (2 pts)
+Let $y_i$ be an arbitrary response, and $x_i \in \R^p$ be an arbitrary feature 
+vector, for $i = 1,\dots,n$. Let 
+\[
+\tilde{x}_i = (x_{i1}, \dots, x_{ip}, \tilde{x}_{i,p+1}),\quad i = 1,\dots,n
+\]
+be the result of appending one more feature. Let $\hat{y}_i$ denote the fitted 
+values from the regression of $y_i$ on $x_i$, and let $\tilde{y}_i$ denote the 
+fitted values from the regression of $y_i$ on $\tilde{x}_i$. Prove that 
+\[
+\sum_{i=1}^n (y_i - \tilde{y}_i)^2 \leq \sum_{i=1}^n (y_i - \hat{y}_i)^2.
+\]
+In other words, *the training MSE will never get worse as we add features* to a 
+given sample regression problem.
+
+SOLUTION GOES HERE
+
+16. (2 pts) 
+How many linearly independent features do we need (how large should $p$ be) in 
+order to achieve a perfect training accuracy, i.e., training MSE of zero? Why?
+
+SOLUTION GOES HERE
+
+17. (Bonus)
+Implement an example in R in order to verify your answer to Q16 empirically. 
+Extra bonus points if you do it on the cardiovascular mortality data, using
+enough lagged features. You should be able to plot the fitted values from the 
+training set and see that they match the observations perfectly (and the CV
+predictions should be super wild looking).
 
 ```{r}
 # CODE GOES HERE

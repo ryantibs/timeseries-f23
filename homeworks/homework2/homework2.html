@@ -167,7 +167,7 @@ pre code {
 </div>
 
 
-<p>The total number of points possible for this homework is XY. The number of points for each question is written below, and questions marked as “bonus” are optional. Submit the <strong>knitted html file</strong> from this Rmd to Gradescope.</p>
+<p>The total number of points possible for this homework is 35. The number of points for each question is written below, and questions marked as “bonus” are optional. Submit the <strong>knitted html file</strong> from this Rmd to Gradescope.</p>
 <p>If you collaborated with anybody for this homework, put their names here:</p>
 <div id="simple-regression" class="section level1">
 <h1>Simple regression</h1>
@@ -214,7 +214,7 @@ pre code {
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="8" style="list-style-type: decimal">
-<li><p>(X pts) Recall the connection between multiple and marginal regression coefficients, as covered in lecture: the <span class="math inline">\(j^{\text{th}}\)</span> multiple regression coefficient can be written in general as <span class="math display">\[
+<li><p>(3 pts) Recall the connection between multiple and marginal regression coefficients, as covered in lecture: the <span class="math inline">\(j^{\text{th}}\)</span> multiple regression coefficient can be written in general as <span class="math display">\[
 \hat\beta_j = \frac{(\hat{x}^{-j}_j)^T \hat{y}^{-j}}
 {(\hat{x}^{-j}_j)^T \hat{x}^{-j}_j},
 \]</span> which we interpret as the simple linear regression coefficient of <span class="math inline">\(\hat{y}^{-j}\)</span> on <span class="math inline">\(\hat{x}^{-j}\)</span>. These are <span class="math inline">\(y\)</span> and <span class="math inline">\(x_j\)</span>, respectively, after we regress out the contributions of all other features. (See the lecture notes for the precise details.)</p>
@@ -228,19 +228,19 @@ pre code {
 <div id="covariance-calculations" class="section level1">
 <h1>Covariance calculations</h1>
 <ol start="9" style="list-style-type: decimal">
-<li>(X pts) Let <span class="math inline">\(x \in \mathbb{R}^n\)</span> and <span class="math inline">\(y \in \mathbb{R}^m\)</span> be random vectors, and let <span class="math inline">\(A \in \mathbb{R}^{k \times n}\)</span> and <span class="math inline">\(B \in \mathbb{R}^{\ell \times m}\)</span> be fixed matrices. Prove that <span class="math display">\[
+<li>(3 pts) Let <span class="math inline">\(x \in \mathbb{R}^n\)</span> and <span class="math inline">\(y \in \mathbb{R}^m\)</span> be random vectors, and let <span class="math inline">\(A \in \mathbb{R}^{k \times n}\)</span> and <span class="math inline">\(B \in \mathbb{R}^{\ell \times m}\)</span> be fixed matrices. Prove that <span class="math display">\[
 \mathrm{Cov}(Ax, By) = A \mathrm{Cov}(x, y) B^T.
 \]</span> Prove as a consequence that <span class="math inline">\(\mathrm{Cov}(Ax) = A \mathrm{Cov}(x) A^T\)</span>. Hint: you may use the rule for covariances of linear combinations (as reviewed in the lecture from week 2, “Measures of dependence and stationarity”).</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="10" style="list-style-type: decimal">
-<li>(X pts) Suppose that <span class="math inline">\(y = X \beta + \epsilon\)</span>, with <span class="math inline">\(X\)</span> and <span class="math inline">\(\beta\)</span> fixed, and where <span class="math inline">\(\epsilon\)</span> is a vector with white noise entries, with variance <span class="math inline">\(\sigma^2\)</span>. Use the rule in Q9 to prove that for the sample least squares coefficients, namely, <span class="math inline">\(\hat\beta = (X^T X)^{-1} X^T y\)</span>, it holds that <span class="math display">\[
+<li>(2 pts) Suppose that <span class="math inline">\(y = X \beta + \epsilon\)</span>, with <span class="math inline">\(X\)</span> and <span class="math inline">\(\beta\)</span> fixed, and where <span class="math inline">\(\epsilon\)</span> is a vector with white noise entries, with variance <span class="math inline">\(\sigma^2\)</span>. Use the rule in Q9 to prove that for the sample least squares coefficients, namely, <span class="math inline">\(\hat\beta = (X^T X)^{-1} X^T y\)</span>, it holds that <span class="math display">\[
 \mathrm{Cov}(\hat\beta) = \sigma^2 (X^T X)^{-1}.
 \]</span></li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="11" style="list-style-type: decimal">
-<li>(X pts) An equivalent way to state the Gauss-Markov theorem is as follows. Under the model from Q10, if <span class="math inline">\(\tilde\beta\)</span> is any other unbiased linear estimator of <span class="math inline">\(\beta\)</span> (where linearity means that <span class="math inline">\(\tilde\beta = My\)</span> for a fixed matrix <span class="math inline">\(M\)</span>) then <span class="math display">\[
+<li>(4 pts) An equivalent way to state the Gauss-Markov theorem is as follows. Under the model from Q10, if <span class="math inline">\(\tilde\beta\)</span> is any other unbiased linear estimator of <span class="math inline">\(\beta\)</span> (where linearity means that <span class="math inline">\(\tilde\beta = My\)</span> for a fixed matrix <span class="math inline">\(M\)</span>) then <span class="math display">\[
 \mathrm{Cov}(\hat\beta) \lesssim \mathrm{Cov}(\tilde\beta)
 \]</span> where <span class="math inline">\(\lesssim\)</span> means less than or equal to in the <em>PSD (positive semidefinite) ordering</em>. Precisely, <span class="math inline">\(A \lesssim B\)</span> if and only if <span class="math inline">\(B-A\)</span> is a PSD matrix, which recall, means <span class="math inline">\(z^T (B-A) z \geq 0\)</span> for all vectors <span class="math inline">\(z\)</span>. Prove that this is indeed equivalent to the statement of the Gauss-Markov theorem given in lecture.</li>
 </ol>
@@ -249,16 +249,35 @@ pre code {
 <div id="cross-validation" class="section level1">
 <h1>Cross-validation</h1>
 <ol start="12" style="list-style-type: decimal">
-<li><p>(X pts) Recall the R code from lecture that performs time series cross-validation to evaluate the mean absolute error (MAE) of predictions from the linear regression of cardiovascular mortality on 4-week lagged particulate levels. (The version where the regression is trained on all-past). Adapt this to evaluate the MAE of predictions from a multiple linear regression of cardiovascular mortality on 4-week lagged particulate levels and 4-week lagged temperature (2 features). Plot the predictions, and print the MAE on the plot, following the lecture code.</p>
+<li><p>(3 pts) Recall the R code from lecture that performs time series cross-validation to evaluate the mean absolute error (MAE) of predictions from the linear regression of cardiovascular mortality on 4-week lagged particulate levels. (The version where the regression is trained on all-past). Adapt this to evaluate the MAE of predictions from a multiple linear regression of cardiovascular mortality on 4-week lagged particulate levels and 4-week lagged temperature (2 features). Plot the predictions, and print the MAE on the plot, following the lecture code.</p>
 <p>Additionally (all drawn on the same figure), plot the fitted values on the training set. By the training set here, we mean what is also called the “burn-in set” in the lecture notes, and indexed by times 1 through <code>t0</code> in the code. The fitted values should come from the initial regression model that is fit to the burn-in set. Print the MAE from the fitted values the training set somewhere on the plot (and label this as “Training MAE” to clearly differentiate it).</p></li>
 </ol>
 <pre class="r"><code># CODE GOES HERE</code></pre>
 <ol start="13" style="list-style-type: decimal">
-<li>(X pts) Repeat the same exercise as in Q12 but now with multiple lags per variable: use lags 4, 8, 12 for each of particulate level and temperature (thus 6 features in total). Did the training MAE go down? Did the cross-validated MAE go down? Discuss. Hint: you may find it useful to know that <code>lm()</code> can take a predictor matrix, as in <code>lm(y ~ x)</code> where <code>x</code> is a matrix; in this problem, you can form the predictor matrix by calling <code>cbind()</code> on the lagged feature vectors.</li>
+<li>(2 pts) Repeat the same exercise as in Q12 but now with multiple lags per variable: use lags 4, 8, 12 for each of particulate level and temperature (thus 6 features in total). Did the training MAE go down? Did the cross-validated MAE go down? Discuss. Hint: you may find it useful to know that <code>lm()</code> can take a predictor matrix, as in <code>lm(y ~ x)</code> where <code>x</code> is a matrix; in this problem, you can form the predictor matrix by calling <code>cbind()</code> on the lagged feature vectors.</li>
 </ol>
 <pre class="r"><code># CODE GOES HERE</code></pre>
 <ol start="14" style="list-style-type: decimal">
-<li>(X pts) Repeat once more the same exercise as in the last question but but now with many lags per variable: use lags 4, 5, …, through 50 for each of particulate level and temperature (thus 47 x 2 = 94 features in total). Did the training MAE go down? Did the cross-validated MAE go down? Are you surprised? Discuss.</li>
+<li>(2 pts) Repeat once more the same exercise as in the last question but but now with many lags per variable: use lags 4, 5, …, through 50 for each of particulate level and temperature (thus 47 x 2 = 94 features in total). Did the training MAE go down? Did the cross-validated MAE go down? Are you surprised? Discuss.</li>
+</ol>
+<pre class="r"><code># CODE GOES HERE</code></pre>
+</div>
+<div id="more-features-the-merrier" class="section level1">
+<h1>More features, the merrier?</h1>
+<ol start="15" style="list-style-type: decimal">
+<li>(2 pts) Let <span class="math inline">\(y_i\)</span> be an arbitrary response, and <span class="math inline">\(x_i \in \R^p\)</span> be an arbitrary feature vector, for <span class="math inline">\(i = 1,\dots,n\)</span>. Let <span class="math display">\[
+\tilde{x}_i = (x_{i1}, \dots, x_{ip}, \tilde{x}_{i,p+1}),\quad i = 1,\dots,n
+\]</span> be the result of appending one more feature. Let <span class="math inline">\(\hat{y}_i\)</span> denote the fitted values from the regression of <span class="math inline">\(y_i\)</span> on <span class="math inline">\(x_i\)</span>, and let <span class="math inline">\(\tilde{y}_i\)</span> denote the fitted values from the regression of <span class="math inline">\(y_i\)</span> on <span class="math inline">\(\tilde{x}_i\)</span>. Prove that <span class="math display">\[
+\sum_{i=1}^n (y_i - \tilde{y}_i)^2 \leq \sum_{i=1}^n (y_i - \hat{y}_i)^2.
+\]</span> In other words, <em>the training MSE will never get worse as we add features</em> to a given sample regression problem.</li>
+</ol>
+<p>SOLUTION GOES HERE</p>
+<ol start="16" style="list-style-type: decimal">
+<li>(2 pts) How many linearly independent features do we need (how large should <span class="math inline">\(p\)</span> be) in order to achieve a perfect training accuracy, i.e., training MSE of zero? Why?</li>
+</ol>
+<p>SOLUTION GOES HERE</p>
+<ol start="17" style="list-style-type: decimal">
+<li>(Bonus) Implement an example in R in order to verify your answer to Q16 empirically. Extra bonus points if you do it on the cardiovascular mortality data, using enough lagged features. You should be able to plot the fitted values from the training set and see that they match the observations perfectly (and the CV predictions should be super wild looking).</li>
 </ol>
 <pre class="r"><code># CODE GOES HERE</code></pre>
 </div>
