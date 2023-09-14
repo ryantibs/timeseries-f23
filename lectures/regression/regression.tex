@@ -367,7 +367,7 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
   \end{equation}
 
 \item You can check that the dimensions all make sense here (that the right-hand
-  side in \eqref{eq:coef_mult1} produces a $p$-dimensional vector)
+  side in \eqref{eq:coef_mult1} produces a $p+1$-dimensional vector)
 \end{itemize}
 
 \subsection{Matrix notation}
@@ -634,10 +634,8 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   we sometimes give to an estimand of the form $a^\T\beta$, for an 
   arbitrary vector $a \in \R^d$. Observe, 
   \begin{align*}
-  \E(a^\T \hbeta) &= a^\T \E(\hbeta)\big[ (X^\T X)^{-1} X^\T y \big] \\
-  &= (X^\T X)^{-1} X^\T \E(y) \\
-  &= (X^\T X)^{-1} X^\T X \beta \\
-  &= \beta
+  \E(a^\T \hbeta) &= a^\T \E(\hbeta) \\
+  &= a^\T \beta
   \end{align*}
 
 \item One common way to measure the quality of an estimator is its \emph{mean
