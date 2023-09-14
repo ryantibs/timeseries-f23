@@ -258,7 +258,7 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
 
 \begin{itemize}
 \item What about the case where we have more than out covariate? This is called
-  \emph{multiple linear regression}. Now let $x  = (x_1, \dots, x_p) \in \R^p$
+  \emph{multiple linear regression}. Now let $x = (x_1, \dots, x_p) \in \R^p$
   be a random vector of covariates, with each entry $x_j$ being an individual
   covariate of interest
 
@@ -292,7 +292,7 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
   \beta^*_0 = \E(y) - \E(x)^\T \beta^*
   \end{equation}
 
-\item  Let's check that the dimensions make sense: here $\Cov(x) \in \R^{p
+\item Let's check that the dimensions make sense: here $\Cov(x) \in \R^{p
     \times  p}$, a $p \times p$ matrix of real values; the element in its $i\th$
   row and $j\th$ column is   
   \[
@@ -407,12 +407,12 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
   y \approx X \beta
   \]
 
-\item Recall, the Euclidean norm $\|\cdot\|$ of a vector $a \in \R^d$ is defined
-  as $\|a\|^2 = \sum_{i=1}^d a_i^2$. This means we can write our sample least
-  squares problem \eqref{eq:ls_mult1} compactly as 
+\item Recall, the Euclidean or $\ell_2$ norm $\|\cdot\|_2$ of a vector $a \in
+  \R^d$ is defined as \smash{$\|a\|_2^2 = \sum_{i=1}^d a_i^2$}. This means we
+  can write our sample least squares problem \eqref{eq:ls_mult1} compactly as  
   \begin{equation}
   \label{eq:ls_mult2}
-  \min_{\beta \in \R^p} \, \|y - X \beta\|^2
+  \min_{\beta \in \R^p} \, \|y - X \beta\|_2^2
   \end{equation}
 
 \item Finally, the sample least squares estimates \eqref{eq:coef_mult1} can 
@@ -765,7 +765,7 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 \item To set us up to discuss this, we first define an estimate of the noise
   variance $\sigma^2$ in \eqref{eq:model_n}:
   \begin{align*}
-  \hat\sigma^2 &= \frac{1}{n-p} \|y - X\hbeta\|^2 \\
+  \hat\sigma^2 &= \frac{1}{n-p} \|y - X\hbeta\|_2^2 \\ 
   &= \frac{1}{n-p} \sum_{i=1}^n (y_ i - x_i^\T \hbeta)^2 
   \end{align*}
   This is the residual sum of squares from linear regression, divided by $n-p$ 
