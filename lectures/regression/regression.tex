@@ -367,7 +367,8 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
   \end{equation}
 
 \item You can check that the dimensions all make sense here (that the right-hand
-  side in \eqref{eq:coef_mult1} produces a $p+1$-dimensional vector)
+  side in \eqref{eq:coef_mult1} produces the correct dimensions for
+  \smash{$\hbeta$}) 
 \end{itemize}
 
 \subsection{Matrix notation}
@@ -633,10 +634,9 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 \item This implies it is unbiased for any contrast of $\beta$. This is the term 
   we sometimes give to an estimand of the form $a^\T\beta$, for an 
   arbitrary vector $a \in \R^d$. Observe, 
-  \begin{align*}
-  \E(a^\T \hbeta) &= a^\T \E(\hbeta) \\
-  &= a^\T \beta
-  \end{align*}
+  \[
+  \E(a^\T \hbeta) = a^\T \E(\hbeta) = a^\T \beta
+  \]
 
 \item One common way to measure the quality of an estimator is its \emph{mean
     squared error} (MSE), which for the least squares estimator \smash{$a^\T
@@ -791,13 +791,14 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   and variance of \smash{$\hbeta_j$}) leads us to define the \emph{t-statistic}  
   \begin{equation}
   \label{eq:t_stat}
-  t_j = \frac{\hbeta_j - \beta_j}{\hat\sigma \sqrt{C_{jj}}} 
+  t_j = \frac{\hbeta_j}{\hat\sigma \sqrt{C_{jj}}} 
   \end{equation}
   Under \eqref{eq:model_n}, this is has a \emph{t-distribution} with $n-p$
-  degrees of freedom. This can be used to test \eqref{eq:null1}, or form a
-  confidence interval for $\beta_j$. This follows the same general recipe that
-  you have learned (or will learn) about hypothesis testing and confidence
-  intervals in your concepts of statistics class
+  degrees of freedom. This can be used to test \eqref{eq:null1}, or a similar
+  construction can be used form a confidence interval for $\beta_j$. This
+  follows the same general recipe that you have learned (or will learn) about
+  hypothesis testing and confidence intervals in your concepts of statistics
+  class 
 
 \item When you call \verb|lm()| in R, and then call \verb|summary()| on its
   output, you are presented with these t-statistics and associated p-values (for
