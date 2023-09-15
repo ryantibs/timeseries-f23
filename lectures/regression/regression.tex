@@ -188,13 +188,15 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
 
 \subsection{Prediction: ex-ante and ex-post}
 
+\def\new{\text{new}}
+
 \begin{itemize}
 \item We can use the estimated coefficients  \smash{$\hbeta_0, \hbeta_1$} in
   \eqref{eq:coef} from linear regression estimates to make \emph{predictions}
-  about the response given a new predictor value $x_{\text{new}}$. This
+  about the response given a new predictor value $x_{\new}$. This
   prediction is  
   \[
-  \hat{y}_{\text{new}} = \hbeta_0 + \hbeta_1 x_{\text{new}},
+  \hat{y}_{\new} = \hbeta_0 + \hbeta_1 x_{\new},
   \]
   where the ``hat'' notation on the left-hand side emphasizes that it is an not  
   observed, but an estimated (predicted) value of the response
@@ -202,7 +204,7 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
 \item In time series context, we often will use the term \emph{forecasting}
   synomously with \emph{prediction}. In the time series, there is an interesting
   distinction between two types of forecasts, based on \emph{whether or not the
-    predictor value $x_{\text{new}}$ needed to make forecasts is available in
+    predictor value $x_{\new}$ needed to make forecasts is available in
     advance}. Specifically:   
   \begin{itemize}
   \item An \emph{ex-ante forecast} is a ``true'' forecast, using only
@@ -212,7 +214,7 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
     regression example
 
   \item An \emph{ex-post forecast} is made using later information on the
-    predictors. So we wait until $x_{\text{new}}$ is observed, then issue our
+    predictors. So we wait until $x_{\new}$ is observed, then issue our
     forecast. For instance, we can make ex-post forecasts in the mortality
     regression example (but cannot easily make ex-ante forecasts unless we 
     somehow could forecast particulate levels into the future)
