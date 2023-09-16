@@ -1,5 +1,5 @@
 ---
-title: 'Lecture 3: Regression and Smoothing'
+title: 'Lecture 3: Regression and Prediction'
 output:
   html_document:
     toc: true
