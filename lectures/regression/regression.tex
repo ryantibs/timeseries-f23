@@ -64,7 +64,7 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
 \item As you'll show on the homework, solving this pair of equations gives the 
   \emph{population regression coefficients}:
   \begin{equation}
-  \label{eq:coef_pop}
+  \label{eq:beta_pop}
   \beta^*_1 = \frac{\Cov(x, y)}{\Var(x)}, \quad 
   \beta^*_0 = \E(y) - \beta^*_1 \E(x)
   \end{equation}
@@ -93,7 +93,7 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
 
 \item We can imagine two ways to proceed:
   \begin{enumerate}
-  \item Start from the population-level formula \eqref{eq:coef_pop}, and use 
+  \item Start from the population-level formula \eqref{eq:beta_pop}, and use 
     plug-in estimates for the covariance and variance
 \item Start from the population-least least squares problem \eqref{eq:ls_pop},
   write down a sample version, then solve it
@@ -110,9 +110,9 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
   \]
   where \smash{$\bar{x} = \frac{1}{n} \sum_{i=1}^n x_i$} and \smash{$\bar{y} =
     \frac{1}{n} \sum_{i=1}^n y_i$} are the sample means, and plug these into
-  \eqref{eq:coef_pop} to get:  
+  \eqref{eq:beta_pop} to get:  
   \begin{equation}
-  \label{eq:coef}
+  \label{eq:beta}
   \hbeta_1 = \frac{\sum_{i=1}^n (x_i - \bar{x}) (y_i - \bar{y})} 
   {\sum_{i=1}^n (x_i - \bar{x})^2}, \quad 
   \hbeta_0 = \bar{y} - \hbeta_1 \bar{x}
@@ -136,7 +136,7 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
   \end{gather*}
  
 \item You'll show on the homework that solving this pair of equations leads you
-  right back to \eqref{eq:coef}
+  right back to \eqref{eq:beta}
 
 \item The \verb|lm()| function in R performs linear regression. The notation you
   use is \verb|lm(y ~ x)|, where \verb|y ~ x| is called a ``formula''. This can
@@ -192,7 +192,7 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
 
 \begin{itemize}
 \item We can use the estimated coefficients  \smash{$\hbeta_0, \hbeta_1$} in
-  \eqref{eq:coef} from linear regression estimates to make \emph{predictions}
+  \eqref{eq:beta} from linear regression estimates to make \emph{predictions}
   about the response given a new predictor value $x_{\new}$. This
   prediction is  
   \[
@@ -230,13 +230,13 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
 \begin{itemize}
 \item What have we assumed above? \emph{Nothing.} That is, \emph{we do  
     not need to assume that the true relationship between $y$ and $x$ is linear
-    in order to perform linear regression as in \eqref{eq:coef}}
+    in order to perform linear regression as in \eqref{eq:beta}}
 
 \item Thus, in general, there need not be any ``true regression coefficients'' 
   that we're actually tracking ... but, we can always think of the sample
-  estimates \smash{$\hbeta_0, \hbeta_1$} in \eqref{eq:coef} as tracking 
+  estimates \smash{$\hbeta_0, \hbeta_1$} in \eqref{eq:beta} as tracking 
   the population quantities \smash{$\beta^*_0, \beta^*_1$} in
-  \eqref{eq:coef_pop}. The latter are basically also always well-defined, 
+  \eqref{eq:beta_pop}. The latter are basically also always well-defined, 
   regardless of linearity. Recall, they are the viewed as the best linear
   approximation at the population level 
 
@@ -286,10 +286,10 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
   \min_{\beta_0, \beta} \, \E\big[ (y - \beta_0 - x^\T \beta)^2 \big]
   \end{equation}
 
-\item The solution, which you can think of as generalizing \eqref{eq:coef_pop},
+\item The solution, which you can think of as generalizing \eqref{eq:beta_pop},
   is 
   \begin{equation}
-  \label{eq:coef_pop_mult}
+  \label{eq:beta_pop_mult}
   \beta^* = \Cov(x)^{-1} \Cov(x, y), \quad 
   \beta^*_0 = \E(y) - \E(x)^\T \beta^*
   \end{equation}
@@ -305,10 +305,10 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
   [\Cov(x, y)]_i = \Cov(x_i, y)
   \]
   So $\Cov(x)^{-1} \Cov(x, y) \in \R^p$, itself a $p$-dimensional vector, which
-  is what we need for $\beta^*$ in \eqref{eq:coef_pop_mult}. Similarly, you can
+  is what we need for $\beta^*$ in \eqref{eq:beta_pop_mult}. Similarly, you can
   check that the dimensions make sense for $\beta^*_0$ 
 
-\item To derive \eqref{eq:coef_pop_mult} as the minimizer in
+\item To derive \eqref{eq:beta_pop_mult} as the minimizer in
   \eqref{eq:ls_pop_mult}, we can again differentiate with respect to each
   $\beta_j$ and set the result to zero, but the calculation is a little more
   difficult (maybe it'll be a bonus on the homework) 
@@ -328,7 +328,7 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
   i = 1,\dots,n 
   \]
 
-\item We can do this either by plug-in estimates from \eqref{eq:coef_pop_mult},
+\item We can do this either by plug-in estimates from \eqref{eq:beta_pop_mult},
   or by writing down a sample version of the least squares problem
   \eqref{eq:ls_pop_mult} and solving it, and again they will both lead to the 
   same answer
@@ -364,12 +364,12 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
 \item The solution, obtained again by taking derivatives and setting equal to
   zero, is
   \begin{equation}
-  \label{eq:coef_mult1}
+  \label{eq:beta_mult1}
   \hbeta = \bigg( \sum_{i=1}^n x_i x_i^\T \bigg)^{-1} \sum_{i=1}^n x_i y_i  
   \end{equation}
 
 \item You can check that the dimensions all make sense here (that the right-hand
-  side in \eqref{eq:coef_mult1} produces the correct dimensions for
+  side in \eqref{eq:beta_mult1} produces the correct dimensions for
   \smash{$\hbeta$}) 
 \end{itemize}
 
@@ -417,19 +417,19 @@ Related reading: Chapter 2 of Shumway and Stoffer (SS); Chapters 5.8, 5.10, and
   \min_{\beta \in \R^p} \, \|y - X \beta\|_2^2
   \end{equation}
 
-\item Finally, the sample least squares estimates \eqref{eq:coef_mult1} can 
+\item Finally, the sample least squares estimates \eqref{eq:beta_mult1} can 
   be written as 
   \begin{equation}
-  \label{eq:coef_mult2}
+  \label{eq:beta_mult2}
   \hbeta = (X^\T X)^{-1} X^\T y  
   \end{equation}
-  This form \eqref{eq:coef_mult2} is by far the more commonly-used (and
+  This form \eqref{eq:beta_mult2} is by far the more commonly-used (and
   easily-remembered) form for the least squares coefficient estimates, compared
-  to \eqref{eq:coef_mult1}. You'll prove the equivalence between the two
-  forms \eqref{eq:coef_mult1}, \eqref{eq:coef_mult2} on the homework 
+  to \eqref{eq:beta_mult1}. You'll prove the equivalence between the two
+  forms \eqref{eq:beta_mult1}, \eqref{eq:beta_mult2} on the homework 
 
-\item Important technical note: above in \eqref{eq:coef_mult2} (also in
-  \eqref{eq:coef_mult1}), we have implicitly assumed that the features---the 
+\item Important technical note: above in \eqref{eq:beta_mult2} (also in
+  \eqref{eq:beta_mult1}), we have implicitly assumed that the features---the 
   columns of $X$---are \emph{linearly independent}. This \emph{can only happen
     if $p \leq n$}, i.e., if we have no more features than samples. Otherwise,
   $X^\T X$ will not have an inverse, strictly speaking. This is not the end of
@@ -481,7 +481,7 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 \item Fix any $j$ (arbitrary). Given a single feature $x_j = (x_{1j}, \dots,
   x_{nj}) \in \R^n$, and response vector $y = (y_1, \dots, y_n) \in \R^n$, the 
   marginal (or simple) regression of $y$ on $x_j$, \emph{without intercept}, is
-  a very similar formula to what you saw in \eqref{eq:coef}:
+  a very similar formula to what you saw in \eqref{eq:beta}:
   \[
   \tilde\beta_j = \frac{\sum_{i=1}^n x_{ij} y_i}{\sum_{i=1}^n x_{ij}^2} 
   \]
@@ -490,14 +490,14 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 
 \item We can rewrite this succinctly in inner product notation as:
   \begin{equation}
-  \label{eq:coef_j}
+  \label{eq:beta_j}
   \tilde\beta_j = \frac{x_j^\T y}{x_j^\T x_j}
   \end{equation}
 
 \item Meanwhile, let's consider the $j\th$ estimated regression coefficient
   $\hbeta_j$ from the multiple regression of $y$ on $X$, as in
-  \eqref{eq:coef_mult2}. Is this the same? That is, is the $j\th$ component of
-  \eqref{eq:coef_mult2} the same as \eqref{eq:coef_j}? 
+  \eqref{eq:beta_mult2}. Is this the same? That is, is the $j\th$ component of
+  \eqref{eq:beta_mult2} the same as \eqref{eq:beta_j}? 
 
 \item The answer is generally no! Putting in other features into the linear
   regression will generally affect the estimated coefficient for $x_j$, i.e.,
@@ -530,32 +530,32 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   of \smash{$\hat{y}^{-j}$} on \smash{$\hat{x}^{-j}_j$}, we get precisely the
   $j\th$ multiple regression coefficient: 
   \begin{equation}
-  \label{eq:coef_j_mult}
+  \label{eq:beta_j_mult}
   \hbeta_j = \frac{(\hat{x}^{-j}_j)^\T\hat{y}^{-j}}
   {(\hat{x}^{-j}_j)^\T\hat{x}^{-j}_j} 
   \end{equation}
 
-\item In other words, \eqref{eq:coef_j_mult} connects multiple regression to
+\item In other words, \eqref{eq:beta_j_mult} connects multiple regression to
   marginal regression: it shows that the $j\th$ coefficient in a multiple
-  regression \eqref{eq:coef_mult2} is equivalent to a marginal regression of $y$
+  regression \eqref{eq:beta_mult2} is equivalent to a marginal regression of $y$
   on $x_j$, but only after we have accounted for the effects of all the other
   predictors, by ``regressing them out'' 
 
-\item The best way to understand the relationship between \eqref{eq:coef_j_mult}
-  and \eqref{eq:coef_mult2} is geometrically (which is also a great way to view 
+\item The best way to understand the relationship between \eqref{eq:beta_j_mult}
+  and \eqref{eq:beta_mult2} is geometrically (which is also a great way to view 
   linear regression in general) but that perspecive requires a bit more advanced
   linear algebra, which we won't cover. For now, you can just think of the
   following: the bigger the \emph{correlations} between $x_j$ and columns of
   $X_{-j}$, the bigger the effect will be in \eqref{eq:resid_j}, where we
   regress out $X_{-j}$ from $x_j$, and this will make the multiple
-  \eqref{eq:coef_j_mult} and marginal \eqref{eq:coef_j} coefficients quite 
+  \eqref{eq:beta_j_mult} and marginal \eqref{eq:beta_j} coefficients quite 
   different from each other
 
 \item On the other hand, when $x_j$ is uncorrelated with each column of
   $X_{-j}$, then the residual \smash{$\hat{x}^{-j}_j$} in \eqref{eq:resid_j} is
   no different from $x_j$, and in fact one can show that the multiple regression
-  coefficient in \eqref{eq:coef_j_mult} and the marginal one in
-  \eqref{eq:coef_j} are exactly the same
+  coefficient in \eqref{eq:beta_j_mult} and the marginal one in
+  \eqref{eq:beta_j} are exactly the same
 
 \item Figure \ref{fig:cardio_mult} revisits the cardiovascular mortality example
   from earlier. Now we perform the regression of cardiovascular mortality on two
@@ -624,7 +624,7 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   equal variance regardless of the feature values 
 
 \item Ok! So under the model \eqref{eq:model_wn}, what can we say about the
-  least squares estimates in \eqref{eq:coef_mult2}? First, note that these are 
+  least squares estimates in \eqref{eq:beta_mult2}? First, note that these are 
   \emph{unbiased} for the true coefficients $\beta$:
   \begin{align*}
   \E(\hbeta) &= \E \big[ (X^\T X)^{-1} X^\T y \big] \\
@@ -660,7 +660,7 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   That is, $a^\T \hbeta = b^\T y$, where $b = X (X^\T X)^{-1} a$ 
 
 % \item We could have also done this more explicitly from the equivalent
-%   formulation in \eqref{eq:coef_mult1}:
+%   formulation in \eqref{eq:beta_mult1}:
 %    \begin{align*}
 %   a^\T \hbeta &= a^\T \bigg( \sum_{i=1}^n x_i x_i^\T \bigg)^{-1} \sum_{i=1}^n
 %                 x_i y_i \\ 
@@ -694,16 +694,16 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   whether or not we can drop the ``L'' from BLUE: is least squares the BUE? That
   is, is least squares the best unbiased estimator, period---best among all
   unbiased estimators, not just linear ones? The answer is ... yes, in a sense,
-  but it depends on how you set up the problem, and in certain problem settings
-  the only unbiased estimators are linear in $y$ anyway.\footnote{See Hansen
-    (2022), ``A modern Gauss-Markov theorem'', and then P{\"o}tscher and
-    Preinerstorfer (2022), ``A modern Gauss-Markov theorem? Really?'', and
-    then Portnoy (2022), ``Linearity  of unbiased linear model estimators''. A
-    nice and friendly overview is given by Allison (2022), ``Is OLS BLUE or
-    BUE?'', \url{https://statisticalhorizons.com/is-ols-blue-or-bue/} (this is a
-    blog post). A masterful, but much more mathematical treatment is given in
-    Lei and Wooldrige (2022), who also weave in important historical results
-    that seem to have been overlooked, and prove new ones as well.}) 
+  but it depends on how you set up the problem, because in certain problem
+  settings the only unbiased estimators are linear in $y$ anyway!\footnote{See
+    Hansen (2022), ``A modern Gauss-Markov theorem'', and then P{\"o}tscher and
+    Preinerstorfer (2022), ``A modern Gauss-Markov theorem? Really?'', and then
+    Portnoy (2022), ``Linearity  of unbiased linear model estimators''. A nice
+    and friendly overview is given by Allison (2022), ``Is OLS BLUE or BUE?'',
+    \url{https://statisticalhorizons.com/is-ols-blue-or-bue/} (this is a blog
+    post). A masterful, but much more mathematical treatment is given in Lei and
+    Wooldrige (2022), who also weave in important historical results that seem
+    to have been overlooked, and prove new ones as well.})  
 \end{itemize}
 
 \section{Classical inference}
@@ -756,7 +756,7 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 
 \begin{itemize}
 \item Under \eqref{eq:model_n}, we can define a \emph{t-test}, based on the
-  least squares estimate \eqref{eq:coef_mult2}, for testing whether or not an 
+  least squares estimate \eqref{eq:beta_mult2}, for testing whether or not an 
   individual coefficient is zero at the population-level: that is, for testing
   the hypothesis 
   \begin{equation}
@@ -918,7 +918,7 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 
 \item However, in the context of regression, it gets a bit murky. Estimation in
   regression is, at its core, about correlation (recall, e.g.,
-  \eqref{eq:coef_j_mult}). But causality lurks in the background in the
+  \eqref{eq:beta_j_mult}). But causality lurks in the background in the
   interpretation of regression coefficients (which we have purposefully
   avoided), and inferential tools like the t-test for individual coefficients as
   in \eqref{eq:null1}    
