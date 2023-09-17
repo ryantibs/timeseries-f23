@@ -1,0 +1,152 @@
+---
+title: 'Lecture 4: Regularization and Smoothing'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+    code_folding: show
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(dev = c("png", "pdf"), fig.path = "fig/",
+                     cache = TRUE, autodep = TRUE, cache.comments = TRUE)
+```
+
+# Load packages
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(astsa)
+library(fpp3)
+library(epidatasets)
+```
+
+# Lagged regression
+
+```{r cardio}
+y = as.numeric(cmort) # Response vector
+lags = 4 * 0:10       # Lags 0, 4, 8, 12, ... 40
+
+# Build predictor matrix, and run linear regression
+x = matrix(NA, length(y), length(lags))  
+for (j in 1:length(lags)) {
+  x[,j] = dplyr::lag(as.numeric(part), lags[j])
+}
+reg = lm(y ~ x)
+coef(reg)
+```
+
+# Ridge 
+
+```{r cardio-ridge}
+library(glmnet) # Implements ridge and lasso estimators
+
+# We'll need to omit NA values from x (and y, correspondingly) explicitly, as
+# otherwise glmnet will complain
+na_obs = which(rowSums(is.na(x)) != 0)
+x = x[-na_obs, ]
+y = y[-na_obs]
+
+# Ridge regression: set alpha = 0, lambda sequence will be chosen automatically
+ridge = glmnet(x, y, alpha = 0)
+beta_ridge = coef(ridge)
+lambda_ridge = ridge$lambda
+
+dim(beta_ridge)      # One row per coefficient, one column per lambda value
+beta_ridge[1:3, 1:5] # E.g., first 3 coefficients for first 5 lambda values
+
+matplot(log(lambda_ridge), t(beta_ridge[-1, ]), type = "l", col = 1:8, 
+        xlab = "log(lambda)", ylab = "Coefficient estimate", main = "Ridge")
+legend("topright", legend = paste("Lag", lags), lty = 1:5, col = 1:8)
+```
+
+# Lasso
+
+```{r cardio-lasso}
+# Lasso regression: set alpha = 1, and let glmnet() choose a lambda sequence 
+# itself, automatically
+lasso = glmnet(x, y, alpha = 1)
+beta_lasso = coef(lasso)
+lambda_lasso = lasso$lambda
+
+dim(beta_lasso)      # One row per coefficient, one column per lambda value
+beta_lasso[1:3, 1:5] # E.g., first 3 coefficients for first 5 lambda values
+
+matplot(lambda_lasso, t(beta_lasso[-1, ]), type = "l", col = 1:8, 
+        xlab = "lambda", ylab = "Coefficient estimate", main = "Lasso")
+legend("topright", legend = paste("Lag", lags), lty = 1:5, col = 1:8)
+```
+# Moving average
+
+```{r soi-ma}
+wgts = rep(1, 12) / 12
+ma = stats::filter(soi, sides = 2, filter = wgts)
+plot(soi, col = 8, ylab = "Southern Oscillation Index", 
+     main = "Moving average")
+lines(ma, lwd = 2, col = 4)
+par(fig = c(0.55, 1, 0.55, 1), new = TRUE) # The top-right insert
+nwgts = c(rep(0, 20), wgts, rep(0, 20))
+plot(nwgts, type = "l", ylim = c(-0.02, 0.1), 
+     xaxt = "n", yaxt = "n", ann = FALSE)
+```
+
+# Kernel smooth
+
+```{r soi-ks}
+ks = ksmooth(time(soi), soi, "normal", bandwidth = 1)
+plot(soi, col = 8, ylab = "Southern Oscillation Index", 
+     main = "Kernel smoother")
+lines(ks, lwd = 2, col = 4)
+par(fig = c(0.55, 1, 0.55, 1), new = TRUE) # The top-right insert
+curve(dnorm(x), type = "l", xlim = c(-3, 3), ylim = c(-0.02, 0.45),  
+     xaxt = "n", yaxt = "n", ann = FALSE)
+```
+
+# HP filter
+
+```{r boston-hp}
+boston = boston_marathon |>
+  filter(Year >= 1924) |>
+  filter(Event == "Men's open division") |>
+  mutate(Minutes = as.numeric(Time)/60) |>
+  select(Year, Minutes)
+
+n = nrow(boston)
+D = diag(rep(-2,n))       # -2s on the diagonal
+D[row(D) == col(D)-1] = 1 # 1s above the diagonal
+D[row(D) == col(D)+1] = 1 # 1s below the diagonal
+D = D[-c(1,n), ]          # Drop first and last row
+D[1:6, 1:6]               # Take a quick look
+I = diag(n)               # n x n identity matrix
+
+# Compute and plot HP filter solution at a few lambda values
+lam = c(10, 100, 1000)
+hp = matrix(NA, nrow = n, ncol = length(lam))
+for (i in 1:length(lam)) {
+  hp[ ,i] = solve(I + lam[i] * t(D) %*% D, boston$Minutes)
+}
+
+plot(boston$Year, boston$Minutes, col = 8, 
+     xlab = "Year", ylab = "Time", main = "Hodrick-Prescott filter")
+matplot(boston$Year, hp, type = "l", lty = 1, lwd = 2, col = 2:4, add = TRUE)
+legend("topright", paste("lambda =", lam), lty = 1, lwd = 2, col = 2:4)
+```
+
+# Trend filter
+
+```{r boston-tf}
+library(glmgen) # Implements trend filtering
+
+# Compute and plot trend filter solution at a few lambda values: the lambda
+# sequence will be chosen automatically (as in glmnet)
+tf = trendfilter(boston$Minutes, k = 1)
+
+ind = c(20, 10, 1)
+plot(boston$Year, boston$Minutes, col = 8, 
+     xlab = "Year", ylab = "Time", main = "Trend filter")
+matplot(boston$Year, tf$beta[, ind], type = "l", 
+        lty = 1, lwd = 2, col = 2:4, add = TRUE)
+legend("topright", paste("lambda =", round(tf$lambda[ind])), 
+       lty = 1, lwd = 2, col = 2:4)
+```
