@@ -207,8 +207,8 @@ down? Did the cross-validated MAE go down? Are you surprised? Discuss.
 # More features, the merrier?
 
 15. (2 pts)
-Let $y_i$ be an arbitrary response, and $x_i \in \R^p$ be an arbitrary feature 
-vector, for $i = 1,\dots,n$. Let 
+Let $y_i$ be an arbitrary response, and $x_i \in \mathbb{R}^p$ be an arbitrary 
+feature vector, for $i = 1,\dots,n$. Let 
 \[
 \tilde{x}_i = (x_{i1}, \dots, x_{ip}, \tilde{x}_{i,p+1}),\quad i = 1,\dots,n
 \]
