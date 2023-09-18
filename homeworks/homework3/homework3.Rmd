@@ -22,9 +22,12 @@ If you collaborated with anybody for this homework, put their names here:
 Suppose that $y \in \mathbb{R}^n$ is a response vector and $X \in \mathbb{R}^{p 
 \times n}$ is a predictor matrix, with $p > n$. Prove that there is at least 
 one $\eta \not= 0$ (not equal to the zero vector) that is in $\mathrm{null}(X)$,
-the null space of $X$. Prove that any vector of the form given in equation (2)
-of the lecture notes (weeks 5-6: "Regularization and smoothing") is a solution
-of the least squares problem for the regression of $y$ on $X$.
+the null space of $X$. Prove that if $\tilde\beta$ is a least squares solution 
+in the regression of $y$ on $X$, then any vector of the form
+\[
+\hat\beta = \tilde\beta + \eta, \quad \text{for $\eta \in \mathrm{null}(X)$}
+\]
+is also a solution.
 
 SOLUTION GOES HERE
 
@@ -48,8 +51,8 @@ each. Using the `glmnet` package, fit a ridge regression and lasso regression
 (two separate models), each over a grid of tuning parameter values $\lambda$ 
 chosen by the `glmnet()` function, with cardiovascular mortality as the response
 and all the lagged features as predictors (you should have 22 in total: 11 from
-particular matter, and 11 from temperature). However, make sure you do this in a 
-split-sample setup for validation, as follows, for each of ridge and lasso:
+particulate matter, and 11 from temperature). However, make sure you do this in
+a split-sample setup for validation, as follows, for each of ridge and lasso:
 
 - fit the `glmnet` object on the *first half of the time series*; 
 - make predictions on the *second half of the time series*, for each $\lambda$;
@@ -101,11 +104,11 @@ cross-validation (or the code you wrote in Homework 2 to implement time series
 cross-validation).
 
     Bonus: report which lagged features were most frequently selected by the 
-lasso. Because the lasso models will be refit at each time point in the second
-half of the data set, you will have to additionally store all coefficients along
-your time series CV pass. Then, look back at the coefficient vectors that 
-correspond to the MAE-optimal $\lambda$ value, and find some way of summarizing
-which components were consistently large in magnitude over time.
+lasso. Because the lasso models will be refit at each time point (in the second
+half of the data set), you will have to additionally store the lasso solutions
+along your time series CV pass. Then, look back at the solutions that correspond
+to the MAE-optimal $\lambda$ value, and choose some way of summarizing which of
+its components were consistently large in magnitude over time.
 
 ```{r}
 # CODE GOES HERE
@@ -113,7 +116,38 @@ which components were consistently large in magnitude over time.
 
 # HP filter
 
-Bonus: asymptotic kernel
+7. The Hodrick-Prescott (HP) filter is defined by solving
+\[
+\min_{\theta \in \mathbb{R}^n} \, \sum_{i=1}^n (y_i - \theta_i)^2 + \lambda
+\sum_{i=1}^{n-2} (\theta_i - 2\theta_{i+1} + \theta_{i+2})^2.
+\]
+Recall in lecture we saw it could be written its solution can be written as
+\[
+\hat\theta = \underbrace{(I + \lambda D^T D)^{-1}}_K \, y.
+\]
+In other words, defining $K$ as above, we have
+\[
+y_i = \sum_{j=1}^n K_{ij} y_j, \quad i = 1,\dots,n.
+\]
+Compute the matrix $K$ empirically for a problem of size $n=100$; inspect three
+of its rows, at indices $i = 25, 50, 75$. For each $i$, plot the $i^{\text{th}}$ 
+row as a curve over the underlying position $1,\dots,n$; that is, plot the x-y
+pairs
+\[
+(x_j, y_j) = (j, K_{ij}), \quad j = 1,\dots,n
+\]
+as a curve. Overlay the curves for all three rows on the same plot, each in a 
+different color. What do these curves look like to you? Use the plot to argue 
+that the HP filter acts like a kernel smoother.
+
+    Bonus: do a literature search to find theory on the *asymptotically 
+equivalent kernel* for the HP filter. This should have a a closed-form. Plot
+this and comment on whether or not your empirical results adhere to what is 
+known about the asymptotics.
+
+```{r}
+# CODE GOES HERE
+```
 
 # Trend filter
 

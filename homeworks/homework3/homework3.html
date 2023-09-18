@@ -172,7 +172,9 @@ pre code {
 <div id="regression-troubles" class="section level1">
 <h1>Regression troubles</h1>
 <ol style="list-style-type: decimal">
-<li>(X pts) Suppose that <span class="math inline">\(y \in \mathbb{R}^n\)</span> is a response vector and <span class="math inline">\(X \in \mathbb{R}^{p \times n}\)</span> is a predictor matrix, with <span class="math inline">\(p &gt; n\)</span>. Prove that there is at least one <span class="math inline">\(\eta \not= 0\)</span> (not equal to the zero vector) that is in <span class="math inline">\(\mathrm{null}(X)\)</span>, the null space of <span class="math inline">\(X\)</span>. Prove that any vector of the form given in equation (2) of the lecture notes (weeks 5-6: “Regularization and smoothing”) is a solution of the least squares problem for the regression of <span class="math inline">\(y\)</span> on <span class="math inline">\(X\)</span>.</li>
+<li>(X pts) Suppose that <span class="math inline">\(y \in \mathbb{R}^n\)</span> is a response vector and <span class="math inline">\(X \in \mathbb{R}^{p \times n}\)</span> is a predictor matrix, with <span class="math inline">\(p &gt; n\)</span>. Prove that there is at least one <span class="math inline">\(\eta \not= 0\)</span> (not equal to the zero vector) that is in <span class="math inline">\(\mathrm{null}(X)\)</span>, the null space of <span class="math inline">\(X\)</span>. Prove that if <span class="math inline">\(\tilde\beta\)</span> is a least squares solution in the regression of <span class="math inline">\(y\)</span> on <span class="math inline">\(X\)</span>, then any vector of the form <span class="math display">\[
+\hat\beta = \tilde\beta + \eta, \quad \text{for $\eta \in \mathrm{null}(X)$}
+\]</span> is also a solution.</li>
 </ol>
 <p>SOLUTION GOES HERE</p>
 <ol start="2" style="list-style-type: decimal">
@@ -183,7 +185,7 @@ pre code {
 <div id="ridge-and-lasso" class="section level1">
 <h1>Ridge and lasso</h1>
 <ol start="3" style="list-style-type: decimal">
-<li>(X pts) On the cardiovascular mortality regression data, form lagged features from the particulate matter and temperature variables, using lags 0, 4, 8, …, 40 from each. Using the <code>glmnet</code> package, fit a ridge regression and lasso regression (two separate models), each over a grid of tuning parameter values <span class="math inline">\(\lambda\)</span> chosen by the <code>glmnet()</code> function, with cardiovascular mortality as the response and all the lagged features as predictors (you should have 22 in total: 11 from particular matter, and 11 from temperature). However, make sure you do this in a split-sample setup for validation, as follows, for each of ridge and lasso:</li>
+<li>(X pts) On the cardiovascular mortality regression data, form lagged features from the particulate matter and temperature variables, using lags 0, 4, 8, …, 40 from each. Using the <code>glmnet</code> package, fit a ridge regression and lasso regression (two separate models), each over a grid of tuning parameter values <span class="math inline">\(\lambda\)</span> chosen by the <code>glmnet()</code> function, with cardiovascular mortality as the response and all the lagged features as predictors (you should have 22 in total: 11 from particulate matter, and 11 from temperature). However, make sure you do this in a split-sample setup for validation, as follows, for each of ridge and lasso:</li>
 </ol>
 <ul>
 <li><p>fit the <code>glmnet</code> object on the <em>first half of the time series</em>;</p></li>
@@ -202,13 +204,25 @@ pre code {
 <li><p>(X pts) Repeat Q3 above, except implementing time series cross-validation instead of split-sample validation. (You should begin time series cross-validation on the second half, treating the first half as a burn-in set.) Warning: this will require carefully adapting your code for the following reason. The <code>glmnet()</code> function chooses a sequence of tuning parameter values <span class="math inline">\(\lambda\)</span> based on the passed feature matrix <code>x</code> and response vector <code>y</code> (its first two arguments). However, in time series cross-validation, this will change at each time point. So if you just call <code>glmnet()</code> naively, then you will not have a consistent <span class="math inline">\(\lambda\)</span> sequence over which to calculate MAE and perform tuning.</p>
 <p>You can circumvent this issue by defining your on <span class="math inline">\(\lambda\)</span> sequence ahead of time, and forcing <code>glmnet()</code> to use it by passing it through its <code>lambda</code> argument. Indeed, the best thing to do here is just to use the <code>lambda</code> sequence that <code>glmnet()</code> itself derived from the ridge and lasso models fit to the first half of the time series, which you already have from Q3. Do this, and then just as in Q3, produce a plot of the cardiovascular mortality time series, along with the predictions from time series CV on the second half, and print the MAE and the selected value of <span class="math inline">\(\lambda\)</span> on the plot.</p>
 <p>You can build off the code given in the regression lecture for time series cross-validation (or the code you wrote in Homework 2 to implement time series cross-validation).</p>
-<p>Bonus: report which lagged features were most frequently selected by the lasso. Because the lasso models will be refit at each time point in the second half of the data set, you will have to additionally store all coefficients along your time series CV pass. Then, look back at the coefficient vectors that correspond to the MAE-optimal <span class="math inline">\(\lambda\)</span> value, and find some way of summarizing which components were consistently large in magnitude over time.</p></li>
+<p>Bonus: report which lagged features were most frequently selected by the lasso. Because the lasso models will be refit at each time point (in the second half of the data set), you will have to additionally store the lasso solutions along your time series CV pass. Then, look back at the solutions that correspond to the MAE-optimal <span class="math inline">\(\lambda\)</span> value, and choose some way of summarizing which of its components were consistently large in magnitude over time.</p></li>
 </ol>
 <pre class="r"><code># CODE GOES HERE</code></pre>
 </div>
 <div id="hp-filter" class="section level1">
 <h1>HP filter</h1>
-<p>Bonus: asymptotic kernel</p>
+<ol start="7" style="list-style-type: decimal">
+<li><p>The Hodrick-Prescott (HP) filter is defined by solving <span class="math display">\[
+\min_{\theta \in \mathbb{R}^n} \, \sum_{i=1}^n (y_i - \theta_i)^2 + \lambda
+\sum_{i=1}^{n-2} (\theta_i - 2\theta_{i+1} + \theta_{i+2})^2.
+\]</span> Recall in lecture we saw it could be written its solution can be written as <span class="math display">\[
+\hat\theta = \underbrace{(I + \lambda D^T D)^{-1}}_K \, y.
+\]</span> In other words, defining <span class="math inline">\(K\)</span> as above, we have <span class="math display">\[
+y_i = \sum_{j=1}^n K_{ij} y_j, \quad i = 1,\dots,n.
+\]</span> Compute the matrix <span class="math inline">\(K\)</span> empirically for a problem of size <span class="math inline">\(n=100\)</span>; inspect three of its rows, at indices <span class="math inline">\(i = 25, 50, 75\)</span>. For each <span class="math inline">\(i\)</span>, plot the <span class="math inline">\(i^{\text{th}}\)</span> row as a curve over the underlying position <span class="math inline">\(1,\dots,n\)</span>; that is, plot the x-y pairs <span class="math display">\[
+(x_j, y_j) = (j, K_{ij}), \quad j = 1,\dots,n
+\]</span> as a curve. Overlay the curves for all three rows on the same plot, each in a different color. What do these curves look like to you? Use the plot to argue that the HP filter acts like a kernel smoother.</p>
+<p>Bonus: do a literature search to find theory on the <em>asymptotically equivalent kernel</em> for the HP filter. This should have a a closed-form. Plot this and comment on whether or not your empirical results adhere to what is known about the asymptotics.</p></li>
+</ol>
 </div>
 <div id="trend-filter" class="section level1">
 <h1>Trend filter</h1>
