@@ -1092,7 +1092,7 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 
 \subsection{Optimism of training error}
 
-\def\TrainErr{\mathrm{TrainErr}}
+\def\TrainMSE{\mathrm{TrainMSE}}
 
 \begin{itemize}
 \item The cheapest, easiest estimate of prediction error, whether measured by
@@ -1101,10 +1101,11 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   the model. For example, for the mean squared error metric, the training error
   would be
   \[
-  \TrainErr = \frac{1}{n} \sum_{t=1}^n (\hat{y}_t - y_t)^2
+  \TrainMSE = \frac{1}{n} \sum_{t=1}^n (\hat{y}_t - y_t)^2
   \]
   where $y_t$, $t = 1,\dots,n$ are the responses that were used to fit the model
-  that produced \smash{$\hat{y}_t$}, $t = 1,\dots,n$
+  that produced \smash{$\hat{y}_t$}, $t = 1,\dots,n$. (Training MAE, MAPE, MASE 
+  would be defined analogously)
 
 \item This, in general, is \emph{not} a good estimate of prediction
   whatsoever! It can be wrong both in absolute and relative terms
@@ -1120,8 +1121,8 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 
 \subsection{Time series cross-validation}
 
-\def\SplitErr{\mathrm{SplitErr}}
-\def\CVErr{\mathrm{CVErr}}
+\def\SplitMSE{\mathrm{SplitMSE}} 
+\def\CVMSE{\mathrm{CVMSE}}
 
 \begin{itemize}
 \item A better estimate of prediction error is given by \emph{cross-validation}
@@ -1131,11 +1132,11 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   \emph{hold-out}) estimate of prediction error: this is what we did in Figure
   \ref{fig:cardio_split}, where we only fit the model to the first half of the
   time series, and used the second half to make predictions. Formally, if we
-  just measured MSE (or MAE, or whatever error metric we like) on the second
-  half of the data, starting at time $t_0+1$, then these would be our hold-out
-  estimates of prediction error:
+  just measured MSE (definitions MAE, MAPE, MASE or whatever error metric we
+  like would be analogous) on the second half of the data, starting at time
+  $t_0+1$, then these would be our hold-out estimates of prediction error: 
   \[
-  \SplitErr = \frac{1}{n-t_0} \sum_{t = t_0+1}^n (\hat{y}_t - y_t)^2 
+  \SplitMSE = \frac{1}{n-t_0} \sum_{t = t_0+1}^n (\hat{y}_t - y_t)^2 
   \]
   Critically, the responses $y_t$, $t > t_0$ were \emph{not} used to fit the
   model that produced the predictions \smash{$\hat{y}_t$}, $t > t_0$. Rather,
@@ -1152,9 +1153,10 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 \item Enter \emph{time series cross-validation}, where we walk forward in time,
   refit the model given all data that we would have available at the given
   forecast date, make a forecast, record the error, and continue. For 1-step
-  ahead forecasts, the cross-validation (CV) error estimate is
+  ahead forecasts, the cross-validation (CV) MSE estimate (definitions for MAE,
+  MAPE, MASE would be analogous) is
   \[
-  \CVErr = \frac{1}{n-t_0} \sum_{t = t_0+1}^n \big( \hat{y}_{t | t-1} - y_t
+  \CVMSE = \frac{1}{n-t_0} \sum_{t = t_0+1}^n \big( \hat{y}_{t | t-1} - y_t
   \big)^2     
   \]
   where \smash{$\hat{y}_{t | t-1}$} indicates that this prediction came from a
@@ -1162,7 +1164,7 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
 
 \item For $k$-step ahead forecasts, the CV error estimate is
   \[
-  \CVErr = \frac{1}{n-t_0} \sum_{t = t_0+1}^n \big( \hat{y}_{t | t-k} - y_t
+  \CVMSE = \frac{1}{n-t_0} \sum_{t = t_0+1}^n \big( \hat{y}_{t | t-k} - y_t
   \big)^2     
   \]
   where similarly \smash{$\hat{y}_{t | t-k}$} indicates that this came from a
