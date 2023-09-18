@@ -148,6 +148,8 @@ plot(boston$Year, boston$Minutes, col = 8,
      xlab = "Year", ylab = "Time", main = "Trend filter")
 matplot(boston$Year, tf$beta[, ind], type = "l", 
         lty = 1, lwd = 2, col = 2:4, add = TRUE)
+# knots = which(abs(D %*% tf$beta[, ind[2]]) > 1e-5)
+# abline(v = boston$Year[knots], lty = 2, col = 3)
 legend("topright", paste("lambda =", round(tf$lambda[ind])), 
        lty = 1, lwd = 2, col = 2:4)
 ```
