@@ -1,0 +1,124 @@
+---
+title: 'Homework 3: [YOUR NAME HERE]'
+subtitle: 'Introduction to Time Series, Fall 2023'
+date: 'Due Thursday October 5 at 5pm'
+output:
+  html_document
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(cache = TRUE, autodep = TRUE, cache.comments = TRUE)
+```
+
+The total number of points possible for this homework is XY. The number of 
+points for each question is written below, and questions marked as "bonus" are 
+optional. Submit the **knitted html file** from this Rmd to Gradescope. 
+
+If you collaborated with anybody for this homework, put their names here:
+
+# Regression troubles
+
+1. (X pts)
+Suppose that $y \in \mathbb{R}^n$ is a response vector and $X \in \mathbb{R}^{p 
+\times n}$ is a predictor matrix, with $p > n$. Prove that there is at least 
+one $\eta \not= 0$ (not equal to the zero vector) that is in $\mathrm{null}(X)$,
+the null space of $X$. Prove that any vector of the form given in equation (2)
+of the lecture notes (weeks 5-6: "Regularization and smoothing") is a solution
+of the least squares problem for the regression of $y$ on $X$.
+
+SOLUTION GOES HERE
+
+2. (X pts)
+With $X, y$ as in Q1, suppose that $\tilde\beta$ is a least squares solution 
+with $\tilde\beta_j > 0$, and suppose that $\mathrm{null}(X) \not\perp e_j$, 
+where $e_j$ is the $j^{\text{th}}$ standard basis vector (i.e., $e_j$ is a 
+vector with all 0s except for a 1 in the $j^{\text{th}}$ component), and recall 
+we write $S \perp v$ for a set $S$ and vector $v$ provided $u^T v = 0$ for all
+$u \in S$. Prove that there exists another least squares solution $\hat\beta$ 
+such that $\hat\beta_j < 0$.
+
+SOLUTION GOES HERE
+
+# Ridge and lasso
+
+3. (X pts)
+On the cardiovascular mortality regression data, form lagged features from the
+particulate matter and temperature variables, using lags 0, 4, 8, ..., 40 from
+each. Using the `glmnet` package, fit a ridge regression and lasso regression
+(two separate models), each over a grid of tuning parameter values $\lambda$ 
+chosen by the `glmnet()` function, with cardiovascular mortality as the response
+and all the lagged features as predictors (you should have 22 in total: 11 from
+particular matter, and 11 from temperature). However, make sure you do this in a 
+split-sample setup for validation, as follows, for each of ridge and lasso:
+
+- fit the `glmnet` object on the *first half of the time series*; 
+- make predictions on the *second half of the time series*, for each $\lambda$;
+- record the MAE of the predictions on the second half, for each $\lambda$;
+- choose the value of $\lambda$ with the lowest MAE;
+- plot the cardiovascular mortality time series, along with the predictions on 
+  the second half, and print the MAE and the selected value of $\lambda$ on the 
+  plot.
+
+    You can build off the code given in the regularization lecture (weeks 5-6: 
+"Regularization and smoothing") for fitting the ridge and lasso models, and the 
+regression lecture (weeks 4-5: "Regression and prediction") for the split-sample
+validation.
+
+```{r}
+# CODE GOES HERE
+```
+
+4. (X pts)
+Which lagged features were present in the MAE-optimal lasso model, selected by
+split-sample validation, in Q3?
+
+```{r}
+# CODE GOES HERE
+```
+
+5. (X pts)
+Repeat Q3 above, except implementing time series cross-validation instead of 
+split-sample validation. (You should begin time series cross-validation on the
+second half, treating the first half as a burn-in set.) Warning: this will 
+require carefully adapting your code for the following reason. The `glmnet()` 
+function chooses a sequence of tuning parameter values $\lambda$ based on the 
+passed feature matrix `x` and response vector `y` (its first two arguments). 
+However, in time series cross-validation, this will change at each time point. 
+So if you just call `glmnet()` naively, then you will not have a consistent 
+$\lambda$ sequence over which to calculate MAE and perform tuning.
+
+    You can circumvent this issue by defining your on $\lambda$ sequence ahead
+of time, and forcing `glmnet()` to use it by passing it through its `lambda` 
+argument. Indeed, the best thing to do here is just to use the `lambda` sequence
+that `glmnet()` itself derived from the ridge and lasso models fit to the first
+half of the time series, which you already have from Q3. Do this, and then just
+as in Q3, produce a plot of the cardiovascular mortality time series, along with
+the predictions from time series CV on the second half, and print the MAE and 
+the selected value of $\lambda$ on the plot.
+
+    You can build off the code given in the regression lecture for time series
+cross-validation (or the code you wrote in Homework 2 to implement time series
+cross-validation).
+
+    Bonus: report which lagged features were most frequently selected by the 
+lasso. Because the lasso models will be refit at each time point in the second
+half of the data set, you will have to additionally store all coefficients along
+your time series CV pass. Then, look back at the coefficient vectors that 
+correspond to the MAE-optimal $\lambda$ value, and find some way of summarizing
+which components were consistently large in magnitude over time.
+
+```{r}
+# CODE GOES HERE
+```
+
+# HP filter
+
+Bonus: asymptotic kernel
+
+# Trend filter
+
+TF with CV tuning
+
+# Additive models
+
+additive model example
