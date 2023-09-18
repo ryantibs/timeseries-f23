@@ -77,6 +77,7 @@ matplot(lambda_lasso, t(beta_lasso[-1, ]), type = "l", col = 1:8,
         xlab = "lambda", ylab = "Coefficient estimate", main = "Lasso")
 legend("topright", legend = paste("Lag", lags), lty = 1:5, col = 1:8)
 ```
+
 # Moving average
 
 ```{r soi-ma}
