@@ -46,7 +46,7 @@ SOLUTION GOES HERE
 
 3. (X pts)
 On the cardiovascular mortality regression data, form lagged features from the
-particulate matter and temperature variables, using lags 0, 4, 8, ..., 40 from
+particulate matter and temperature variables, using lags 4, 8, ..., 40 from 
 each. Using the `glmnet` package, fit a ridge regression and lasso regression
 (two separate models), each over a grid of tuning parameter values $\lambda$ 
 chosen by the `glmnet()` function, with cardiovascular mortality as the response
@@ -65,7 +65,8 @@ a split-sample setup for validation, as follows, for each of ridge and lasso:
     You can build off the code given in the regularization lecture (weeks 5-6: 
 "Regularization and smoothing") for fitting the ridge and lasso models, and the 
 regression lecture (weeks 4-5: "Regression and prediction") for the split-sample
-validation.
+validation. *Note carefully that the lecture code includes lag 0, and here we do
+not, so that we can make ex-ante 4-week ahead forecasts!*
 
 ```{r}
 # CODE GOES HERE
@@ -80,15 +81,19 @@ split-sample validation, in Q3?
 ```
 
 5. (X pts)
-Repeat Q3 above, except implementing time series cross-validation instead of 
-split-sample validation. (You should begin time series cross-validation on the
-second half, treating the first half as a burn-in set.) Warning: this will 
-require carefully adapting your code for the following reason. The `glmnet()` 
-function chooses a sequence of tuning parameter values $\lambda$ based on the 
-passed feature matrix `x` and response vector `y` (its first two arguments). 
-However, in time series cross-validation, this will change at each time point. 
-So if you just call `glmnet()` naively, then you will not have a consistent 
-$\lambda$ sequence over which to calculate MAE and perform tuning.
+Repeat Q3, except implement time series cross-validation instead of split-sample 
+validation. You should begin time series cross-validation on the second half of
+the time series, treating the first half as a burn-in set. Also, be sure to fit 
+each ridge or lasso model using a trailing window of 200 time points (not all 
+past). 
+
+    Warning: doing time series cross-validation properly will require us to pay 
+attention to the following. The `glmnet()` function chooses a sequence of tuning 
+parameter values $\lambda$ based on the passed feature matrix `x` and response 
+vector `y` (its first two arguments). However, in time series cross-validation, 
+this will change at each time point. So if you just call `glmnet()` naively, 
+then you will not have a consistent $\lambda$ sequence over which to calculate 
+MAE and perform tuning.
 
     You can circumvent this issue by defining your on $\lambda$ sequence ahead
 of time, and forcing `glmnet()` to use it by passing it through its `lambda` 
