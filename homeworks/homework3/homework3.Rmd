@@ -93,7 +93,7 @@ $\lambda$ sequence over which to calculate MAE and perform tuning.
     You can circumvent this issue by defining your on $\lambda$ sequence ahead
 of time, and forcing `glmnet()` to use it by passing it through its `lambda` 
 argument. Indeed, the best thing to do here is just to use the `lambda` sequence
-that `glmnet()` itself derived from the ridge and lasso models fit to the first
+that `glmnet()` itself derived for the ridge and lasso models fit to the first
 half of the time series, which you already have from Q3. Do this, and then just
 as in Q3, produce a plot of the cardiovascular mortality time series, along with
 the predictions from time series CV on the second half, and print the MAE and 
@@ -116,7 +116,7 @@ its components were consistently large in magnitude over time.
 
 # HP filter
 
-7. (X pts)
+6. (X pts)
 Recall in lecture we saw the HP filter could be written explicitly as
 \[
 \hat\theta = \underbrace{(I + \lambda D^T D)^{-1}}_K \, y,
@@ -148,15 +148,28 @@ about the asymptotics.
 
 # Trend filter
 
-8. (X pts)
+7. (X pts)
 Implement 5-fold cross-validation in order to tune $\lambda$ in trend filtering
 applied to the Boston marathon men's data set. Recall the description of how to
 set folds in a special "structured" way, for tuning smoothers, given near the 
 end of the lecture notes (weeks 5-6: "Regularization and smoothing"). The code
 below shows how to run trend filtering and derive estimates at the held-out
-points for one fold. You can build off this code for your solution. (Note: you
-will need to install the `glmgen` package from GitHub, which you can do using 
-the code that has been commented out.)
+points for one fold. You can build off this code for your solution. You will 
+need to install the `glmgen` package from GitHub, which you can do using the 
+code that has been commented out. 
+
+    Important note: just like `glmnet()`, the `trendfilter()`  function (in the
+`glmnet` package) computes its own `lambda` sequence. So you will need to define 
+an initial `lambda` sequence to pass to each subsequent call to `trendfilter()`,
+so that you can have a consistent grid of tuning parameter values over which to
+perform cross-validation. We do this below by using the `lambda` sequence that
+`trendfilter()` itself derived when the trend filtering model is fit on the full
+data set.
+
+    After implementing cross-validation, compute and report the $\lambda$ value
+with the smallest cross-validated MAE. The, lastly, plot the solution at this
+value of $\lambda$ when the model is fit to the full data set (this is already
+available in the `tf` object below.)
 
 ```{r}
 # devtools::install_github("glmgen/glmgen", subdir = "R_pkg/glmgen")
@@ -169,16 +182,23 @@ boston = boston_marathon |>
   mutate(Minutes = as.numeric(Time)/60) |>
   select(Year, Minutes)
 
+# Fit trend filtering on the entire data in order to grab the lambda sequence
+tf = trendfilter(x = boston$Year, y = boston$Minutes, k = 1)
+lambda = tf$lambda
+
 n = nrow(boston)       # Number of points
 k = 5                  # Number of folds
 inds = rep_len(1:k, n) # Folds indices
 
-tf = trendfilter(x = boston$Year[inds != 1], 
-                 y = boston$Minutes[inds != 1], 
-                 k = 1)
+# Fit trend filtering on all points but those in first fold. We are forcing it
+# to use the lambda sequence that we saved above
+tf_subset = trendfilter(x = boston$Year[inds != 1], 
+                        y = boston$Minutes[inds != 1], 
+                        k = 1, lambda = lambda)
 
-# Plot the predictions at the 25th lambda value
-yhat = predict(tf, x.new = boston$Year[inds == 1])
+# Compute the predictions on the points in the first fold. Plot the predictions
+# (as a sanity check) at a particular value of lambda in the middle of the grid
+yhat = predict(tf_subset, x.new = boston$Year[inds == 1])
 plot(boston$Year, boston$Minutes, col = 8)
 points(boston$Year[inds == 1], yhat[, 25], col = 2, pch = 19)
 ```
