@@ -583,8 +583,16 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
     linear interpolation of the estimates at its neighbors.} 
   Doing this 4 more times, where each time we shift the indices of the held-out
   points forward by one, we will be able to compute the average error over all
-  points, and use this to select the tuning parameter value. You'll implement
-  this on the homework  
+  points, and use this to select the tuning parameter value. You'll get to see
+  this on the homework
+
+\item (An important side note: trend filtering can be extended to model a
+  piecewise polynomial of an arbitrary degree, not just linear; as in the above, 
+  the knots in this piecewise polynomial will be chosen adaptively based on the 
+  data. So it can generate smoother-looking fits, like the HP filter or kernel 
+  smoothing, but the key difference is that it has a property called \emph{local
+    adaptivity}, which comes from its ability to select knots based on the
+  data. Ask about this in office hours if you are curious to hear more!) 
 \end{itemize}
 
 \section{Additive models}
