@@ -272,6 +272,7 @@ x = matrix(NA, length(y), length(lags))
 for (j in 1:length(lags)) {
   x[,j] = dplyr::lag(as.numeric(part), lags[j])
 }
+
 reg = lm(y ~ x)
 coef(reg)</code></pre>
 <pre><code>##  (Intercept)           x1           x2           x3           x4           x5 
@@ -285,7 +286,7 @@ coef(reg)</code></pre>
 
 # We&#39;ll need to omit NA values from x (and y, correspondingly) explicitly, as
 # otherwise glmnet will complain
-na_obs = which(rowSums(is.na(x)) != 0)
+na_obs = 1:max(lags)
 x = x[-na_obs, ]
 y = y[-na_obs]
 

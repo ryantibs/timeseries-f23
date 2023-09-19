@@ -33,6 +33,7 @@ x = matrix(NA, length(y), length(lags))
 for (j in 1:length(lags)) {
   x[,j] = dplyr::lag(as.numeric(part), lags[j])
 }
+
 reg = lm(y ~ x)
 coef(reg)
 ```
@@ -44,7 +45,7 @@ library(glmnet) # Implements ridge and lasso estimators
 
 # We'll need to omit NA values from x (and y, correspondingly) explicitly, as
 # otherwise glmnet will complain
-na_obs = which(rowSums(is.na(x)) != 0)
+na_obs = 1:max(lags)
 x = x[-na_obs, ]
 y = y[-na_obs]
 
