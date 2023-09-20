@@ -1213,7 +1213,7 @@ Cross-validation, 4-steps ahead:
   example. (Recall, these are 4-step ahead forecasts, so the CV scheme is as in
   the bottom panel of Figure \ref{fig:split_cv}.) We can see that the MAE has
   improved a bit from the split-sample forecasts in Figure
-  \ref{fig:cardio_split} (from about 9.39 to 7.95). However, the forecasts still
+  \ref{fig:cardio_split} (from about 9.39 to 8.03). However, the forecasts still
   look biased upwards  
 
 \begin{figure}[htb]
@@ -1237,20 +1237,22 @@ Cross-validation, 4-steps ahead:
 \begin{itemize}
 \item It turns out that we can further improve the forecasts in the
   cardiovascular mortality example by training on a \emph{trailing window},
-  rather than on all past. In other words, to fit the regression model we use to
-  make a forecast at time $t$, instead of solving  
+  rather than on all past. In other words, to fit the regression model we use to 
+  make a $k$-step ahead forecast of the response's value at time $t$, instead of 
+  solving    
   \[
-  \min_{\beta_0,\beta_1} \, \sum_{s=1}^{t-1} (y_s - \beta_0 - \beta_1 x_{s-k})^2
+  \min_{\beta_0,\beta_1} \, \sum_{s=1}^{t-k} (y_s - \beta_0 - \beta_1 x_{s-k})^2
   \]
   we solve
   \[
-  \min_{\beta_0,\beta_1} \, \sum_{s={t-w}}^{t-1} (y_s - \beta_0 - \beta_1 x_{s-k})^2
+  \min_{\beta_0,\beta_1} \, \sum_{s={t-k-w+1}}^{t-k} (y_s - \beta_0 - \beta_1
+  x_{s-k})^2 
   \]
   for a choice of window length $w$
 
 \item Figure \ref{fig:cardio_cv2} shows such forecasts with a window length $w = 
-  10$ (i.e., 10 weeks). We see that it does significantly better, both
-  qualitatively and in terms of MAE (from about 7.95 to 5.26)
+  10$ (i.e., 10 weeks). We see that it does quite a bit better, both
+  qualitatively and in terms of MAE (from about 8.03 to 6.77) 
 
 \item Why does this happen? Because the relationship between cardiovascular
   mortality and particulate level is changing over time. In the language of the

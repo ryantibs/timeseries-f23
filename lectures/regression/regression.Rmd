@@ -179,10 +179,11 @@ legend("topleft", legend = paste("MAE =", round(mae_second_half, 2)),
 # time points
 t0 = floor(n/2)
 yhat_all_past = yhat_trailing = rep(NA, length = n-t0)
+w = 10 # This is our trailing window length
 
 for (t in (t0+1):n) {
-  reg_all_past = lm(cmort_vec ~ x, subset = (1:n) < t)
-  reg_trailing = lm(cmort_vec ~ x, subset = (1:n) < t & (1:n) >= t-10)
+  reg_all_past = lm(cmort_vec ~ x, subset = (1:n) <= t-k)
+  reg_trailing = lm(cmort_vec ~ x, subset = (1:n) <= t-k & (1:n) > t-k-w)
   yhat_all_past[t-t0] = predict(reg_all_past, newdata = data.frame(x = x[t]))
   yhat_trailing[t-t0] = predict(reg_trailing, newdata = data.frame(x = x[t]))
 }
