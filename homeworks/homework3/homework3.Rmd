@@ -10,7 +10,7 @@ output:
 knitr::opts_chunk$set(cache = TRUE, autodep = TRUE, cache.comments = TRUE)
 ```
 
-The total number of points possible for this homework is XY. The number of 
+The total number of points possible for this homework is 28. The number of 
 points for each question is written below, and questions marked as "bonus" are 
 optional. Submit the **knitted html file** from this Rmd to Gradescope. 
 
@@ -18,9 +18,9 @@ If you collaborated with anybody for this homework, put their names here:
 
 # Regression troubles
 
-1. (X pts)
-Suppose that $y \in \mathbb{R}^n$ is a response vector and $X \in \mathbb{R}^{p 
-\times n}$ is a predictor matrix, with $p > n$. Prove that there is at least 
+1. (4 pts)
+Suppose that $y \in \mathbb{R}^n$ is a response vector and $X \in \mathbb{R}^{n 
+\times p}$ is a predictor matrix, with $p > n$. Prove that there is at least 
 one $\eta \not= 0$ (not equal to the zero vector) that is in $\mathrm{null}(X)$,
 the null space of $X$. Prove that if $\tilde\beta$ is a least squares solution 
 in the regression of $y$ on $X$, then any vector of the form
@@ -31,7 +31,7 @@ is also a solution.
 
 SOLUTION GOES HERE
 
-2. (X pts)
+2. (5 pts)
 With $X, y$ as in Q1, suppose that $\tilde\beta$ is a least squares solution 
 with $\tilde\beta_j > 0$, and suppose that $\mathrm{null}(X) \not\perp e_j$, 
 where $e_j$ is the $j^{\text{th}}$ standard basis vector (i.e., $e_j$ is a 
@@ -44,14 +44,14 @@ SOLUTION GOES HERE
 
 # Ridge and lasso
 
-3. (X pts)
+3. (7 pts)
 On the cardiovascular mortality regression data, form lagged features from the
 particulate matter and temperature variables, using lags 4, 8, ..., 40 from 
 each. Using the `glmnet` package, fit a ridge regression and lasso regression
 (two separate models), each over a grid of tuning parameter values $\lambda$ 
 chosen by the `glmnet()` function, with cardiovascular mortality as the response
-and all the lagged features as predictors (you should have 22 in total: 11 from
-particulate matter, and 11 from temperature). However, make sure you do this in
+and all the lagged features as predictors (you should have 20 in total: 10 from
+particulate matter, and 10 from temperature). However, make sure you do this in
 a split-sample setup for validation, as follows, for each of ridge and lasso:
 
 - fit the `glmnet` object on the *first half of the time series*; 
@@ -72,7 +72,7 @@ not, so that we can make ex-ante 4-week ahead forecasts!*
 # CODE GOES HERE
 ```
 
-4. (X pts)
+4. (1 pts)
 Which lagged features were present in the MAE-optimal lasso model, selected by
 split-sample validation, in Q3?
 
@@ -80,7 +80,7 @@ split-sample validation, in Q3?
 # CODE GOES HERE
 ```
 
-5. (X pts)
+5. (7 pts)
 Repeat Q3, except implement time series cross-validation instead of split-sample 
 validation. You should begin time series cross-validation on the second half of
 the time series, treating the first half as a burn-in set. Also, be sure to fit 
@@ -95,7 +95,7 @@ this will change at each time point. So if you just call `glmnet()` naively,
 then you will not have a consistent $\lambda$ sequence over which to calculate 
 MAE and perform tuning.
 
-    You can circumvent this issue by defining your on $\lambda$ sequence ahead
+    You can circumvent this issue by defining your own $\lambda$ sequence ahead
 of time, and forcing `glmnet()` to use it by passing it through its `lambda` 
 argument. Indeed, the best thing to do here is just to use the `lambda` sequence
 that `glmnet()` itself derived for the ridge and lasso models fit to the first
@@ -108,7 +108,7 @@ the selected value of $\lambda$ on the plot.
 cross-validation (or the code you wrote in Homework 2 to implement time series
 cross-validation).
 
-    Bonus: report which lagged features were most frequently selected by the 
+6. (Bonus) Report which lagged features were most frequently selected by the 
 lasso. Because the lasso models will be refit at each time point (in the second
 half of the data set), you will have to additionally store the lasso solutions
 along your time series CV pass. Then, look back at the solutions that correspond
@@ -121,7 +121,7 @@ its components were consistently large in magnitude over time.
 
 # HP filter
 
-6. (X pts)
+7. (4 pts)
 Recall in lecture we saw the HP filter could be written explicitly as
 \[
 \hat\theta = \underbrace{(I + \lambda D^T D)^{-1}}_K \, y,
@@ -142,7 +142,7 @@ as a curve. Overlay the curves for all three rows on the same plot, each in a
 different color. What do these curves look like to you? Use the plot to argue 
 that the HP filter acts like a kernel smoother.
 
-    Bonus: do a literature search to find theory on the *asymptotically 
+8. (Bonus) Do a literature search to find theory on the *asymptotically 
 equivalent kernel* for the HP filter. This should have a closed-form. Plot this
 and comment on whether or not your empirical results adhere to what is known 
 about the asymptotics.
@@ -153,7 +153,7 @@ about the asymptotics.
 
 # Trend filter
 
-7. (X pts)
+9. (Bonus)
 Implement 5-fold cross-validation in order to tune $\lambda$ in trend filtering
 applied to the Boston marathon men's data set. Recall the description of how to
 set folds in a special "structured" way, for tuning smoothers, given near the 
