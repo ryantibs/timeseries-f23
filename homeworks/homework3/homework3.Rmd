@@ -10,7 +10,7 @@ output:
 knitr::opts_chunk$set(cache = TRUE, autodep = TRUE, cache.comments = TRUE)
 ```
 
-The total number of points possible for this homework is 28. The number of 
+The total number of points possible for this homework is 33. The number of 
 points for each question is written below, and questions marked as "bonus" are 
 optional. Submit the **knitted html file** from this Rmd to Gradescope. 
 
@@ -18,7 +18,7 @@ If you collaborated with anybody for this homework, put their names here:
 
 # Regression troubles
 
-1. (4 pts)
+1. (5 pts)
 Suppose that $y \in \mathbb{R}^n$ is a response vector and $X \in \mathbb{R}^{n 
 \times p}$ is a predictor matrix, with $p > n$. Prove that there is at least 
 one $\eta \not= 0$ (not equal to the zero vector) that is in $\mathrm{null}(X)$,
@@ -31,7 +31,7 @@ is also a solution.
 
 SOLUTION GOES HERE
 
-2. (5 pts)
+2. (6 pts)
 With $X, y$ as in Q1, suppose that $\tilde\beta$ is a least squares solution 
 with $\tilde\beta_j > 0$, and suppose that $\mathrm{null}(X) \not\perp e_j$, 
 where $e_j$ is the $j^{\text{th}}$ standard basis vector (i.e., $e_j$ is a 
@@ -44,7 +44,7 @@ SOLUTION GOES HERE
 
 # Ridge and lasso
 
-3. (7 pts)
+3. (8 pts)
 On the cardiovascular mortality regression data, form lagged features from the
 particulate matter and temperature variables, using lags 4, 8, ..., 40 from 
 each. Using the `glmnet` package, fit a ridge regression and lasso regression
@@ -57,7 +57,7 @@ a split-sample setup for validation, as follows, for each of ridge and lasso:
 - fit the `glmnet` object on the *first half of the time series*; 
 - make predictions on the *second half of the time series*, for each $\lambda$;
 - record the MAE of the predictions on the second half, for each $\lambda$;
-- choose the value of $\lambda$ with the lowest MAE;
+- choose and report the value of $\lambda$ with the lowest MAE;
 - plot the cardiovascular mortality time series, along with the predictions on 
   the second half, and print the MAE and the selected value of $\lambda$ on the 
   plot.
@@ -80,7 +80,7 @@ split-sample validation, in Q3?
 # CODE GOES HERE
 ```
 
-5. (7 pts)
+5. (8 pts)
 Repeat Q3, except implement time series cross-validation instead of split-sample 
 validation. You should begin time series cross-validation on the second half of
 the time series, treating the first half as a burn-in set. Also, be sure to fit 
@@ -108,12 +108,13 @@ the selected value of $\lambda$ on the plot.
 cross-validation (or the code you wrote in Homework 2 to implement time series
 cross-validation).
 
-6. (Bonus) Report which lagged features were most frequently selected by the 
-lasso. Because the lasso models will be refit at each time point (in the second
-half of the data set), you will have to additionally store the lasso solutions
-along your time series CV pass. Then, look back at the solutions that correspond
-to the MAE-optimal $\lambda$ value, and choose some way of summarizing which of
-its components were consistently large in magnitude over time.
+6. (Bonus) 
+Report which lagged features were most frequently selected by the lasso. Because
+the lasso models will be refit at each time point (in the second half of the
+data set), you will have to additionally store the lasso solutions along your 
+time series CV pass. Then, look back at the solutions that correspond to the 
+MAE-optimal $\lambda$ value, and choose some way of summarizing which of its 
+components were consistently large in magnitude over time.
 
 ```{r}
 # CODE GOES HERE
@@ -121,7 +122,7 @@ its components were consistently large in magnitude over time.
 
 # HP filter
 
-7. (4 pts)
+7. (5 pts)
 Recall in lecture we saw the HP filter could be written explicitly as
 \[
 \hat\theta = \underbrace{(I + \lambda D^T D)^{-1}}_K \, y,
@@ -131,10 +132,10 @@ points. In other words, defining $K \in \mathbb{R}^{n \times n}$ as above,
 \[
 \hat\theta_i = \sum_{j=1}^n K_{ij} y_j, \quad i = 1,\dots,n.
 \]
-Compute the matrix $K$ empirically for a problem of size $n=100$; inspect three
-of its rows, at indices $i = 25, 50, 75$. For each $i$, plot the $i^{\text{th}}$ 
-row as a curve over the underlying position $1,\dots,n$; that is, plot the x-y
-pairs
+Compute the matrix $K$ empirically for a problem of size $n=100$, and setting 
+the tuning parameter to be $\lambda=100$; inspect three of its rows, at indices
+$i = 25, 50, 75$. For each $i$, plot the $i^{\text{th}}$ row as a curve over the 
+underlying position $1,\dots,n$; that is, plot the x-y pairs
 \[
 (x_j, y_j) = (j, K_{ij}), \quad j = 1,\dots,n
 \]
@@ -142,10 +143,10 @@ as a curve. Overlay the curves for all three rows on the same plot, each in a
 different color. What do these curves look like to you? Use the plot to argue 
 that the HP filter acts like a kernel smoother.
 
-8. (Bonus) Do a literature search to find theory on the *asymptotically 
-equivalent kernel* for the HP filter. This should have a closed-form. Plot this
-and comment on whether or not your empirical results adhere to what is known 
-about the asymptotics.
+8. (Bonus) 
+Do a literature search to find theory on the *asymptotically equivalent kernel* 
+for the HP filter. This should have a closed-form. Plot this and comment on 
+whether or not your empirical results adhere to what is known asymptotically.
 
 ```{r}
 # CODE GOES HERE
