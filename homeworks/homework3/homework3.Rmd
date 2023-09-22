@@ -108,6 +108,10 @@ the selected value of $\lambda$ on the plot.
 cross-validation (or the code you wrote in Homework 2 to implement time series
 cross-validation).
 
+```{r}
+# CODE GOES HERE
+```
+
 6. (Bonus) 
 Report which lagged features were most frequently selected by the lasso. Because
 the lasso models will be refit at each time point (in the second half of the
@@ -143,6 +147,10 @@ as a curve. Overlay the curves for all three rows on the same plot, each in a
 different color. What do these curves look like to you? Use the plot to argue 
 that the HP filter acts like a kernel smoother.
 
+```{r}
+# CODE GOES HERE
+```
+
 8. (Bonus) 
 Do a literature search to find theory on the *asymptotically equivalent kernel* 
 for the HP filter. This should have a closed-form. Plot this and comment on 
@@ -173,7 +181,7 @@ perform cross-validation. We do this below by using the `lambda` sequence that
 data set.
 
     After implementing cross-validation, compute and report the $\lambda$ value
-with the smallest cross-validated MAE. The, lastly, plot the solution at this
+with the smallest cross-validated MAE. Then, lastly, plot the solution at this
 value of $\lambda$ when the model is fit to the full data set (this is already
 available in the `tf` object below.)
 
