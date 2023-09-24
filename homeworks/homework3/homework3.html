@@ -205,21 +205,27 @@ pre code {
 <p>Warning: doing time series cross-validation properly will require us to pay attention to the following. The <code>glmnet()</code> function chooses a sequence of tuning parameter values <span class="math inline">\(\lambda\)</span> based on the passed feature matrix <code>x</code> and response vector <code>y</code> (its first two arguments). However, in time series cross-validation, this will change at each time point. So if you just call <code>glmnet()</code> naively, then you will not have a consistent <span class="math inline">\(\lambda\)</span> sequence over which to calculate MAE and perform tuning.</p>
 <p>You can circumvent this issue by defining your own <span class="math inline">\(\lambda\)</span> sequence ahead of time, and forcing <code>glmnet()</code> to use it by passing it through its <code>lambda</code> argument. Indeed, the best thing to do here is just to use the <code>lambda</code> sequence that <code>glmnet()</code> itself derived for the ridge and lasso models fit to the first half of the time series, which you already have from Q3. Do this, and then just as in Q3, produce a plot of the cardiovascular mortality time series, along with the predictions from time series CV on the second half, and print the MAE and the selected value of <span class="math inline">\(\lambda\)</span> on the plot.</p>
 <p>You can build off the code given in the regression lecture for time series cross-validation (or the code you wrote in Homework 2 to implement time series cross-validation).</p></li>
-<li><p>(Bonus) Report which lagged features were most frequently selected by the lasso. Because the lasso models will be refit at each time point (in the second half of the data set), you will have to additionally store the lasso solutions along your time series CV pass. Then, look back at the solutions that correspond to the MAE-optimal <span class="math inline">\(\lambda\)</span> value, and choose some way of summarizing which of its components were consistently large in magnitude over time.</p></li>
+</ol>
+<pre class="r"><code># CODE GOES HERE</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>(Bonus) Report which lagged features were most frequently selected by the lasso. Because the lasso models will be refit at each time point (in the second half of the data set), you will have to additionally store the lasso solutions along your time series CV pass. Then, look back at the solutions that correspond to the MAE-optimal <span class="math inline">\(\lambda\)</span> value, and choose some way of summarizing which of its components were consistently large in magnitude over time.</li>
 </ol>
 <pre class="r"><code># CODE GOES HERE</code></pre>
 </div>
 <div id="hp-filter" class="section level1">
 <h1>HP filter</h1>
 <ol start="7" style="list-style-type: decimal">
-<li><p>(5 pts) Recall in lecture we saw the HP filter could be written explicitly as <span class="math display">\[
+<li>(5 pts) Recall in lecture we saw the HP filter could be written explicitly as <span class="math display">\[
 \hat\theta = \underbrace{(I + \lambda D^T D)^{-1}}_K \, y,
 \]</span> where <span class="math inline">\(D \in \mathbb{R}^{(n-2) \times n}\)</span> is the second difference matrix on <span class="math inline">\(n\)</span> points. In other words, defining <span class="math inline">\(K \in \mathbb{R}^{n \times n}\)</span> as above, <span class="math display">\[
 \hat\theta_i = \sum_{j=1}^n K_{ij} y_j, \quad i = 1,\dots,n.
 \]</span> Compute the matrix <span class="math inline">\(K\)</span> empirically for a problem of size <span class="math inline">\(n=100\)</span>, and setting the tuning parameter to be <span class="math inline">\(\lambda=100\)</span>; inspect three of its rows, at indices <span class="math inline">\(i = 25, 50, 75\)</span>. For each <span class="math inline">\(i\)</span>, plot the <span class="math inline">\(i^{\text{th}}\)</span> row as a curve over the underlying position <span class="math inline">\(1,\dots,n\)</span>; that is, plot the x-y pairs <span class="math display">\[
 (x_j, y_j) = (j, K_{ij}), \quad j = 1,\dots,n
-\]</span> as a curve. Overlay the curves for all three rows on the same plot, each in a different color. What do these curves look like to you? Use the plot to argue that the HP filter acts like a kernel smoother.</p></li>
-<li><p>(Bonus) Do a literature search to find theory on the <em>asymptotically equivalent kernel</em> for the HP filter. This should have a closed-form. Plot this and comment on whether or not your empirical results adhere to what is known asymptotically.</p></li>
+\]</span> as a curve. Overlay the curves for all three rows on the same plot, each in a different color. What do these curves look like to you? Use the plot to argue that the HP filter acts like a kernel smoother.</li>
+</ol>
+<pre class="r"><code># CODE GOES HERE</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>(Bonus) Do a literature search to find theory on the <em>asymptotically equivalent kernel</em> for the HP filter. This should have a closed-form. Plot this and comment on whether or not your empirical results adhere to what is known asymptotically.</li>
 </ol>
 <pre class="r"><code># CODE GOES HERE</code></pre>
 </div>
@@ -228,7 +234,7 @@ pre code {
 <ol start="9" style="list-style-type: decimal">
 <li><p>(Bonus) Implement 5-fold cross-validation in order to tune <span class="math inline">\(\lambda\)</span> in trend filtering applied to the Boston marathon men’s data set. Recall the description of how to set folds in a special “structured” way, for tuning smoothers, given near the end of the lecture notes (weeks 5-6: “Regularization and smoothing”). The code below shows how to run trend filtering and derive estimates at the held-out points for one fold. You can build off this code for your solution. You will need to install the <code>glmgen</code> package from GitHub, which you can do using the code that has been commented out.</p>
 <p>Important note: just like <code>glmnet()</code>, the <code>trendfilter()</code> function (in the <code>glmnet</code> package) computes its own <code>lambda</code> sequence. So you will need to define an initial <code>lambda</code> sequence to pass to each subsequent call to <code>trendfilter()</code>, so that you can have a consistent grid of tuning parameter values over which to perform cross-validation. We do this below by using the <code>lambda</code> sequence that <code>trendfilter()</code> itself derived when the trend filtering model is fit on the full data set.</p>
-<p>After implementing cross-validation, compute and report the <span class="math inline">\(\lambda\)</span> value with the smallest cross-validated MAE. The, lastly, plot the solution at this value of <span class="math inline">\(\lambda\)</span> when the model is fit to the full data set (this is already available in the <code>tf</code> object below.)</p></li>
+<p>After implementing cross-validation, compute and report the <span class="math inline">\(\lambda\)</span> value with the smallest cross-validated MAE. Then, lastly, plot the solution at this value of <span class="math inline">\(\lambda\)</span> when the model is fit to the full data set (this is already available in the <code>tf</code> object below.)</p></li>
 </ol>
 <pre class="r"><code># devtools::install_github(&quot;glmgen/glmgen&quot;, subdir = &quot;R_pkg/glmgen&quot;)
 library(glmgen)
