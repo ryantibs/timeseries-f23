@@ -64,7 +64,7 @@ a split-sample setup for validation, as follows, for each of ridge and lasso:
 
     You can build off the code given in the regularization lecture (weeks 5-6: 
 "Regularization and smoothing") for fitting the ridge and lasso models, and the 
-regression lecture (weeks 4-5: "Regression and prediction") for the split-sample
+regression lecture (weeks 3-4: "Regression and prediction") for the split-sample
 validation. *Note carefully that the lecture code includes lag 0, and here we do
 not, so that we can make ex-ante 4-week ahead forecasts!*
 
