@@ -1,0 +1,54 @@
+---
+title: 'Lecture 5: Spectral Analysi and Filtering'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+    code_folding: show
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(dev = c("png", "pdf"), fig.path = "fig/",
+                     cache = TRUE, autodep = TRUE, cache.comments = TRUE)
+```
+
+# Load packages
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(astsa)
+library(fpp3)
+library(epidatasets)
+```
+
+# Periodic processes
+
+```{r cos-process}
+n = 100
+t = 1:n
+x1 = sqrt(2^2 + 3^2)*cos(2*pi*t*3/n + atan(-3/2))
+y1 = 2*cos(2*pi*t*3/n) + 3*sin(2*pi*t*3/n)
+
+x2 = sqrt(4^2 + 5^2)*cos(2*pi*t*6/n + atan(-5/4))
+y2 = 4*cos(2*pi*t*6/n) + 5*sin(2*pi*t*6/n)
+
+par(mar = c(4.5, 4.5, 0.5, 0.5))
+matplot(t, cbind(x1, y1), type = "l", lty = 1:2, col = 1:2, ylab = "x_t",
+        ylim = c(-10, 10))
+matplot(t, cbind(x2, y2), type = "l", lty = 1:2, col = c(8,4), add = TRUE)
+rect(-atan(-3/2)*n/3*1/(2*pi), -20, n/3 - atan(-3/2)*n/3*1/(2*pi), 20,
+     border = NA, col = rgb(1, 0, 0, 0.2))
+rect(3*n/6 - atan(-5/4)*n/6*1/(2*pi), -20, 4*n/6 - atan(-6/4)*n/6*1/(2*pi), 20,
+     border = NA, col = rgb(0, 0, 1, 0.2))
+```
+
+# Mixtures
+
+```{r cos-mixture}
+par(mfrow = c(2, 1), mar = c(4.5, 4.5, 0.5, 0.5))
+plot(t, y1 + y2, type = "l", ylab = "x_t")
+
+y3 = 6*cos(2*pi*t*18/100) + 7*sin(2*pi*t*18/100)
+plot(t, y1 + y2 + y3, type = "l", ylab = "x_t")
+```
