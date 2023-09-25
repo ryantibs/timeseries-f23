@@ -10,7 +10,7 @@ output:
 knitr::opts_chunk$set(cache = TRUE, autodep = TRUE, cache.comments = TRUE)
 ```
 
-The total number of points possible for this homework is 33. The number of 
+The total number of points possible for this homework is 38. The number of 
 points for each question is written below, and questions marked as "bonus" are 
 optional. Submit the **knitted html file** from this Rmd to Gradescope. 
 
@@ -215,4 +215,29 @@ tf_subset = trendfilter(x = boston$Year[inds != 1],
 yhat = predict(tf_subset, x.new = boston$Year[inds == 1])
 plot(boston$Year, boston$Minutes, col = 8)
 points(boston$Year[inds == 1], yhat[, 25], col = 2, pch = 19)
+```
+
+# Spectral analysis
+
+10. (3 pts)
+Let $\omega_k$, $k = 1,\dots,p$ be fixed and arbitrary frequencies and let
+$U_{k1}, U_{k2}$, $k = 1,\dots,p$ be uncorrelated random variables with mean 
+zero, where $U_{k1}, U_{k2}$ have variance $\sigma^2_k$. Define 
+\[
+x_t = \sum_{i=1}^p \Big( U_{k1} \cos(2\pi\omega_k t) + U_{k2} \sin(2\pi\omega_k t) \Big)
+\]  
+for $t = 0, \pm 1, \pm 2, \dots$. Prove that this process is stationary, and
+verify the form of its autocovariance function given in lecture (weeks 7-8, 
+"Spectral analysis and filtering").
+
+SOLUTION GOES HERE
+
+11. (2 pts)
+Construct a small empirical example to verify the autocovariance formula you 
+derived in Q10. That is, generate a process with at least $p=2$ components. 
+compute its autocorrelation function with `acf()`, and compare to the analytic
+formula you derived.
+
+```{r}
+# CODE GOES HERE
 ```
