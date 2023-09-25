@@ -176,26 +176,29 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
 \item Critically, $\|\cdot\|_0$ is \emph{not convex}, while $\|\cdot\|_1$ and 
   $\|\cdot\|_2$ are convex (note that any norm is a convex function). This makes
   best subset selection a nonconvex problem, and one that is generally very hard
-  to solve in practice except for small $p$. We won't focus on best subset 
-  selection further in this lecture. (Though it is itself the topic of a flurry 
-  of work in the operations research literature a few years ago ... which you
-  can ask about in office hours if you are curious) 
+  to solve in practice except for small $p$. Meanwhile, the lasso and ridge
+  regression are both defined by convex optimization problems, and are generally
+  much easier to compute. We won't focus on best subset selection further in
+  this lecture. (Though it was the topic of a flurry of work in the operations
+  research literature a few years ago ... which you can ask about in office
+  hours if you are curious)   
 
 \item Lastly, an important note: when there is an explicit intercept $\beta_0$
   in the model, we typically do not want to penalize it, \emph{and so we modify
-    the penalty $P(\beta)$ so that it excludes $\beta_0$}---this will be
-  implicit in everything below 
+    the penalty $P(\beta)$ so that it excludes $\beta_0$}. This will be implicit
+  in everything below  
 
 \item Ok, really lastly, penalties like $\ell_1$ and $\ell_2$ only make sense if
   all the features (columns of $X$) are on the same scale (why?). Thus an 
   important and standard preprocessing step is to scale each feature (column of
-  $X$) so that it has unit sample variance 
+  $X$) so that it has unit norm
 \end{itemize}
 
 \subsection{Ridge}
 
 \begin{itemize}
-\item The \emph{ridge} estimates of regression coefficients are given by solving    
+\item The \emph{ridge} estimates of the regression coefficients are given by
+  solving     
   \[
   \min_{\beta \in \R^p} \, \sum_{i=1}^n (y_i - x_i^\T \beta)^2 + \lambda
   \sum_{j=1}^p \beta_j^2
@@ -236,7 +239,8 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
 \subsection{Lasso}
 
 \begin{itemize}
-\item The \emph{lasso} estimates of regression coefficients are given by solving    
+\item The \emph{lasso} estimates of the regression coefficients are given by
+  solving     
   \[
   \min_{\beta \in \R^p} \, \sum_{i=1}^n (y_i - x_i^\T \beta)^2 + \lambda
   \sum_{j=1}^p |\beta_j|
@@ -256,10 +260,11 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
 \item A second key difference is that the lasso estimates of the regression
   coefficients are \emph{sparse}. In other words, solving the lasso problem
   results in a vector \smash{$\hbeta$} with many components exactly equal to
-  zero, and a larger choice of $\lambda$ will result in more zeros. This doesn't
-  happen with ridge regression, whose coefficient estimates are generically
-  \emph{dense}. Figure \ref{fig:lasso_ridge} is the ``classic'' picture used to
-  explain this, and we will talk through its interpretation in lecture 
+  zero, and a larger choice of $\lambda$ will result in more zeros
+
+\item This doesn't happen with ridge regression, whose coefficient estimates are
+  generically \emph{dense}. Figure \ref{fig:lasso_ridge} is the ``classic''
+  picture used to explain this, and we will talk through its interpretation in lecture 
 
 \begin{figure}[htb]
 \centering
@@ -282,10 +287,10 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
   leads to better interpretability  
 \end{itemize}
 
-\subsection{Discussion}
+\subsection{Discussion: which one?}
 
 \begin{itemize}
-\item We should be clear that the lasso is not ``better'' than ridge, in any
+\item We should be clear that the lasso is not ``better'' than ridge in any
   general sense, and neither is ridge ``better'' than the lasso. They each can
   help tremendously with stabilizing coefficient estimates so as to lead to
   improved predictive accuracy. They each do so by regularizing in different
@@ -310,14 +315,52 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
 \item In time series regression, in the vein of examples we studied in the last 
   lecture, this would allow us to include \emph{many lags} of a feature of
   interest, or a few lags of \emph{many external covariates}, and so on, and
-  then apply a ridge or lasso penalty. Then, you might wonder: how would we
-  select $\lambda$? In fact, you already know the answer (for problems with a
-  predictive focus): use time series cross-validation!
+  then apply a ridge or lasso penalty
+
+\item Then, you might wonder: how would we select $\lambda$? In fact, you
+  already know the answer (for problems with a predictive focus): use time
+  series cross-validation! 
 
 \item That is, define a grid of $\lambda$ values, fit ridge or lasso estimates
   for each $\lambda$, let each one make predictions, and select the value that 
   yields the best CV error. You will practice this on the homework, where you'll
   also use the \verb|glmnet| package to solve the ridge and lasso problems 
+\end{itemize}
+
+\subsection{Interlude: coordinate descent for the lasso}
+
+\begin{itemize}
+\item As a very quick interlude, here is an algorithm used to compute lasso
+  estimates in practice, called \emph{coordinate descent}. In fact, this is what
+  is used by the \verb|glmnet| package internally. We repeat, cycling over 
+  $j=1,2,\dots,p$ until convergence (until the coefficient estimates do not
+  really change anymore), the following steps (with $x_j$ denoting the $j\th$
+  column of $X$): 
+
+\begin{itemize}
+\item Compute the $j\th$ partial residual: $r_j = y - \sum_{\ell \not= j} x_\ell 
+  \hbeta_\ell$  
+
+\item Compute the univariate least squares coefficient of $r_j$ on $x_j$: 
+  \[
+  \bar\beta_j = \frac{x_j^\T r_j}{x_j^\T x_j}
+  \]
+
+\item Update the $j\th$ lasso coefficient by ``soft-thresholding'' the above: 
+  \[
+  \hbeta_j = \begin{cases}
+  \bar\beta_j + \lambda & \text{if $\bar\beta_j < -2\lambda \|x_j\|_2^2$} \\ 
+  \bar\beta_j - \lambda & \text{if $\bar\beta_j > 2\lambda \|x_j\|_2^2$} \\
+  0 & \text{otherwise}
+  \end{cases}
+  \]
+  where recall $\lambda$ is the lasso regularization parameter 
+\end{itemize}
+
+\item (Note that similarity here between this algorithm and the
+  marginal-multiple connection we covered previously for least squares. In 
+  fact, this algorithm is still valid when $\lambda = 0$, and it can be used to 
+  compute least squares coefficients!) 
 \end{itemize}
 
 \section{Smoothing}
@@ -425,8 +468,8 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
   smoothing on the SOI data again. We can see that the estimates look more
   smooth  
 
-\item (Note that a centered MA is a special case of kernel smoothing with a
-  ``boxcar'' kernel: $K(u) = 1\{|u| \leq b\}$)
+\item (Note that a centered MA is actually kernel smoothing with a ``boxcar''
+  kernel: $K(u) = 1\{|u| \leq b\}$)     
 \end{itemize}
 
 \subsection{Hodrick-Prescott filter}
@@ -483,8 +526,8 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
 
 \item The HP filter has a computational advantage a linear filter with smooth
   weights, such as the Gaussian kernel smoother (the HP filter can be computed
-  in linear-time because $D$ is banded). In terms of the qualitative behavior of
-  their estimates, the HP filter and Gaussian kernel smoother are pretty similar    
+  in linear-time because $D$ is banded). In terms of their qualitative behavior, 
+  the HP filter and a Gaussian kernel smoother are pretty similar     
 
 \item In fact, though it not obvious at all, the HP filter admits an
   \emph{equivalent} form as a kernel smoother, for a special implicit kernel 
@@ -493,10 +536,10 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
 \item The HP filter is worth knowing about because it is quite a popular tool in
   macroeconomics, where it is primarily used for time series decomposition: it
   is used to estimate a trend component in a time series, and then the residuals
-  from this are used to estimate a cyclic component. However, some
-  econometricians have recently criticized this practice, on the basis that it
-  can induce spurious correlations in the residuals, along with other
-  concerns.\footnote{See Hamilton ``Why you should never use the
+  from this are used to estimate a cyclic component. However, recently, some 
+  econometricians have criticized this practice, on the basis that it can induce
+  spurious correlations in the residuals, along with other
+  concerns.\footnote{See Hamilton ``Why you should never use the  
     Hodrick-Prescott filter'' (2017), but also Hodrick ``An exploration of
     trend-cycle decomposition methodologies in simulated data'' (2020), which is
     a rebuttal that challenges some of the ideas proposed by Hamilton. Hodrick
