@@ -521,8 +521,9 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
   \end{equation}
 
 \item Figure \ref{fig:boston} shows an example of the HP filter fit to the
-  winning men's times from the Boston marathon, at a few different values of the
-  regularization level $\lambda$
+  winning men's times from the Boston marathon, at a few different values of the 
+  regularization level $\lambda$. (What happens to the HP filter as $\lambda \to
+  \infty$?)     
 
 \item The HP filter has a computational advantage a linear filter with smooth
   weights, such as the Gaussian kernel smoother (the HP filter can be computed
@@ -608,8 +609,8 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
 
 \item Figure \ref{fig:boston} shows an example of the trend filter on Boston
   marathon data again. The piecewise linear structure, and qualitative
-  difference to the HP filter, is very clear. (Ask yourself: what estimate does
-  trend filtering return as $\lambda \to \infty$?) 
+  difference to the HP filter, is very clear. (What is the behavior of trend
+  filtering as $\lambda \to \infty$?) 
 
 \item So ... how do you choose the regularization level $\lambda$ in the trend 
   filter or HP filter, or bandwidth $b$ in a kernel smoother? Cross-validation!
@@ -641,7 +642,7 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
 \section{Additive models}
 
 \begin{itemize}
-\item To gear up to (very) briefly discuss additive models, we have to first
+\item To gear up to very briefly discuss additive models, we have to first
   make clear the following point: \emph{each one of the smoothers described in
     the last section can be extended to a problem where the input points in the
     underlying smoothing problem are arbitrary: $x_i$, $i = 1,\dots,n$ (rather
