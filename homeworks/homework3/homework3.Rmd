@@ -226,9 +226,9 @@ zero, where $U_{k1}, U_{k2}$ have variance $\sigma^2_k$. Define
 \[
 x_t = \sum_{i=1}^p \Big( U_{k1} \cos(2\pi\omega_k t) + U_{k2} \sin(2\pi\omega_k t) \Big)
 \]  
-for $t = 0, \pm 1, \pm 2, \dots$. Prove that this process is stationary, and
-verify the form of its autocovariance function given in lecture (weeks 7-8, 
-"Spectral analysis and filtering").
+for $t = 1,2,3,\dots$. Prove that this process is stationary, and show that its
+autocovariance function is of the form given in lecture (weeks 7-8, "Spectral 
+analysis and filtering").
 
 SOLUTION GOES HERE
 
