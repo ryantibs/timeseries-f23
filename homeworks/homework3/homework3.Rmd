@@ -224,7 +224,7 @@ Let $\omega_j$, $j = 1,\dots,p$ be fixed and arbitrary frequencies and let
 $U_{j1}, U_{j2}$, $j = 1,\dots,p$ be uncorrelated random variables with mean 
 zero, where $U_{j1}, U_{j2}$ have variance $\sigma^2_j$. Define 
 \[
-x_t = \sum_{i=1}^p \Big( U_{j1} \cos(2\pi\omega_j t) + U_{j2} \sin(2\pi\omega_j t) \Big)
+x_t = \sum_{j=1}^p \Big( U_{j1} \cos(2\pi\omega_j t) + U_{j2} \sin(2\pi\omega_j t) \Big)
 \]  
 for $t = 1,2,3,\dots$. Prove that this process is stationary, and show that its
 autocovariance function is of the form given in lecture (weeks 7-8, "Spectral 

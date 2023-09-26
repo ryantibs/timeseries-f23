@@ -273,7 +273,7 @@ points(boston$Year[inds == 1], yhat[, 25], col = 2, pch = 19)</code></pre>
 <h1>Spectral analysis</h1>
 <ol start="10" style="list-style-type: decimal">
 <li>(3 pts) Let <span class="math inline">\(\omega_j\)</span>, <span class="math inline">\(j = 1,\dots,p\)</span> be fixed and arbitrary frequencies and let <span class="math inline">\(U_{j1}, U_{j2}\)</span>, <span class="math inline">\(j = 1,\dots,p\)</span> be uncorrelated random variables with mean zero, where <span class="math inline">\(U_{j1}, U_{j2}\)</span> have variance <span class="math inline">\(\sigma^2_j\)</span>. Define <span class="math display">\[
-x_t = \sum_{i=1}^p \Big( U_{j1} \cos(2\pi\omega_j t) + U_{j2} \sin(2\pi\omega_j t) \Big)
+x_t = \sum_{j=1}^p \Big( U_{j1} \cos(2\pi\omega_j t) + U_{j2} \sin(2\pi\omega_j t) \Big)
 \]</span><br />
 for <span class="math inline">\(t = 1,2,3,\dots\)</span>. Prove that this process is stationary, and show that its autocovariance function is of the form given in lecture (weeks 7-8, “Spectral analysis and filtering”).</li>
 </ol>
