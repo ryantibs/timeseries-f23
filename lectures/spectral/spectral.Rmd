@@ -34,8 +34,8 @@ x2 = sqrt(4^2 + 5^2)*cos(2*pi*t*6/n + atan(-5/4))
 y2 = 4*cos(2*pi*t*6/n) + 5*sin(2*pi*t*6/n)
 
 par(mar = c(4.5, 4.5, 0.5, 0.5))
-matplot(t, cbind(x1, y1), type = "l", lty = 1:2, col = 1:2, ylab = "x_t",
-        ylim = c(-10, 10))
+matplot(t, cbind(x1, y1), type = "l", lty = 1:2, col = 1:2, xlab = "Time",
+        ylab = "", ylim = c(-10, 10))
 matplot(t, cbind(x2, y2), type = "l", lty = 1:2, col = c(8,4), add = TRUE)
 rect(-atan(-3/2)*n/3*1/(2*pi), -20, n/3 - atan(-3/2)*n/3*1/(2*pi), 20,
      border = NA, col = rgb(1, 0, 0, 0.2))
@@ -47,8 +47,23 @@ rect(3*n/6 - atan(-5/4)*n/6*1/(2*pi), -20, 4*n/6 - atan(-6/4)*n/6*1/(2*pi), 20,
 
 ```{r cos-mixture}
 par(mfrow = c(2, 1), mar = c(4.5, 4.5, 0.5, 0.5))
-plot(t, y1 + y2, type = "l", ylab = "x_t")
+plot(t, y1 + y2, type = "l", xlab = "Time", ylab = "")
 
 y3 = 6*cos(2*pi*t*18/100) + 7*sin(2*pi*t*18/100)
-plot(t, y1 + y2 + y3, type = "l", ylab = "x_t")
+plot(t, y1 + y2 + y3, type = "l", xlab = "Time", ylab = "")
+```
+
+# Periodogram
+
+```{r periodogram}
+P12 = Mod(fft(y1 + y2))^2 / n
+P123 = Mod(fft(y1 + y2 + y3))^2 / n
+
+par(mfrow = c(2, 1), mar = c(4.5, 4.5, 0.5, 0.5))
+plot(t/n, P12, type = "h", xlab = "Frequency", ylab = "Periodogram", 
+     xlim = c(0, 0.5))
+abline(v = 0.5, lty = 2, col = 2)
+plot(t/n, P123, type = "h", xlab = "Frequency", ylab = "Periodogram",  
+     xlim = c(0, 0.5))
+abline(v = 0.5, lty = 2, col = 2)
 ```
