@@ -349,8 +349,8 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
 \item Update the $j\th$ lasso coefficient by ``soft-thresholding'' the above: 
   \[
   \hbeta_j = \begin{cases}
-  \bar\beta_j + \lambda & \text{if $\bar\beta_j < -2\lambda \|x_j\|_2^2$} \\ 
-  \bar\beta_j - \lambda & \text{if $\bar\beta_j > 2\lambda \|x_j\|_2^2$} \\
+  \bar\beta_j + 2\lambda & \text{if $\bar\beta_j < -2\lambda \|x_j\|_2^2$} \\  
+  \bar\beta_j - 2\lambda & \text{if $\bar\beta_j > 2\lambda \|x_j\|_2^2$} \\ 
   0 & \text{otherwise}
   \end{cases}
   \]
@@ -427,7 +427,8 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
   For a window of (odd or even) length $m = k+1$, a trailing MA smoother uses
   weights 
   \[
-  a_{-k} \cdots a_0 = \frac{1}{m}
+  a_{-k} = \cdots = a_0 = \frac{1}{m} \quad \text{and} \quad 
+  a_1 = \cdots = a_k = 0
   \]
 
 \item (For either, centered or trailing MA smoothers, or really linear filters

@@ -82,7 +82,7 @@ legend("topright", legend = paste("Lag", lags), lty = 1:5, col = 1:8)
 # Moving average
 
 ```{r soi-ma}
-wgts = rep(1, 12) / 12
+wgts = rep(1, 11) / 11
 ma = stats::filter(soi, sides = 2, filter = wgts)
 plot(soi, col = 8, ylab = "Southern Oscillation Index", 
      main = "Moving average")
@@ -96,7 +96,7 @@ plot(nwgts, type = "l", ylim = c(-0.02, 0.1),
 # Kernel smooth
 
 ```{r soi-ks}
-ks = ksmooth(time(soi), soi, "normal", bandwidth = 1)
+ks = ksmooth(time(soi), soi, kernel = "normal", bandwidth = 1)
 plot(soi, col = 8, ylab = "Southern Oscillation Index", 
      main = "Kernel smoother")
 lines(ks, lwd = 2, col = 4)
