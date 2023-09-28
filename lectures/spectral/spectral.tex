@@ -367,11 +367,62 @@ x_t = A \cos(2\pi\omega t + \phi)
 
 \section{Interlude: ST decomposition}
 
-Chapters 3.4--3.6 of HA.
+\begin{itemize}
+\item As an interlude, we'll demo how to use the periodogram, in combination
+  with smoothing (as we learned in the last lecture) to detect the presence of 
+  seasonality in time series, and fit a seasonal-trend (ST) decomposition 
 
-Cleveland, R. B., Cleveland, W. S., McRae, J. E., Terpenning, I. J. (1990). STL:
-A seasonal-trend decomposition procedure based on LOESS.  
+\item Warning: what we do here is very simple and may very well offend
+  researchers well-versed in classical time series decomposition and
+  econometrics alike. It is only meant as a demo. We repeat: it is just a demo! 
 
+\item (You can learn more about decomposition methods in time series in Chapters 
+  3.4--3.6 of the HA book. It is worth mentioning that in statistics, the STL
+  decomposition is pretty standard and popular, which stands for
+  ``seasonal-trend decomposition using LOESS'', with LOESS being a particular
+  type of smoother that we didn't cover, but it acts like kernel smoother with a
+  varying bandwidth. For an econometrics perspective, see the references from
+  the last lecture: Hodrick-Prescott $\to$ Hamilton $\to$ Hodrick again. The
+  last reference is especially scholarly and reviews what has been done over the
+  years)
+
+\item Ok with all those caveats laid out, a pretty simple and generic method to
+  perform an ST decomposition of a time series $y_t$, $t = 1,\dots,n$ is as
+  follows:    
+  \begin{itemize}
+  \item Use a smoother to estimate a trend \smash{$\htheta_t$}, $t = 1,\dots,n$,
+    aiming to undersmooth somewhat so as to ignore a (possible) cyclic or
+    seasonal component 
+
+  \item Compute residuals \smash{$r_t = y_t - \htheta_t$}, $t = 1,\dots,n$
+
+  \item Absent any prior knowledge about the periods of the seasonal component 
+    (i.e., without wanting to specify a priori that there might be weekly,
+    monthly, quarterly, etc. components), just compute the periodogram of the
+    residuals
+
+\item Identify large peaks in the periodogram, and fit and add to the model
+  seasonal components that correspond to the predominant periods (inverse 
+  frequencies) that are present  
+  \end{itemize}
+
+\item Of course the method presented above is limited in several ways (e.g., it
+  assumes that the seasonal components have constant amplitude over time), and
+  other methods are more advanced in various ways. You can read more in the 
+  aforementioned references if you are curious
+
+\item Figure \ref{fig:st_decomposition} gives an example applied to US retail 
+  employment data. We can see very clear cycles at about a year, half-year,
+  third-year, and quarter-year 
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.85\textwidth]{fig/st-decomposition-1.pdf}
+\caption{ST decomposition, using an HP filter for the smoother, and a
+  periodogram on the residuals to detect predominant frequency components.}  
+\label{fig:st_decomposition}
+\end{figure}
+\end{itemize}
 
 \section{Spectral representation}
 
@@ -382,12 +433,9 @@ A seasonal-trend decomposition procedure based on LOESS.
 \item In particular, if $x_t$, $t = 1,2,3,\dots$ is stationary with autovariance
   function $\gamma(h) = \Cov(x_{t+h}, x_t)$, then there exists a unique
   increasing function $F$, called the \emph{spectral distribution function}
-  corresponding to the process, such that  
-  \begin{alignat*}{2}
-  F(\omega) &= 0 \quad && \text{for $\omega \leq -1/2$}, \\
-  F(\omega) &= \gamma(0) \quad && \text{for $\omega \geq 1/2$}, 
-  \end{alignat*}
-  and for any $h = 0, \pm 1, \pm 2, \dots$,
+  corresponding to the process, with $F(\omega) = 0$ for $\omega \leq -1/2$, and 
+  $F(\omega) = \gamma(0)$ for $\omega \geq 1/2$, such that for any $h = 0, \pm
+  1, \pm 2, \dots$,  
   \[
   \gamma(h) = \int_{-1/2}^{1/2} \exp(2\pi i \omega h) \, dF(\omega) 
   \]
@@ -423,10 +471,12 @@ A seasonal-trend decomposition procedure based on LOESS.
 
 \item The important high-level perspective to remember here: \emph{the
     auto-covariance function and spectral density contain the same information 
-    about a time series, but express it in different ways}. The auto-covariance 
-  function expresses the variation broken down by \emph{lags}, whereas the
-  spectral density expresses variation broken down by \emph{frequencies}---or by
-  \emph{cycles} (remembering that the inverse of a frequency is a cycle) 
+    about a time series, but express it in different ways}
+
+\item The auto-covariance function expresses the variation broken down by
+  \emph{lags}, whereas the spectral density expresses variation broken down by
+  \emph{frequencies}---or by \emph{cycles} (remembering that the inverse of a
+  frequency is a cycle)  
 
 \item Next we compute the spectral density in a number of our favorite example
   stationary time series models. It will be helpful to point out that $\gamma(h)
@@ -644,5 +694,4 @@ A seasonal-trend decomposition procedure based on LOESS.
   analysis and filtering in general. See Chapters 4.4--4.10 of the SS book if
   you're interested in learning more
 \end{itemize}
-
 \end{document}

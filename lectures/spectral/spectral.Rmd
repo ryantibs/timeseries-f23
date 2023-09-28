@@ -89,6 +89,39 @@ text(0.027, 9000, "29 day cycle")
 us_retail_employment <- us_employment |>
   filter(year(Month) >= 1990, Title == "Retail Trade") |>
   select(-Series_ID, -Title) 
+
+x = as.Date(us_retail_employment$Month)
+y = us_retail_employment$Employed
+
+# Compute and plot HP filter solution at decently large lambda value
+n = nrow(us_retail_employment)
+D = diag(rep(-2,n))       # -2s on the diagonal
+D[row(D) == col(D)-1] = 1 # 1s above the diagonal
+D[row(D) == col(D)+1] = 1 # 1s below the diagonal
+D = D[-c(1,n), ]          # Drop first and last row
+I = diag(n)               # n x n identity matrix
+lam = 1000
+hp = solve(I + lam * t(D) %*% D, y)
+
+par(mfrow = c(2, 1), mar = c(4.5, 4.5, 0.5, 0.5))
+plot(x, y, col = 8, type = "l", xlab = "Date", ylab = "Employed")
+lines(x, hp, type = "l", lty = 1, lwd = 2, col = 2)
+
+# Compute and plot periodogram and pick out 4 largest components (but ignoring
+# ones that bunched up together)
+d = fft(y - hp)
+Per = Mod(d)^2 / n
+Freq = 0:(n-1)/n
+
+plot(Freq, Per, type = "h", xlab = "Frequency",  ylab = "Periodogram", 
+     xlim = c(0, 0.5), lwd = 2)
+
+ord = order(Per[Freq <= 1/2], decreasing = TRUE)
+cbind(Per[ord][1:5], Freq[ord][1:5])
+
+ind = ord[c(1, 2, 4, 5)]
+text(Freq[ind] + 0.005, Per[ind], adj = c(0, 0.5),
+     paste(round(1/Freq[ind], 2), "month cycle"))
 ```
 
 # Spectral density, moving average
