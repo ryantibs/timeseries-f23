@@ -1,5 +1,5 @@
 ---
-title: 'Lecture 5: Spectral Analysi and Filtering'
+title: 'Lecture 5: Spectral Analysis and Decomposition'
 output:
   html_document:
     toc: true
@@ -83,6 +83,48 @@ text(0.05, 7000, "24 day cycle")
 text(0.027, 9000, "29 day cycle")
 ```
 
-# Spectral densities
+# ST decomposition
 
-# ST* decomposition
+```{r st-decomposition}
+us_retail_employment <- us_employment |>
+  filter(year(Month) >= 1990, Title == "Retail Trade") |>
+  select(-Series_ID, -Title) 
+```
+
+# Spectral density, moving average
+
+```{r spectral-density-ma}
+theta = seq(0, 0.9, length = 8)
+omega = seq(0, 1/2, length = 500)
+fmat = matrix(NA, length(omega), length(theta))
+for (j in 1:ncol(fmat)) {
+  fmat[,j] = (1 + theta[j])^2 + 2* theta[j]^2 * cos(2*pi*omega)
+}
+
+par(mar = c(4.5, 4.5, 0.5, 0.5))
+matplot(omega, fmat, type = "l", lty = 1, col = 1:8, 
+        xlab = "Frequency", ylab = "Spectral density")
+legend("topright", lty = 1, col = 1:8,
+       legend = paste("theta =", round(theta, 2)))
+```
+
+# Spectral density, autoregressive
+
+```{r spectral-density-ar}
+phi1 = c(1, 0.6, 0.5, -0.5)
+phi2 = c(-0.9, -0.9, 0.4, 0.4)
+omega = seq(0, 1/2, length = 500)
+fmat = matrix(NA, length(omega), length(theta))
+for (j in 1:ncol(fmat)) {
+  fmat[,j] = 1 / ((1 + phi1[j]^2 + phi2[j]^2) -
+    2 * phi1[j] * (1 - phi2[j]) * cos(2*pi*omega) -
+    2 * phi2[j] * cos(4*pi*omega))
+}
+
+par(mar = c(4.5, 4.5, 0.5, 0.5))
+matplot(omega, fmat, type = "l", lty = 1, col = 1:8, 
+        xlab = "Frequency", ylab = "Spectral density")
+legend("topright", lty = 1, col = 1:8,
+       legend = paste0("(phi1, phi2) = (", round(phi1, 2), ", ", 
+                       round(phi2, 2), ")"))
+```

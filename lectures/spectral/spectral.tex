@@ -5,7 +5,7 @@
 \usepackage[normalem]{ulem}
 \usepackage{centernot}
 
-\title{Lecture 5: Spectral Analysis and Filtering \\ \smallskip  
+\title{Lecture 5: Spectral Analysis and Decomposition \\ \smallskip  
 \large Introduction to Time Series, Fall 2023 \\ \smallskip
 Ryan Tibshirani}
 \date{}
@@ -15,7 +15,7 @@ Ryan Tibshirani}
 \RaggedRight
 \vspace{-50pt}
 
-Related reading: Chapters 4.1--4.3 and 4.7--4.8 of Shumway and Stoffer (SS).
+Related reading: Chapters 4.1--4.3 of Shumway and Stoffer (SS).
 
 \section{Periodic processes}
 
@@ -28,9 +28,9 @@ x_t = A \cos(2\pi\omega t + \phi)
 
 \item Importantly, the quantity $\omega$ in the above definition is called 
   \emph{frequency} of the process; and the quantity $1/\omega$ is called the    
-  \emph{period}. As $t$ varies from $0$ to $1/\omega$, note that the process
-  goes through one complete cycle (it ends up back where it started). See Figure
-  \ref{fig:cos_process} 
+  \emph{period} or \emph{cycle}. As $t$ varies from $0$ to $1/\omega$, note that
+  the process goes through one complete cycle (it ends up back where it
+  started). See Figure \ref{fig:cos_process} 
 
 \begin{figure}[htb]
 \centering
@@ -163,7 +163,7 @@ x_t = A \cos(2\pi\omega t + \phi)
   \label{eq:fourier_model}
   x_t \approx a_0 + \sum_{j=1}^p (a_j c_{tj} + b_j s_{tj}), \quad t = 1,\dots,n 
   \end{equation}
-  Thus the regression coefficients $a_j,b_j$, $j = 1,\dots,p$ represent the 
+  Hence the regression coefficients $a_j,b_j$, $j = 1,\dots,p$ represent the 
   amplitudes 
 
 \item How large should $p$ in the above regression model? That is, how many
@@ -208,10 +208,10 @@ x_t = A \cos(2\pi\omega t + \phi)
   \]
 
 \item However, something is very special about out matrix $Z$: it satisfies 
-  $Z^\T Z = (n/2) \cdot I$, where $I$ the $n \times n$ identity matrix. In other
+  $Z^\T Z = (n/2) I$, where $I$ the $n \times n$ identity matrix. In other
   words, \emph{its columns are uncorrelated, and have squared $\ell_2$ norm
     equal to $n/2$}. This is a very special property of the cosine and sine
-  basis functions (and it is the foundation of the discrete Fourier transform,
+  basis functions (and it is the foundation of the discrete Fourier transform, 
   to be discussed shortly)
     
 \item Thus, writing $z_j$, $j = 1,\dots,n$ as the columns of $Z$, we have
@@ -224,8 +224,7 @@ x_t = A \cos(2\pi\omega t + \phi)
   so the multiple regression coefficients of $x$ on $Z$ are simply the marginal
   regression coefficients
 
-\item In other words, the coefficients are simply \smash{$\hat{a}_0 =
-    \bar{x}$}, and 
+\item More explicitly, the coefficients are \smash{$\hat{a}_0 = \bar{x}$}, and   
   \begin{equation}
   \label{eq:fourier_coef}
   \begin{aligned}
@@ -340,12 +339,15 @@ x_t = A \cos(2\pi\omega t + \phi)
   the modulus of each entry of the DFT satisfies (by definition) $|d(j/n)|^2 = 
   \mathrm{Re}\{d(j/n)\}^2 + \mathrm{Im}\{d(j/n)\}^2$, the periodogram in
   \eqref{eq:periodogram} is 
-  \begin{align*}
+  \begin{align}
+  \nonumber
   P(j/n) &= \frac{n}{4} \big( \hat{a}_j^2 + \hat{b}_j^2 \big) \\
+  \nonumber
   &= \frac{n}{4} \bigg( \frac{4}{n} \mathrm{Re}\{d(j/n)\}^2 +
     \frac{4}{n} \mathrm{Im}\{d(j/n)\}^2 \bigg) \\
+  \label{eq:periodogram_dft}          
   &= |d(j/n)|^2
-  \end{align*}
+  \end{align}
 
 \item In other words, the periodogram is simply the squared modulus of the DFT! 
 
@@ -363,12 +365,19 @@ x_t = A \cos(2\pi\omega t + \phi)
   squared modulus, i.e., the periodogram, across frequencies
 \end{itemize}
 
-\section{Spectral density}
+\section{Interlude: ST decomposition}
+
+Chapters 3.4--3.6 of HA.
+
+Cleveland, R. B., Cleveland, W. S., McRae, J. E., Terpenning, I. J. (1990). STL:
+A seasonal-trend decomposition procedure based on LOESS.  
+
+
+\section{Spectral representation}
 
 \begin{itemize}
 \item Now we turn to a general fact about stationary processes in time series,
-  which is called the \emph{spectral representation} of the auto-covariance
-  function
+  which is called the spectral representation of the auto-covariance function 
 
 \item In particular, if $x_t$, $t = 1,2,3,\dots$ is stationary with autovariance
   function $\gamma(h) = \Cov(x_{t+h}, x_t)$, then there exists a unique
@@ -404,10 +413,11 @@ x_t = A \cos(2\pi\omega t + \phi)
 
 \item There is also an inverse relationship: we can represent $f$ in terms of
   $\gamma$, via 
-  \[
+  \begin{equation}
+  \label{eq:spectral_density}
   f(\omega) = \sum_{h=-\infty}^\infty \gamma(h) \exp(-2\pi i \omega h), \quad
   \omega \in [-1/2, 1/2] 
-  \]
+  \end{equation}
   In other words, the spectral density and autovariance function are
   \emph{Fourier transform} pairs
 
@@ -419,7 +429,9 @@ x_t = A \cos(2\pi\omega t + \phi)
   \emph{cycles} (remembering that the inverse of a frequency is a cycle) 
 
 \item Next we compute the spectral density in a number of our favorite example
-  stationary time series models 
+  stationary time series models. It will be helpful to point out that $\gamma(h)
+  = \gamma(-h)$ implies $f(\omega) = f(-\omega)$, so we only need to keep track
+  of $f$ for $\omega \in [0, 1/2]$ 
 \end{itemize}
 
 \subsection{White noise}
@@ -427,33 +439,210 @@ x_t = A \cos(2\pi\omega t + \phi)
 \begin{itemize}
 \item Recall our most basic stationary process which is white noise: $x_t$, $t = 
   1,2,3,\dots$ are uncorrelated random variables, with zero mean, and constant 
-  variance $\sigma^2$. In other words, 
+  variance $\sigma^2$. So
   \[
+  \gamma(h) = \begin{cases} 
+    \sigma^2 & h = 0 \\
+    0 & h \not= 0
+  \end{cases}
+  \]
+ 
+\item The spectral density, according to \eqref{eq:spectral_density}, is
+  therefore
+  \[
+  f(\omega) = \sigma^2, \quad \omega \in [0, 1/2]
+  \]
 
-  \]\gamma(0) = \sigma^2$ and $\gamma( Precisely,   
-  \begin{gather*}
-  \Cov(x_s, x_t) = 0, \quad \text{for all $s \not= t$} \\
-  \E(x_t) = 0, \; \Var(x_t) = \sigma^2, \quad \text{for all $t$} 
-  \end{gather*}
-  So by definition (this one is kind of vacuous), we have mean function $\mu_t =
-  0$ and variance function $\sigma^2_t = \sigma^2$, which are constant functions
-  (do not vary in time)
+\item So, white noise has the simplest spectral density there is: it is constant! 
 
-
-$x_t
-  w_t$, $t = 1,2,3,\dots$, where 
+\item For the moment you (may) have been waiting for: we can finally explain
+  where a lot of the nomenclature is coming from ... if we think about a time
+  series as being comprised of a mixture of colors---which we can generally do
+  since any time series has the periodic representation
+  \eqref{eq:fourier_decomp}---then \emph{spectral analysis} provides us a tool
+  like a prism, for decomposing this series into its primary colors, or
+  \emph{spectra}. And, just like the color white, a \emph{white noise} series is
+  an equal mix of all colors (frequencies)
 \end{itemize}
 
-\subsection{Moving average}
+\subsection{MA model}
 
-\subsection{Autoregressive model}
+\begin{itemize}
+\item Moving on to a moving average: consider $x_t = w_t + \theta w_{t-1}$, $t =
+  1,2,3,\dots$, where $w_t$, $t = 1,2,3,\dots$ is a white noise sequence. The
+  right-hand side here is not exactly the same as an equal-weights moving
+  average (as we've looked at many times before), but a linear filter of the
+  past, with weights $a_0 = 1$ and $a_1 = \theta$. It is generally what we'll
+  call a moving average (MA) model in the context of ARIMA, as we'll learn soon  
+
+\item By direct calculation, which you can check, the auto-covariance function
+  is: 
+  \[
+  \gamma(h) = \begin{cases}
+  (1+\theta^2) \sigma^2 & h = 0 \\
+  \theta^2 \sigma^2 & |h| = 1 \\
+  0 & |h| > 1 \\
+  \end{cases}
+  \]
+  where $\sigma^2$ denotes the variance of $w_t$
+
+\item The spectral density, according to \eqref{eq:spectral_density}, is
+  therefore
+  \begin{align*}
+  f(\omega) &= (1+\theta^2) \sigma^2 + \theta^2 \sigma^2 (e^{2\pi i \omega} +
+              e^{-2\pi i \omega}) \\
+  &=  \sigma^2 \Big( 1+\theta^2 + 2 \theta^2 \cos(2\pi \omega) \Big)
+  \end{align*}
+  where in the second line we used $\cos(\theta) = (e^{i\theta} +e^{i\theta}) / 
+  2$, which follows from Euler's formula $e^{i\theta} = \cos(\theta) + i
+  \sin(\theta)$
+
+\item So an MA process has a spectral density that decays from zero, and larger
+  $\theta$ means a steeper decay from $\omega = 0$ to $\omega = 1/2$. See Figure
+  \ref{fig:spectral_density_ma} for an illustration  
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.85\textwidth]{fig/spectral-density-ma-1.pdf}
+\caption{Spectral density for the MA model, as $\theta$ varies.}
+\label{fig:spectral_density_ma}
+\end{figure}
+\end{itemize}
+
+\subsection{AR model}
+
+\begin{itemize}
+\item Lastly, we'll turn to an autoregressive model: consider $x_t = \phi_1
+  x_{t-1} + \phi_2 x_{t-2} + w_t$, $t = 1,2,3,\dots$, where $w_t$, $t = 
+  1,2,3,\dots$ is a white noise sequence. This is a second-order autoregressive
+  (AR) model, which we'll learn more about when we cover ARIMA soon
+
+\item Calculating the auto-covariance function is going to a bit nasty for this 
+  process (as you'll learn more about later when we cover ARIMA). However, for
+  our purposes here, we can get away with a trick: finding an equation that
+  relates the auto-covariance of white noise tot hat of the AR process 
+
+\item Since $w_t = x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2}$, $t = 1,2,3,\dots$, we
+  have 
+  \begin{align*}
+  \gamma_w(h) &= \Cov(w_{t+h}, w_t) \\
+  &= \Cov(x_{t+h} - \phi_1 x_{t+h-1} -  \phi_2 x_{t+h-2}, \,
+    x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2}) \\
+  &= \gamma_x(h) - \phi_1 \gamma_x(h+1) - \phi_2 \gamma_x(h+2) 
+    - \phi_1 \gamma_x(h-1) + \phi_1^2 \gamma_x(h) + \phi_1 \phi_2 
+    \gamma_x(h+1) \\ 
+    &\qquad - \phi_2 \gamma_x(h-2) +  \phi_1 \phi_2 \gamma_x(h-1) + \phi_2^2
+    \gamma_x(h) \\
+    &= (1+\phi_1^2+\phi_2^2) \gamma_x(h)  
+      -\phi_1(1-\phi_2) \big( \gamma_x(h-1) + \gamma_x(h+1) \big) 
+      - \phi_2 \big( \gamma_x(h-2) + \gamma_x(h+2) \big)  
+  \end{align*}
+
+\item Now represent the auto-covariance function $\gamma_x$ as an integral with
+  respect to the spectral density $f_x$:
+  \[
+  \gamma_w(h) = \int_{-1/2}^{1/2} \Big( (1+\phi_1^2+\phi_2^2)  
+  - \phi_1(1-\phi_2) (e^{-2\pi i \omega} + e^{2\pi i \omega})
+  - \phi_2 (e^{-4\pi i \omega} + e^{4\pi i \omega}) \Big) \exp(2\pi i \omega
+  h) \, f_x(\omega) \, d\omega
+  \]
+
+\item However, note that the representation of $\gamma_w$ in terms of its own
+  spectral density $f_w$ is of course
+  \[
+  \gamma_w(h) = \int_{-1/2}^{1/2} \exp(2\pi i \omega h) \, f_w(\omega) \,
+  d\omega 
+  \]
+
+\item Since Fourier transforms are uniquely identifying, we infer that the
+  integrands in the last two display must match:
+  \[
+  \Big( (1+\phi_1^2+\phi_2^2)  
+    - \phi_1(1-\phi_2) (e^{-2\pi i \omega} + e^{2\pi i \omega})
+    - \phi_2 (e^{-4\pi i \omega} + e^{4\pi i \omega}) \Big) \exp(2\pi i \omega
+    h) \, f_x(\omega) = f_w(\omega)
+  \]
+
+\item And based on our earlier calculation for white noise, we know that
+  $f_w(\omega) = \sigma^2$, the noise variance, so plugging that into the above,
+  we learn 
+  \begin{align*}
+  f_x(\omega) &= \frac{\sigma^2}{ (1+\phi_1^2+\phi_2^2)  
+    - \phi_1(1-\phi_2) (e^{-2\pi i \omega} + e^{2\pi i \omega})
+    - \phi_2 (e^{-4\pi i \omega} + e^{4\pi i \omega}) } \\
+  &= \frac{\sigma^2}{ (1+\phi_1^2+\phi_2^2)  
+    -2 \phi_1(1-\phi_2) \cos(2\pi \omega) 
+    - 2 \phi_2 \cos(4\pi \omega) }
+  \end{align*}
+  where in the second line we used the identity $\cos(\theta) = (e^{i\theta}
+  +e^{i\theta}) / 2$ once again
+
+\item Plotting this, as we do in Figure \ref{fig:spectral_density_ar}, we learn
+  that a second-order AR process has a spectral density that is concentrated
+  around a particular frequency. For example, when $\phi_1 = 1$ and $\phi_2 = 
+  -0.9$, it is concentrated around $\omega \approx 0.16$ (a cycle of $1/\omega
+  \approx 6$ time points)
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.85\textwidth]{fig/spectral-density-ar-1.pdf}
+\caption{Spectral density for the second-order AR model, for a few parameter
+  choices $\phi_1,\phi_2$.}
+\label{fig:spectral_density_ar}
+\end{figure}
+\end{itemize}
 
 \subsection{Sample spectral density}
 
-\section{Linear filtering}
+\begin{itemize}
+\item To conclude, let's draw a connection between the two main players that
+  we've seen in this lecture: the periodogram, and the spectral density 
 
-\subsection{Lagged regression}
+\item Recall the DFT \eqref{eq:dft} of a series $x_t$, $t = 1,\dots,n$, which we
+  can rewrite as
+  \[
+  d(\omega_j) = \frac{1}{\sqrt{n}} \sum_{t=1}^n x_t \exp(-2\pi i \omega_j t) 
+  \]
+  for $\omega_j = j/n$, $j = 0,1,\dots,n-1$
 
-\section{ST* decomposition}
+\item We claim that \smash{$\sum_{t=1}^n \exp(-2\pi i \omega_j t) = 0$}
+  for any $j < n$. This can be check by viewing it as a geometric series
+  \smash{$\sum_{t=1}^n z^t$} in $z = e^{2\pi i j / n}$, and hence we can use the
+  formula  
+  \[
+  \sum_{t=1}^n z^t = z \frac{1-z^n}{1-z}, \quad \text{for $z \not= 1$}
+  \] 
+  but here $z^n = e^{2\pi i j} = 1$ for any $j < n$
+
+\item Using the last fact, we can thus rewrite the DFT once more as  
+  \[
+  d(\omega_j) = \frac{1}{\sqrt{n}} \sum_{t=1}^n (x_t - \bar{x}) \exp(-2\pi i
+  \omega_j t)
+  \]
+
+\item The periodogram, recalling \eqref{eq:periodogram_dft}, is given by the 
+  squared modulus of the DFT, $P(\omega_j) = |d(\omega_j)|^2$. Using the fact
+  that the squared modulus of $z = a+bi$ is $|z|^2 = a^2 + b^2 = (a+ib)(a-ib)$,  
+  \begin{align*}
+  P(\omega_j) &= \frac{1}{n} \sum_{s=1}^n \sum_{t=1}^n (x_s - \bar{x}) (x_t -
+    \bar{x}) \exp\big( -2\pi i \omega_j (t-s) \big) \\
+  &= \frac{1}{n} \sum_{h=-(n-1)}^{n-1} \sum_{t = s+h} (x_s - \bar{x}) (x_{s+h} -
+    \bar{x}) \exp(-2\pi i \omega_j h) \\
+  &= \sum_{h=-(n-1)}^{n-1} \frac{1}{n} \sum_{s=1}^{n-|h|} (x_s - \bar{x})
+    (x_{s+|h|} - \bar{x}) \exp(-2\pi i \omega_j h) \\
+  &= \sum_{h=-(n-1)}^{n-1} \hat\gamma(h) \exp(-2\pi i \omega_j h)
+  \end{align*}
+  where \smash{$\hat\gamma(h)$} is our usual sample auto-covariance at lag $h$ 
+
+\item Compare the last line to the spectral density \eqref{eq:spectral_density},
+  and what do you find? The periodogram is simply a \emph{sample spectral
+    density} estimator, at discrete frequencies $\omega_j$, $j = 0,\dots,n-1$ 
+
+\item For models in which we expect smoothness in the spectral density, the
+  sample spectral density (periodogram) turns out to be not such a good
+  estimator. There is much more we can do, and much more to say about spectral
+  analysis and filtering in general. See Chapters 4.4--4.10 of the SS book if
+  you're interested in learning more
+\end{itemize}
 
 \end{document}
