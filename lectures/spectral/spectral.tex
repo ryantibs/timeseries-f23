@@ -90,7 +90,7 @@ x_t = A \cos(2\pi\omega t + \phi)
   \[
   \mu_t = \E(x_t) = 0
   \]
-  which is constant in time; and the autocovariance function 
+  which is constant in time; and the auto-covariance function 
   \begin{align*}
   \gamma(s,t) &= \Cov(x_s, x_t) \\
   &= \Cov\Big( U_1 \cos(2\pi\omega s) + U_2 \sin(2\pi\omega s), \, 
@@ -122,7 +122,7 @@ x_t = A \cos(2\pi\omega t + \phi)
 
 \item As a generalization of the above calculation, you'll show on your homework
   that the process $x_t$, $t = 1,2,3,\dots$ defined in
-  \eqref{eq:cos_sin_process_p} is stationary, with autocovariance function  
+  \eqref{eq:cos_sin_process_p} is stationary, with auto-covariance function   
   \[
   \gamma(h) = \sum_{j=1}^p \sigma^2_j \cos(2\pi\omega_j h)
   \]
@@ -367,7 +367,7 @@ x_t = A \cos(2\pi\omega t + \phi)
 
 \begin{itemize}
 \item Now we turn to a general fact about stationary processes in time series,
-  which is called the \emph{spectral representation} of the autocovariance
+  which is called the \emph{spectral representation} of the auto-covariance
   function
 
 \item In particular, if $x_t$, $t = 1,2,3,\dots$ is stationary with autovariance
@@ -412,8 +412,8 @@ x_t = A \cos(2\pi\omega t + \phi)
   \emph{Fourier transform} pairs
 
 \item The important high-level perspective to remember here: \emph{the
-    autocovariance function and spectral density contain the same information
-    about a time series, but express it in different ways}. The autocovariance 
+    auto-covariance function and spectral density contain the same information 
+    about a time series, but express it in different ways}. The auto-covariance 
   function expresses the variation broken down by \emph{lags}, whereas the
   spectral density expresses variation broken down by \emph{frequencies}---or by
   \emph{cycles} (remembering that the inverse of a frequency is a cycle) 
@@ -423,6 +423,26 @@ x_t = A \cos(2\pi\omega t + \phi)
 \end{itemize}
 
 \subsection{White noise}
+
+\begin{itemize}
+\item Recall our most basic stationary process which is white noise: $x_t$, $t = 
+  1,2,3,\dots$ are uncorrelated random variables, with zero mean, and constant 
+  variance $\sigma^2$. In other words, 
+  \[
+
+  \]\gamma(0) = \sigma^2$ and $\gamma( Precisely,   
+  \begin{gather*}
+  \Cov(x_s, x_t) = 0, \quad \text{for all $s \not= t$} \\
+  \E(x_t) = 0, \; \Var(x_t) = \sigma^2, \quad \text{for all $t$} 
+  \end{gather*}
+  So by definition (this one is kind of vacuous), we have mean function $\mu_t =
+  0$ and variance function $\sigma^2_t = \sigma^2$, which are constant functions
+  (do not vary in time)
+
+
+$x_t
+  w_t$, $t = 1,2,3,\dots$, where 
+\end{itemize}
 
 \subsection{Moving average}
 

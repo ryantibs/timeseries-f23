@@ -82,3 +82,7 @@ plot(Freq, Per, type = "h", xlab = "Frequency", ylab = "Periodogram",
 text(0.05, 7000, "24 day cycle")
 text(0.027, 9000, "29 day cycle")
 ```
+
+# Spectral densities
+
+# ST* decomposition
