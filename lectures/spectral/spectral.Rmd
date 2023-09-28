@@ -53,17 +53,32 @@ y3 = 6*cos(2*pi*t*18/100) + 7*sin(2*pi*t*18/100)
 plot(t, y1 + y2 + y3, type = "l", xlab = "Time", ylab = "")
 ```
 
-# Periodogram
+# Periodogram, mixture data
 
-```{r periodogram}
-P12 = Mod(fft(y1 + y2))^2 / n
-P123 = Mod(fft(y1 + y2 + y3))^2 / n
+```{r periodogram-mix}
+P = Mod(fft(y1 + y2))^2 / n
+Q = Mod(fft(y1 + y2 + y3))^2 / n
 
 par(mfrow = c(2, 1), mar = c(4.5, 4.5, 0.5, 0.5))
-plot(t/n, P12, type = "h", xlab = "Frequency", ylab = "Periodogram", 
-     xlim = c(0, 0.5))
+plot(0:(n-1)/n, P, type = "h", xlab = "Frequency", ylab = "Periodogram", 
+     xlim = c(0, 0.5), lwd = 3)
 abline(v = 0.5, lty = 2, col = 2)
-plot(t/n, P123, type = "h", xlab = "Frequency", ylab = "Periodogram",  
-     xlim = c(0, 0.5))
+plot(0:(n-1)/n, Q, type = "h", xlab = "Frequency", ylab = "Periodogram",  
+     xlim = c(0, 0.5), lwd = 3)
 abline(v = 0.5, lty = 2, col = 2)
+```
+
+# Periodogram, star data
+
+```{r periodogram-star}
+n = length(star)
+Per = Mod(fft(star - mean(star)))^2 / n
+Freq = 0:(n-1)/n
+
+par(mfrow = c(2, 1), mar = c(4.5, 4.5, 0.5, 0.5))
+plot(star, ylab="Star magnitude", xlab = "Day")
+plot(Freq, Per, type = "h", xlab = "Frequency", ylab = "Periodogram",  
+     xlim = c(0, 0.08), lwd = 3)
+text(0.05, 7000, "24 day cycle")
+text(0.027, 9000, "29 day cycle")
 ```

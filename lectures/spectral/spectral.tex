@@ -136,7 +136,7 @@ x_t = A \cos(2\pi\omega t + \phi)
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.875\textwidth]{fig/cos-mixture-1.pdf}
+\includegraphics[width=0.85\textwidth]{fig/cos-mixture-1.pdf}
 \caption{Mixture of periodic processes of different frequencies (and
   amplitudes).}  
 \label{fig:cos_mixture}
@@ -267,26 +267,38 @@ x_t = A \cos(2\pi\omega t + \phi)
   \label{eq:periodogram}
   P_x(j/n) = \frac{n}{4} \big( \hat{a}_j^2 + \hat{b}_j^2 \big)
   \end{equation}
-  (The scaling by $n/4$ is unimportant but will be helpful for mapping this onto
-  the discrete Fourier transform, later)
+  When the underlying series is clear from the context, we will drop the
+  subscript and simply write $P$ 
 
 \item Large values of the periodogram indicate which frequencies are predominant
-  in the given series. This is illustrated in Figure \ref{fig:periodogram},
+  in the given series. This is illustrated in Figure \ref{fig:periodogram_mix},
   which displays the periodogorams for the two series in Figure
-  \ref{fig:cos_mixture} 
+  \ref{fig:cos_mixture}. Another nice real data example (from a 1923 texbook on
+  numerical analysis!) is given in Figure \ref{fig:periodogram_star}  
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.85\textwidth]{fig/periodogram-mix-1.pdf}
+\caption{Periodograms for the mixture processes in Figure
+  \ref{fig:cos_mixture}.} 
+\label{fig:periodogram_mix}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.85\textwidth]{fig/periodogram-star-1.pdf}
+\caption{Periodogram for star magnitude data over 600 consecutive days
+  (originally from ``The Calculus of Observations'' by Whittaker and Robinson,   
+  adapted by SS). Note the large values of the periodogram at 0.35 and 0.41,
+  which correspond to $1/0.35 \approx 29$ and $1/0.41 \approx 24$ day 
+  cycles. For more on the interpretation, see Example 4.3 of SS.}
+\label{fig:periodogram_star}
+\end{figure}
 
 \item If we think back to the mixture process \eqref{eq:cos_sin_process_p} as a
   model for our data, then the periodogram gives us a breakdown of which
   frequencies are the largest \emph{sources of variance}: recall $\sigma_j^2 =
   \E(U_{j1}^2 + U_{j2}^2)/2$ is the variance at frequency $\omega_j$ 
-
-\begin{figure}[htb]
-\centering
-\includegraphics[width=0.875\textwidth]{fig/periodogram-1.pdf}
-\caption{Periodograms for the mixture processes in Figure
-  \ref{fig:cos_mixture}.} 
-\label{fig:periodogram}
-\end{figure}
 \end{itemize}
 
 \subsection{Discrete Fourier transform}
@@ -297,19 +309,20 @@ x_t = A \cos(2\pi\omega t + \phi)
   connection to what is called the \emph{discrete Fourier transform} (DFT) 
 
 \item The DFT of a series $x_t$, $t = 1,\dots,n$, is denoted $d_x$ and defined
-  as 
+  as  
   \begin{equation}
   \label{eq:dft}
-  d_x(j/n) = \frac{1}{\sqrt{n}} \sum_{t=1}^n x_t \exp(-2\pi i j/n \cdot t),
+  d_x(j/n) = \frac{1}{\sqrt{n}} \sum_{t=1}^n x_t \exp(-2\pi i j/n \cdot t), 
   \quad j = 0,1,\dots,n-1 
   \end{equation}
   where $i$ is the imaginary unit, which satisfies $i^2 = -1$. Thus the DFT is
-  complex-valued  
+  complex-value. As before, when the underlying series is clear from the
+  context, we will drop the subscript and simply write $d$ 
 
 \item Recalling Euler's formula, $e^{i\theta} = \cos(\theta) + i \sin(\theta)$, 
   we also have (using the fact that cosine is an even function and sine is odd): 
   \[
-  d_x(j/n) = \frac{1}{\sqrt{n}} \sum_{t=1}^n x_t \cos(2\pi j/n \cdot t) - 
+  d(j/n) = \frac{1}{\sqrt{n}} \sum_{t=1}^n x_t \cos(2\pi j/n \cdot t) - 
   \frac{i}{\sqrt{n}} \sum_{t=1}^n x_t \sin(2\pi j/n \cdot t), \quad j =
   0,1,\dots,n-1   
   \]
@@ -317,26 +330,27 @@ x_t = A \cos(2\pi\omega t + \phi)
 \item Thus, from the DFT, we can compute each cosine and sine coefficient in
   \eqref{eq:fourier_coef} by
   \[
-  \hat{a}_j = \frac{2}{\sqrt{n}} \mathrm{Re}\{d_x(j/n)\} \quad \text{and} \quad 
-  \hat{b}_j = -\frac{2}{\sqrt{n}} \mathrm{Im}\{d_x(j/n)\}
+  \hat{a}_j = \frac{2}{\sqrt{n}} \mathrm{Re}\{d(j/n)\} \quad \text{and} \quad 
+  \hat{b}_j = -\frac{2}{\sqrt{n}} \mathrm{Im}\{d(j/n)\}
   \]
   where for a complex number $z = a+bi$, we use $\mathrm{Re}\{z\} = a$ and
   $\mathrm{Im}\{z\} = b$ to denote its real and imaginary parts
 
 \item Note the following interesting connection to the periodogram. Since the
-  the modulus of each entry of the DFT satisfies (by definition) $|d_x(j/n)|^2 = 
-  \mathrm{Re}\{d_x(j/n)\}^2 + \mathrm{Im}\{d_x(j/n)\}^2$, the periodogram in
+  the modulus of each entry of the DFT satisfies (by definition) $|d(j/n)|^2 = 
+  \mathrm{Re}\{d(j/n)\}^2 + \mathrm{Im}\{d(j/n)\}^2$, the periodogram in
   \eqref{eq:periodogram} is 
   \begin{align*}
-  P_x(j/n) &= \frac{n}{4} \big( \hat{a}_j^2 + \hat{b}_j^2 \big) \\
-  &= \frac{n}{4} \bigg( \frac{4}{n} \mathrm{Re}\{d_x(j/n)\}^2 +
-    \frac{4}{n} \mathrm{Im}\{d_x(j/n)\}^2 \bigg) \\
-  &= |d_x(j/n)|^2
+  P(j/n) &= \frac{n}{4} \big( \hat{a}_j^2 + \hat{b}_j^2 \big) \\
+  &= \frac{n}{4} \bigg( \frac{4}{n} \mathrm{Re}\{d(j/n)\}^2 +
+    \frac{4}{n} \mathrm{Im}\{d(j/n)\}^2 \bigg) \\
+  &= |d(j/n)|^2
   \end{align*}
-  That is, the periodogram is simply the squared modulus of the DFT 
 
-\item Side note: the entire DFT $d_x$ can be computed rapidly using an algorithm
-  called the fast Fourier transform (FFT), which takes $O(n\log{n})$ operations
+\item In other words, the periodogram is simply the squared modulus of the DFT! 
+
+\item Side note: the entire DFT can be computed rapidly using an algorithm
+  called the fast Fourier transform (FFT), which takes $O(n\log{n})$ operations 
   (most efficient in practice when $n$ is a highly composite integer, such as a
   power of 2). The modern generic FFT algorithm is credited to Cooley and Tukey
   in the 1960s, but similar ideas were arround much earlier   
@@ -344,15 +358,82 @@ x_t = A \cos(2\pi\omega t + \phi)
 \item Side side note: different software implementations scale the FFT/DFT 
   differently, so you have to be careful to consult the documentation. For
   example, the \verb|fft()| function in R computes it without the leading factor
-  of $n^{-1/2}$, and with an additional factor of $\exp(2\pi i j/n)$ that can be
-  ignored since we're only using it in our examples for its squared modulus, 
-  i.e., the periodogram
+  of $n^{-1/2}$, and with an additional factor of $\exp(2\pi i j/n)$, but this
+  doesn't matter since we're only using it in our examples to compute the
+  squared modulus, i.e., the periodogram, across frequencies
 \end{itemize}
 
 \section{Spectral density}
 
+\begin{itemize}
+\item Now we turn to a general fact about stationary processes in time series,
+  which is called the \emph{spectral representation} of the autocovariance
+  function
+
+\item In particular, if $x_t$, $t = 1,2,3,\dots$ is stationary with autovariance
+  function $\gamma(h) = \Cov(x_{t+h}, x_t)$, then there exists a unique
+  increasing function $F$, called the \emph{spectral distribution function}
+  corresponding to the process, such that  
+  \begin{alignat*}{2}
+  F(\omega) &= 0 \quad && \text{for $\omega \leq -1/2$}, \\
+  F(\omega) &= \gamma(0) \quad && \text{for $\omega \geq 1/2$}, 
+  \end{alignat*}
+  and for any $h = 0, \pm 1, \pm 2, \dots$,
+  \[
+  \gamma(h) = \int_{-1/2}^{1/2} \exp(2\pi i \omega h) \, dF(\omega) 
+  \]
+
+\item Above, we can think of $F$ as being analogous to a cumulative distribution
+  function (CDF), and thus the integral as being analogous as an expectation
+  defined with respect the distribution that governs $F$. The only difference is
+  that the total mass here of need not be 1, but is instead $\gamma(0)$ 
+
+\item We will generally ignore this distinction and call $F$ a distribution
+  anyway, and in the case $F$ is differentiable, we will denote its derivative
+  by $f$ and call this the \emph{spectral density}
+
+\item When the spectral density exists,\footnote{It exists when the autovariance
+    function is absolutely summable, which means that it satisfies
+    \smash{$\sum_{h=-\infty}^\infty |\gamma(h)| < \infty$}. See Appendix C of SS
+    for details.} 
+  note that we have the representation 
+  \[
+  \gamma(h) = \int_{-1/2}^{1/2} \exp(2\pi i \omega h) \, f(\omega) \, d\omega,
+  \quad h = 0, \pm 1, \pm 2, \dots
+  \]
+
+\item There is also an inverse relationship: we can represent $f$ in terms of
+  $\gamma$, via 
+  \[
+  f(\omega) = \sum_{h=-\infty}^\infty \gamma(h) \exp(-2\pi i \omega h), \quad
+  \omega \in [-1/2, 1/2] 
+  \]
+  In other words, the spectral density and autovariance function are
+  \emph{Fourier transform} pairs
+
+\item The important high-level perspective to remember here: \emph{the
+    autocovariance function and spectral density contain the same information
+    about a time series, but express it in different ways}. The autocovariance 
+  function expresses the variation broken down by \emph{lags}, whereas the
+  spectral density expresses variation broken down by \emph{frequencies}---or by
+  \emph{cycles} (remembering that the inverse of a frequency is a cycle) 
+
+\item Next we compute the spectral density in a number of our favorite example
+  stationary time series models 
+\end{itemize}
+
+\subsection{White noise}
+
+\subsection{Moving average}
+
+\subsection{Autoregressive model}
+
+\subsection{Sample spectral density}
+
 \section{Linear filtering}
 
-\section{Lagged regression}
+\subsection{Lagged regression}
+
+\section{ST* decomposition}
 
 \end{document}
