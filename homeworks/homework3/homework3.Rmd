@@ -1,7 +1,7 @@
 ---
 title: 'Homework 3: [YOUR NAME HERE]'
 subtitle: 'Introduction to Time Series, Fall 2023'
-date: 'Due Thursday October 5 at 5pm'
+date: 'Due Friday October 6 at 9pm'
 output:
   html_document
 ---
