@@ -551,11 +551,11 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   \eqref{eq:beta_j_mult} and marginal \eqref{eq:beta_j} coefficients quite 
   different from each other
 
-\item On the other hand, when $x_j$ is uncorrelated with each column of
-  $X_{-j}$, then the residual \smash{$\hat{x}^{-j}_j$} in \eqref{eq:resid_j} is
-  no different from $x_j$, and in fact one can show that the multiple regression
-  coefficient in \eqref{eq:beta_j_mult} and the marginal one in
-  \eqref{eq:beta_j} are exactly the same
+\item On the other hand, when $x_j$ is orthogonal to (or uncorrelated with, if
+  we are using a model with intercept) each column of $X_{-j}$, then the
+  residual \smash{$\hat{x}^{-j}_j$} in \eqref{eq:resid_j} is no different from
+  $x_j$, and in fact one can show that the multiple regression coefficient in
+  \eqref{eq:beta_j_mult} and the marginal one in \eqref{eq:beta_j} are the same    
 
 \item Figure \ref{fig:cardio_mult} revisits the cardiovascular mortality example
   from earlier. Now we perform the regression of cardiovascular mortality on two
@@ -602,7 +602,7 @@ just have to remember that $i$ indexes samples (rows), and $j$ indexes features
   for some unknown coefficient vector $\beta \in \R^p$, and a white noise vector 
   $\epsilon \in \R^n$
 
-\item In \eqref{eq:model_wn}, $\epsilon \sim WN(0, \sigma^2 I)$ is our notation
+\item In \eqref{eq:model_wn}, $\epsilon \sim \WN(0, \sigma^2 I)$ is our notation
   for a white noise vector: the first argument specifies that the mean is zero, 
   $\E(\epsilon) = 0$, and the second argument specifies that the covariance
   satisfies $\Cov(\epsilon) = \sigma^2 I$, where $I$ is the $n \times n$
