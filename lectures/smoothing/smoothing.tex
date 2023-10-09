@@ -125,22 +125,24 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
   for large $n$ and $p$, where $\sigma^2$ is the error variance. What do we
   notice? This explodes as $p$ approaches $n$. Big problem!
 
+\item This is being driven by the \emph{variance} of the predictions from least 
+  squares, which grows out of control as $p$ approaches $n$
+
 \item (Aside: what happens with the prediction MSE when $p > n$? The answer may
-  surprise you. The MSE associated with the particular solution in
-  \eqref{eq:coef_mn} is actually quite interesting and in some ways exotic when 
-  $p > n$. Typically we need $p$ to be \emph{much larger} than $n$ (away from
-  the $p = n$ barrier) in order for it to be well-behaved. This has been the
-  topic of a recent flurry of research in statistics in machine learning ...  we
-  won't focus on it in this lecture and will instead talk about explicit
-  regularization. But feel free to ask about it in office hours)    
+  surprise you. The MSE associated with \eqref{eq:coef_mn} is actually quite
+  interesting and in some ways exotic when $p > n$. Typically we need $p$ to be
+  \emph{much larger} than $n$ (away from the $p = n$ barrier) in order for it to
+  be well-behaved. This has been the topic of a recent flurry of research in
+  statistics in machine learning ...  we won't cover this, but feel free to ask
+  about it in office hours)     
 \end{itemize}
 
 \section{Regularization}
 
 \begin{itemize}
 \item \emph{Regularization} to the rescue! This will finesse both of the
-  problems described above: it gives us a way to produce nontrivial coefficient 
-  estimates, and it often gives us more accurate predictions 
+  problems described above: it leads to nontrivial coefficient estimates, and
+  often leads to more accurate predictions, by reducing variance  
 
 \item In the regression setting, a general approach for regularization moves us 
   from \eqref{eq:ls} to solving:
@@ -148,10 +150,9 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
   \label{eq:ls_pen}
   \min_\beta \, \|y - X\beta\|_2^2 + \lambda P(\beta)
   \end{equation}
-  Here $P : \R^p \to \R_+$ is some penalty function, and $\lambda \geq 0$ is a
-  tuning parameter (also called the regularization parameter) which trades off
-  the importance of the squared loss---first term in \eqref{eq:ls_pen}, and the
-  penalty---second term in \eqref{eq:ls_pen}  
+  Here $P : \R^p \to \R_+$ is a penalty function, and $\lambda \geq 0$ is a
+  tuning parameter (or regularization parameter), trading off the importance
+  of the squared loss and penalty (first and second terms in \eqref{eq:ls_pen}) 
 
 \item In other words, the larger the value of $\lambda$, the more weight we put
   on penalizing large values of $P(\beta)$, which results in estimates that we
@@ -164,8 +165,9 @@ Relevant reading: Chapter 2.3 (smoothing) of Shumway and Stoffer (SS); Chapters
   P(\beta) &= \|\beta\|_1 = \sum_{j=1}^p |\beta_j|, \\
   P(\beta) &= \|\beta\|_2^2 = \sum_{j=1}^p \beta_j^2.
   \end{align*}
-  This gives rise to what we call \emph{best subset selection}, the
-  \emph{lasso}, and \emph{ridge regression}, respectively
+
+\item These give rise to what we call \emph{best subset selection}, the
+  \emph{lasso}, and \emph{ridge regression}, respectively  
 
 \item (Aside: calling $\|\cdot\|_0$ the ``$\ell_0$ norm'' is a misnomer, as it
   is not actually a norm: it does not satisfy positive homogeneity, i.e.,
