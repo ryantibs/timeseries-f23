@@ -430,12 +430,12 @@ x_t = A \cos(2\pi\omega t + \phi)
 \item Now we turn to a general fact about stationary processes in time series,
   which is called the spectral representation of the auto-covariance function 
 
-\item In particular, if $x_t$, $t = 1,2,3,\dots$ is stationary with autovariance
-  function $\gamma(h) = \Cov(x_{t+h}, x_t)$, then there exists a unique
-  increasing function $F$, called the \emph{spectral distribution function}
-  corresponding to the process, with $F(\omega) = 0$ for $\omega \leq -1/2$, and 
-  $F(\omega) = \gamma(0)$ for $\omega \geq 1/2$, such that for any $h = 0, \pm
-  1, \pm 2, \dots$,  
+\item In particular, if $x_t$, $t = 1,2,3,\dots$ is stationary with
+  auto-covariance function $\gamma(h) = \Cov(x_{t+h}, x_t)$, then there exists a 
+  unique increasing function $F$, called the \emph{spectral distribution
+    function} corresponding to the process, with $F(\omega) = 0$ for $\omega
+  \leq -1/2$, and $F(\omega) = \gamma(0)$ for $\omega \geq 1/2$, such that for
+  any $h = 0, \pm 1, \pm 2, \dots$,  
   \[
   \gamma(h) = \int_{-1/2}^{1/2} \exp(2\pi i \omega h) \, dF(\omega) 
   \]
@@ -449,10 +449,10 @@ x_t = A \cos(2\pi\omega t + \phi)
   anyway, and in the case $F$ is differentiable, we will denote its derivative
   by $f$ and call this the \emph{spectral density}
 
-\item When the spectral density exists,\footnote{It exists when the autovariance
-    function is absolutely summable, which means that it satisfies
-    \smash{$\sum_{h=-\infty}^\infty |\gamma(h)| < \infty$}. See Appendix C of SS
-    for details.} 
+\item When the spectral density exists,\footnote{It exists when the
+    auto-covariance function is absolutely summable, which means that it
+    satisfies \smash{$\sum_{h=-\infty}^\infty |\gamma(h)| < \infty$}. See
+    Appendix C of SS for details.} 
   note that we have the representation 
   \[
   \gamma(h) = \int_{-1/2}^{1/2} \exp(2\pi i \omega h) \, f(\omega) \, d\omega,
@@ -466,7 +466,7 @@ x_t = A \cos(2\pi\omega t + \phi)
   f(\omega) = \sum_{h=-\infty}^\infty \gamma(h) \exp(-2\pi i \omega h), \quad
   \omega \in [-1/2, 1/2] 
   \end{equation}
-  In other words, the spectral density and autovariance function are
+  In other words, the spectral density and auto-covariance function are
   \emph{Fourier transform} pairs
 
 \item The important high-level perspective to remember here: \emph{the
