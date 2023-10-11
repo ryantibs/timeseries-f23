@@ -528,7 +528,7 @@ x_t = A \cos(2\pi\omega t + \phi)
   \[
   \gamma(h) = \begin{cases}
   (1+\theta^2) \sigma^2 & h = 0 \\
-  \theta^2 \sigma^2 & |h| = 1 \\
+  \theta \sigma^2 & |h| = 1 \\
   0 & |h| > 1 \\
   \end{cases}
   \]
@@ -541,7 +541,7 @@ x_t = A \cos(2\pi\omega t + \phi)
               e^{-2\pi i \omega}) \\
   &=  \sigma^2 \Big( 1+\theta^2 + 2 \theta^2 \cos(2\pi \omega) \Big)
   \end{align*}
-  where in the second line we used $\cos(\theta) = (e^{i\theta} +e^{i\theta}) / 
+  where in the second line we used $\cos(\theta) = (e^{i\theta} +e^{-i\theta}) / 
   2$, which follows from Euler's formula $e^{i\theta} = \cos(\theta) + i
   \sin(\theta)$
 
@@ -623,7 +623,7 @@ x_t = A \cos(2\pi\omega t + \phi)
     - 2 \phi_2 \cos(4\pi \omega) }
   \end{align*}
   where in the second line we used the identity $\cos(\theta) = (e^{i\theta}
-  +e^{i\theta}) / 2$ once again
+  +e^{-i\theta}) / 2$ once again
 
 \item Plotting this, as we do in Figure \ref{fig:spectral_density_ar}, we learn
   that a second-order AR process has a spectral density that is concentrated
