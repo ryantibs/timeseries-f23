@@ -1,0 +1,34 @@
+---
+title: 'Lecture 6: Autoregressive Integrated Moving Average Models'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+    code_folding: show
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(dev = c("png", "pdf"), fig.path = "fig/",
+                     cache = TRUE, autodep = TRUE, cache.comments = TRUE)
+```
+
+# Load packages
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(astsa)
+library(fpp3)
+library(epidatasets)
+```
+
+# AR(1) processes
+
+```{r ar}
+x1 = arima.sim(list(order = c(1,0,0), ar = 0.9), n = 100)
+x2 = arima.sim(list(order = c(1,0,0), ar = -0.9), n = 100)
+
+par(mfrow = c(2, 1), mar = c(2, 0.5, 3, 0.5))
+plot(x1, main = paste("AR(1), phi = +0.9"), xlab = "", ylab = "")
+plot(x2, main = paste("AR(1), phi = -0.9"), xlab = "", ylab = "")
+```
