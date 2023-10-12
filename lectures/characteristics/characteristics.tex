@@ -251,7 +251,7 @@ Related reading: Chapters 1.1--1.2 of Shumway and Stoffer (SS); Chapters 2.3 and
 
 \item A general linear filter takes the form
   \[
-  y_t = \sum_{i=-\infty}^\infty a_i \cdot x_{t-i}
+  y_t = \sum_{i=-\infty}^\infty a_i x_{t-i}
   \]
   for constants $a_i$, where typically only finitely many are nonzero. For
   example, the second to last example took $a_{-1} = a_0 = a_1 = 1/3$, and the
@@ -267,7 +267,7 @@ Related reading: Chapters 1.1--1.2 of Shumway and Stoffer (SS); Chapters 2.3 and
 \begin{itemize}
 \item An \emph{autoregressive process} is one that takes the form  
   \[
-  x_t = \sum_{i=1}^k \beta_i \cdot x_{t-i} + \epsilon_t
+  x_t = \sum_{i=1}^k \beta_i x_{t-i} + \epsilon_t
   \]
   for coefficients $\beta_1,\dots,\beta_k$ and errors $\epsilon_t$
 
