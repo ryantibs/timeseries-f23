@@ -24,13 +24,13 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   already learned about AR models, which were introduced all the way back in our 
   first lecture)  
 
-\item Precisely, an AR model of order $p \geq 1$, denoted AR($p$), is of the
+\item Precisely, an AR model of order $p \geq 0$, denoted AR($p$), is of the
   form 
   \begin{equation}
   \label{eq:ar-p}
   x_t = \sum_{j=1}^p \phi_j x_{t-j} + \epsilon_t
   \end{equation}
-  where $\epsilon_t$, $t = 0, \pm 1 \pm 2, \pm 3,\dots$ is a white noise
+  where $\epsilon_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is a white noise
   sequence. Note that we allow the time index to be negative here (we extend
   time back to $-\infty$), which will useful in what follows
 
@@ -56,7 +56,7 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   B^k x_t = x_{t-k} 
   \]
 
-\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as 
+M\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as 
   \[
   x_t - \phi_1 x_{t-1} - \phi_2 - x_{t-2} - \cdots - \phi_p x_{t-p} = \epsilon_t  
   \]
@@ -100,7 +100,7 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   \label{eq:ar-1}
   x_t = \phi x_{t-1} + \epsilon_t 
   \end{equation}
-  for  $t = 0, \pm 1 \pm 2, \pm 3,\dots$ 
+  for  $t = 0, \pm 1, \pm 2, \pm 3, \dots$ 
 
 \item Unraveling the iterations, we get
   \begin{align*}
@@ -122,15 +122,20 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
 
 \item Why is it called this? We can compute the auto-covariance function,
   writing $\sigma^2 = \Var(\epsilon_t)$ for the noise variance, as
-  \begin{align*}
+  \begin{align}
+  \nonumber
   \Cov(x_t, x_{t+h}) &= \Cov\bigg( \sum_{j=0}^\infty \phi^j \epsilon_{t-j}, 
   \sum_{\ell=0}^\infty \phi^\ell \epsilon_{t+h-\ell} \bigg) \\
+  \nonumber
   &= \sum_{j,\ell=0}^\infty \phi^j \phi^\ell \Cov( \epsilon_{t-j},
     \epsilon_{t+h-\ell} ) \\
+  \nonumber
   &= \sum_{j=0}^\infty \phi^j \phi^{j+h} \sigma^2 \\
+  \nonumber
   &= \sigma^2 \phi^h \sum_{j=0}^\infty \phi^{2j} \\
-  &= \sigma^2 \frac{\phi^h}{1 - \phi^2} 
-  \end{align*}
+  \label{eq:ar-1-auto-cov}
+  &= \sigma^2 \frac{\phi^h}{1 - \phi^2}    
+  \end{align}
   where we used the fact that \smash{$\sum_{j=0}^\infty b^j = 1/(1-b)$} for $|b|
   < 1$. Since the auto-covariance in the last line only depends on $h$, we can
   see that the AR(1) process is indeed stationary
@@ -154,15 +159,14 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   causality used in the broader sense in statistics. We will ... somewhat
   begrudgingly ... stick with the standard nomenclature in time series here) 
 
-\item We say that a series $x_t$, $t = 0, \pm 1, \pm 2, \dots$ is \emph{causal}
-  provided that it can be written in the form
+\item We say that a series $x_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is
+  \emph{causal} provided that it can be written in the form
   \begin{equation}
   \label{eq:causal}
   x_t = \sum_{j=0}^\infty \psi_j \epsilon_{t-j}
   \end{equation}
-  for a white noise sequence $\epsilon_t$, $t = 0, \pm 1 \pm 2, \pm
-  3,\dots$, and coefficients such that \smash{$\sum_{j=0}^\infty |\psi_j| < 
-      \infty$}
+  for a white noise sequence $\epsilon_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$,
+  and coefficients such that \smash{$\sum_{j=0}^\infty |\psi_j| < \infty$} 
 
 \item You should think of this as a generalization of
   \eqref{eq:ar-1-stationary}, where we allow for arbitrary coefficients
@@ -196,18 +200,18 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
 \section{MA models}
 
 \begin{itemize}
-\item A \emph{moving average} (MA) model is dual, in a colloquial sense, to the
-  AR model. Instead of having $x_t$ evolve according to a linear combination of
-  the recent past, the \emph{errors} in the model evolve according to a linear
-  combination of white noise
+\item A \emph{moving average} (MA) model is ``dual'', in a colloquial sense, to
+  the AR model. Instead of having $x_t$ evolve according to a linear combination
+  of the recent past, the \emph{errors} in the model evolve according to a
+  linear combination of white noise
 
-\item Precisely, an MA model of order $q \geq 1$, denoted MA($q$), is of the
+\item Precisely, an MA model of order $q \geq 0$, denoted MA($q$), is of the
   form 
   \begin{equation}
   \label{eq:ma-q}
   x_t = \epsilon_t + \sum_{j=1}^q \theta_j \epsilon_{t-j} 
   \end{equation}
-  where $\epsilon_t$, $t = 0, \pm 1 \pm 2, \pm 3,\dots$ is a white noise
+  where $\epsilon_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is a white noise
   sequence
 
 \item The coefficients $\theta_1,\dots,\theta_q$ in \eqref{eq:ma-q} are fixed
@@ -250,42 +254,171 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
 \item To check this, we compute the auto-covariance function using a similar
   calculation to those we've done before, writing $\theta_0 = 1$ for
   convenience:  
-    \begin{align*}
+  \begin{align}
+  \nonumber
   \Cov(x_t, x_{t+h}) &= \Cov\bigg( \sum_{j=0}^q \theta_j \epsilon_{t-j}, 
   \sum_{\ell=0}^q \theta_\ell \epsilon_{t+h-\ell} \bigg) \\
+  \nonumber
   &= \sum_{j,\ell=0}^q \theta_j \theta_\ell \Cov( \epsilon_{t-j},
     \epsilon_{t+h-\ell} ) \\
+  \label{eq:ma-q-auto-cov}
   &= \sigma^2 \sum_{j=0}^q \theta_j \theta_{j+h}
-  \end{align*}
+  \end{align}
   Since this only depends on $h$, we can see that the process is indeed
   stationary 
 
 \item Actually, this (similarity between this and previous calculations) brings
-  us to emphasize the following connection: \emph{an AR(1) model is actually an
-    MA($\infty$) model}, as we saw in the stationary representation
-  \eqref{eq:ar-1-stationary}. But writing it as an AR(1) process is simpler 
+  us to emphasize the following connection: \emph{an AR(1) model with $|\phi| <
+    1$ is actually a particular infinite-order MA model}, as we saw in the
+  stationary representation \eqref{eq:ar-1-stationary}. But writing it as an
+  AR(1) process is simpler   
 
-\item TODO statement about connection in general?
+\item We will see that there is a more general connection to be made. An AR($p$)
+  process with certain constraints on its coefficients can be written as an
+  MA($\infty$) process. Conversely, an MA($q$) process with certain constraints
+  on its coefficients can be written as an AR($\infty$) process! So there is
+  some duplicity in representation here, but that's OK. We can find a guiding
+  principle in preferring to represent things in their simplest forms, which
+  means that we'll use AR and MA to compactly represent particular behaviors
+  that would otherwise be more complex to describe/represent
 \end{itemize}
 
-\subsection{MA(1): non-uniqueness and invertibility}
+\subsection{MA(1): issues with non-uniqueness}
 
 \begin{itemize}
-\item There are a number of issues with the MA processes that are worth
-  elucidating. 
+\item Consider the MA(1) model:
+  \begin{equation}
+  \label{eq:ma-1}
+  x_t = \epsilon_t + \theta \epsilon_{t-1}
+  \end{equation}
+  for  $t = 0, \pm 1, \pm 2, \pm 3, \dots$ 
+
+\item According to \eqref{eq:ma-q-auto-cov}, we can compute its auto-covariance 
+  simply (recalling $\theta_0 = 1$) as
+  \begin{equation}
+  \label{eq:ma-1-auto-cov}  
+  \gamma(h) = \begin{cases}
+  (1+\theta^2) \sigma^2 & h = 0 \\
+  \theta \sigma^2 & |h| = 1 \\
+  0 & |h| > 1 \\
+  \end{cases}
+  \end{equation}
+
+\item The corresponding auto-correlation function is thus
+  \[
+  \rho(h) = \begin{cases}
+  1 & h = 0 \\
+  \frac{\theta}{1+\theta^2} & |h| = 1 \\ 
+  0 & |h| > 1 \\
+  \end{cases}
+  \]
+
+\item If we look carefully, then we can see a problem lurking here: the
+  auto-correlation function is unchanged if we replace $\theta$ by $1/\theta$
+
+\item And in fact, the auto-covariance function \eqref{eq:ma-1-auto-cov} is
+  unchanged if we replace $\theta$ and $\sigma^2$ with $1/\theta$ and $\sigma^2
+  \theta^2$; e.g., try $\theta = 5$ and $\sigma^2 = 1$, and $\theta = 1/5$ and
+  $\sigma^2 = 25$, you'll find that the auto-covariance function is the same in
+  both cases 
+
+\item This is not good because it means we cannot detect the difference in an
+  MA(1) model with parameter $\theta$ and normal noise with variance $\sigma^2$ 
+  from another MA(1) model with parameter $1/\theta$ and normal noise with
+  variance $\sigma^2 \sigma^2$
+
+\item In other words, there is some \emph{non-uniqueness} of \emph{redundancy}
+  in the parametrization---different choices of parameters will actually lead to
+  the same behavior in the model in the end
+
+\item In the MA(1) case, there is actually a way to uniquely specify a
+  parametrization to work with: we can simply choose the one with $|\theta| < 
+  1$. This leads to a representation of the MA(1) process as an infinite-order
+  AR process: similar arguments to those that led to \eqref{eq:ar-1-stationary} 
+  now show us that, when $|\theta| < 1$, we can write 
+  \begin{equation}
+  \label{eq:ma-1-invertible}
+  \epsilon_t = \sum_{j=0}^\infty \theta^j x_{t-j} 
+  \end{equation}
+  This is called the \emph{invertible representation} of the MA(1) process
+  \eqref{eq:ma-1} 
+
+\item Soon we will see that there are conditions that allow us to write a
+  general MA($q$) process as an AR($\infty$) process
+\end{itemize}
+
+\subsection{Invertibility}
+
+\begin{itemize}
+\item Before we turn to ARMA models, we define one last concept, which
+  generalizes what we just saw for MA(1) when $|\theta| < 1$ (just as causality
+  generalized what we derived for AR(1) when $|\phi| < 1$), called
+  \emph{invertibility}  
+
+\item We say that a series $x_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is
+  \emph{invertible} provided that it can be written in the form
+  \begin{equation}
+  \label{eq:invertible}
+  \epsilon_t = \sum_{j=0}^\infty \pi_j x_{t-j}
+  \end{equation}
+  for a white noise sequence $\epsilon_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$,
+  and coefficients such that \smash{$\sum_{j=0}^\infty |\pi_j| < \infty$}, where 
+  we set $\pi_0 = 1$
+
+\item You should think of this as a generalization of
+  \eqref{eq:ma-1-invertible}, where we allow for arbitrary coefficients
+  $\pi_1,\pi_2,\dots$, subject to an absolute summability condition   
+
+\item And of course, note how invertibility \eqref{eq:invertible} is kind of an
+  opposite condition to causality \eqref{eq:causal}  
 \end{itemize}
 
 \section{ARMA models}
 
-ARMA(p,q)
-Backshift notation
+\begin{itemize}
+\item AR and MA models have complementary characteristics. The auto-covariance
+  of an AR model decays away from $h=0$, whereas that for an MA process has
+  finite support---in other words, at a certain lag, variates along an MA
+  sequence are completely uncorrelated (e.g., compare \eqref{eq:ar-1-auto-cov}
+  and \eqref{eq:ma-1-auto-cov} for the AR(1) and MA(1) models)   
 
-point out special cases: 
+\item (The spectral perspective, by the way, provides another nice way of
+  viewing these complementary characteristics. In the spectral domain, the story
+  is somewhat flipped: the spectral density of an MA process generally decays
+  away from $\omega=0$, whereas that for an AR process can be much more locally
+  concentrated around particular frequencies; recall our examples from the last
+  lecture) 
+
+\item Sure, there is some duplicity in representation here. We can write some AR
+  models as infinite-order MA models, and we can write some MA models as
+  infinite-order AR models 
+
+\item But that's OK and we can generally take the most salient features that
+  each model represents, compactly, and combine them to get a compact
+  representation of both features, simultaneously. That is exactly what an
+  ARMA model does
+
+\item Precisely, an ARMA model of orders $p,q \geq 0$, denoted ARMA($p,q$), is
+  of the form 
+  \begin{equation}
+    \label{eq:arma-pq}
+  x_t = \sum_{j=1}^p \phi_j x_{t-j} + \sum_{j=0}^q \theta_j \epsilon_{t-j}  
+  \end{equation}
+  where $\epsilon_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is a white noise
+  sequence
+
+\item The coefficients $\phi_1,\dots,\phi_p,\theta_0,\dots,\theta_q$ in
+  \eqref{eq:arma-pq} are fixed (nonrandom), and we assume $\phi_p,\theta_q \not=
+  0$, and we set $\theta_0 = 1$. Note that in \eqref{eq:arma-pq}, we have
+  $\E(x_t) = 0$ for all $t$ 
+
+\item Backshift notation
+
+\item point out special cases: 
 ARMA(0,0): white noise
 ARMA(1,0): random walk 
 
-\begin{itemize}
-\item
+
 \end{itemize}
 
 \subsection{Parameter redundancy}
