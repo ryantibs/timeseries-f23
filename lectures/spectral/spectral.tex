@@ -517,11 +517,12 @@ x_t = A \cos(2\pi\omega t + \phi)
 
 \begin{itemize}
 \item Moving on to a moving average: consider $x_t = w_t + \theta w_{t-1}$, $t =
-  1,2,3,\dots$, where $w_t$, $t = 1,2,3,\dots$ is a white noise sequence. The
-  right-hand side here is not exactly the same as an equal-weights moving
-  average (as we've looked at many times before), but a linear filter of the
-  past, with weights $a_0 = 1$ and $a_1 = \theta$. It is generally what we'll
-  call a moving average (MA) model in the context of ARIMA, as we'll learn soon  
+  0, \pm 1, \pm 2, \pm 3, \dots$, where $w_t$, $t = 0, \pm 1, \pm 2, \pm 3,
+  \dots$ is a white noise sequence. The right-hand side here is not exactly the
+  same as an equal-weights moving average (as we've looked at many times
+  before), but a linear filter of the past, with weights $a_0 = 1$ and $a_1 =
+  \theta$. It is generally what we'll call a moving average (MA) model in the
+  context of ARIMA, as we'll learn soon   
 
 \item By direct calculation, which you can check, the auto-covariance function
   is: 
@@ -561,17 +562,18 @@ x_t = A \cos(2\pi\omega t + \phi)
 
 \begin{itemize}
 \item Lastly, we'll turn to an autoregressive model: consider $x_t = \phi_1
-  x_{t-1} + \phi_2 x_{t-2} + w_t$, $t = 1,2,3,\dots$, where $w_t$, $t = 
-  1,2,3,\dots$ is a white noise sequence. This is a second-order autoregressive
-  (AR) model, which we'll learn more about when we cover ARIMA soon
+  x_{t-1} + \phi_2 x_{t-2} + w_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$, where
+  $w_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is a white noise sequence. This is
+  a second-order autoregressive (AR) model, which we'll learn more about when we
+  cover ARIMA soon 
 
 \item Calculating the auto-covariance function is going to a bit nasty for this 
   process (as you'll learn more about later when we cover ARIMA). However, for
   our purposes here, we can get away with a trick: finding an equation that
   relates the auto-covariance of white noise tot hat of the AR process 
 
-\item Since $w_t = x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2}$, $t = 1,2,3,\dots$, we
-  have 
+\item Since $w_t = x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2}$, $t = 0, \pm 1, \pm 2,
+  \pm 3, \dots$, we have 
   \begin{align*}
   \gamma_w(h) &= \Cov(w_{t+h}, w_t) \\
   &= \Cov(x_{t+h} - \phi_1 x_{t+h-1} -  \phi_2 x_{t+h-2}, \,
