@@ -32,3 +32,14 @@ par(mfrow = c(2, 1), mar = c(2, 0.5, 3, 0.5))
 plot(x1, main = paste("AR(1), phi = +0.9"), xlab = "", ylab = "")
 plot(x2, main = paste("AR(1), phi = -0.9"), xlab = "", ylab = "")
 ```
+
+# MA(1) processes
+
+```{r ma}
+x1 = arima.sim(list(order = c(0,0,1), ma = 0.9), n = 100)
+x2 = arima.sim(list(order = c(0,0,1), ma = -0.9), n = 100)
+
+par(mfrow = c(2, 1), mar = c(2, 0.5, 3, 0.5))
+plot(x1, main = paste("MA(1), phi = +0.9"), xlab = "", ylab = "")
+plot(x2, main = paste("MA(1), phi = -0.9"), xlab = "", ylab = "")
+```

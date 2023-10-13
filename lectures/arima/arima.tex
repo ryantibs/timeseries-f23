@@ -24,10 +24,11 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   already learned about AR models, which were introduced all the way back in our 
   first lecture)  
 
-\item An AR model of order $p \geq 1$, denoted AR($p$), is of the form
+\item Precisely, an AR model of order $p \geq 1$, denoted AR($p$), is of the
+  form 
   \begin{equation}
   \label{eq:ar-p}
-  x_t = \sum_{j=1}^p \phi_i x_{t-j} + \epsilon_t
+  x_t = \sum_{j=1}^p \phi_j x_{t-j} + \epsilon_t
   \end{equation}
   where $\epsilon_t$, $t = 0, \pm 1 \pm 2, \pm 3,\dots$ is a white noise
   sequence. Note that we allow the time index to be negative here (we extend
@@ -35,12 +36,12 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
 
 \item The coefficients $\phi_1,\dots,\phi_p$ in \eqref{eq:ar-p} are fixed
   (nonrandom), and we assume $\phi_p \not= 0$ (otherwise the order here would
-  effectively be less than $p$)   
+  effectively be less than $p$). Note that in \eqref{eq:ar-p}, we have $\E(x_t)
+  = 0$ for all $t$
 
-\item Note that in \eqref{eq:ar-p}, we have $\E(x_t) = 0$ for all $t$. If we
-  wanted to allow for a nonzero but constant mean, then we could add an
-  intercept to the model in \eqref{eq:ar-p}. We omit this for simplicity in this 
-  lecture  
+\item If we wanted to allow for a nonzero but constant mean, then we could add
+  an intercept to the model in \eqref{eq:ar-p}. We'll omit this for simplicity
+  in this lecture  
 
 \item A useful tool for expressing and working with AR models is the
   \emph{backshift operator}: this is an operator we denote by $B$ that takes a 
@@ -120,7 +121,7 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   \eqref{eq:ar-1} 
 
 \item Why is it called this? We can compute the auto-covariance function,
-  writing $\sigma^2 = \Var(\epsilon_t)$ for the noise variance, as: 
+  writing $\sigma^2 = \Var(\epsilon_t)$ for the noise variance, as
   \begin{align*}
   \Cov(x_t, x_{t+h}) &= \Cov\bigg( \sum_{j=0}^\infty \phi^j \epsilon_{t-j}, 
   \sum_{\ell=0}^\infty \phi^\ell \epsilon_{t+h-\ell} \bigg) \\
@@ -165,7 +166,7 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
 
 \item You should think of this as a generalization of
   \eqref{eq:ar-1-stationary}, where we allow for arbitrary coefficients
-  $\psi_0,\psi_1,\psi_2,\dots$, subject to a summability condition 
+  $\psi_0,\psi_1,\psi_2,\dots$, subject to an absolute summability condition  
 
 \item It is straightforward to check that causality actually implies
   stationarity: we can just compute the auto-covariance function in
@@ -194,17 +195,84 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
 
 \section{MA models}
 
-MA(q)
-Backshift notation 
+\begin{itemize}
+\item A \emph{moving average} (MA) model is dual, in a colloquial sense, to the
+  AR model. Instead of having $x_t$ evolve according to a linear combination of
+  the recent past, the \emph{errors} in the model evolve according to a linear
+  combination of white noise
+
+\item Precisely, an MA model of order $q \geq 1$, denoted MA($q$), is of the
+  form 
+  \begin{equation}
+  \label{eq:ma-q}
+  x_t = \epsilon_t + \sum_{j=1}^q \theta_j \epsilon_{t-j} 
+  \end{equation}
+  where $\epsilon_t$, $t = 0, \pm 1 \pm 2, \pm 3,\dots$ is a white noise
+  sequence
+
+\item The coefficients $\theta_1,\dots,\theta_q$ in \eqref{eq:ma-q} are fixed
+  (nonrandom), and we assume $\theta_q \not= 0$ (otherwise the order here would 
+  effectively be less than $q$). Note that in \eqref{eq:ma-q}, we have $\E(x_t)
+  = 0$ for all $t$ 
+
+\item Again, we can rewrite \eqref{eq:ma-q}, using backshift notation, as 
+  \begin{equation}
+  \label{eq:ma-q-backshift}
+  x_t = \Big(1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q \Big)
+  \epsilon_t  
+  \end{equation}
+
+\item Often, authors will write \eqref{eq:ma-q-backshift} even more compactly as   
+  \begin{equation}
+  \label{eq:ma-q-phi}
+  x_t = \theta(B) \epsilon_t 
+  \end{equation}
+  where $\theta(B) = 1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q$ is
+  called the \emph{moving average operator} of order $q$, associated with the
+  coefficients $\theta_1,\dots,\theta_q$
+
+\item Figure \ref{fig:ma} shows two simple examples of MA processes
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.85\textwidth]{fig/ma-1.pdf}
+\caption{Two examples of MA(1) processes, with $\theta = \pm 0.9$.}
+\label{fig:ma}
+\end{figure}
+\end{itemize}
+
+\subsection{Stationarity}
 
 \begin{itemize}
-\item
+\item Unlike AR processes, an MA process \eqref{eq:ma-q} is stationary \emph{for
+    any values of the parameters $\theta_1,\dots,\theta_q$}
+
+\item To check this, we compute the auto-covariance function using a similar
+  calculation to those we've done before, writing $\theta_0 = 1$ for
+  convenience:  
+    \begin{align*}
+  \Cov(x_t, x_{t+h}) &= \Cov\bigg( \sum_{j=0}^q \theta_j \epsilon_{t-j}, 
+  \sum_{\ell=0}^q \theta_\ell \epsilon_{t+h-\ell} \bigg) \\
+  &= \sum_{j,\ell=0}^q \theta_j \theta_\ell \Cov( \epsilon_{t-j},
+    \epsilon_{t+h-\ell} ) \\
+  &= \sigma^2 \sum_{j=0}^q \theta_j \theta_{j+h}
+  \end{align*}
+  Since this only depends on $h$, we can see that the process is indeed
+  stationary 
+
+\item Actually, this (similarity between this and previous calculations) brings
+  us to emphasize the following connection: \emph{an AR(1) model is actually an
+    MA($\infty$) model}, as we saw in the stationary representation
+  \eqref{eq:ar-1-stationary}. But writing it as an AR(1) process is simpler 
+
+\item TODO statement about connection in general?
 \end{itemize}
 
 \subsection{MA(1): non-uniqueness and invertibility}
 
 \begin{itemize}
-\item
+\item There are a number of issues with the MA processes that are worth
+  elucidating. 
 \end{itemize}
 
 \section{ARMA models}
