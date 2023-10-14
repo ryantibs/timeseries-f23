@@ -470,7 +470,58 @@ M\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as
 \subsection{Causality and invertibility}
 
 \begin{itemize}
-\item 
+\item Now we learn about two more conditions on the AR and MA polynomials that
+  imply important general properties of the underlying ARMA process, and
+  generalize calculations we saw earlier for AR(1) and MA(1) models
+
+\item Before we describe these, we recall the following terminology: for a
+  polynomial \smash{$f(z) = \sum_{j=0}^k a_j z^j$}, we say that $z$ is a
+  \emph{root} of $f$ provided $f(z) = 0$
+
+\item And we say that a point $z \in \C$ lies \emph{outside of the unit circle} 
+  (in the complex plane $\C$) provided that $|z| > 1$, where $|z|$ is the
+  complex modulus of $z$ (recall $|z|^2 = \mathrm{Re}\{z\}^2 +
+  \mathrm{Im}\{z\}^2$)     
+
+\item The first property: \emph{the ARMA process \eqref{eq:arma-pq} has a causal
+    representation \eqref{eq:causal} if and only if all roots of the AR
+    polynomial \eqref{eq:ar-p-polynomial} lie outside of the unit circle}. The
+  coefficients $\psi_0,\psi_1,\psi_2,\dots$ in the causal representation can be
+  determined by solving  
+  \[
+  \psi(z) = \frac{\theta(z)}{\phi(z)} \iff 
+  \sum_{j=0}^\infty \psi_j z^j = \frac{1 + \theta_1 z + \theta_2 z^2 + \cdots +
+    \theta_q z^q}{1 - \phi_1 z - \phi_2 z^2 - \cdots - \phi_p z^p}, \quad
+  \text{for $|z| < 1$}
+  \]
+
+\item The second property: \emph{the ARMA process \eqref{eq:arma-pq} is
+    invertible \eqref{eq:invertible} if and only if all roots of the MA
+    polynomial \eqref{eq:ma-q-polynomial} lie outside of the unit circle}. The  
+  coefficients $\pi_1,\pi_2,\dots$ in the invertible representation can be 
+  determined by solving   
+  \[
+  \pi(z) = \frac{\phi(z)}{\theta(z)} \iff 
+  \sum_{j=0}^\infty \pi_j z^j = \frac{1 - \phi_1 z - \phi_2 z^2 - \cdots -
+    \phi_p z^p}{1 + \theta_1 z + \theta_2 z^2 + \cdots + \theta_q z^q}, \quad 
+  \text{for $|z| < 1$}
+  \]
+
+\item (As an aside, you can see that parameter redundancy issues would not
+  affect the causal and invertible representations, as they shouldn't, because
+  any common factors in $\phi(z)$ and $\theta(z)$ would cancel in their ratios 
+  which determine the coefficients in the causal and invertible expansions)  
+
+\item We won't cover the proofs of these properties or go into further details
+  about them or their importance. You can see Appendix B.2 of SS for proofs,
+  or read more in Chapter 3.1 of SS about these properties, and read other parts
+  of the SS book for their consequences (and significance). At a high-level,
+  they are worth knowing because they are considered foundational results in
+  ARMA models (just like it is worth knowing foundations for regression models,
+  etc.)  
+
+\item Also, recall that causality implies stationarity, so what we have just
+  learned is the general result that renders an ARMA($p,q$) process stationary 
 \end{itemize}
 
 \subsection{Difference equations}
