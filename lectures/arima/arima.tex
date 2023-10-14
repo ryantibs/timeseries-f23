@@ -56,7 +56,7 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   B^k x_t = x_{t-k} 
   \]
 
-M\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as 
+\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as 
   \[
   x_t - \phi_1 x_{t-1} - \phi_2 - x_{t-2} - \cdots - \phi_p x_{t-p} = w_t  
   \]
@@ -369,10 +369,11 @@ M\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as
 
 \begin{itemize}
 \item AR and MA models have complementary characteristics. The auto-covariance
-  of an AR model decays away from $h=0$, whereas that for an MA process has
-  finite support---in other words, at a certain lag, variates along an MA
-  sequence are completely uncorrelated (e.g., compare \eqref{eq:ar-1-auto-cov}
-  and \eqref{eq:ma-1-auto-cov} for the AR(1) and MA(1) models)   
+  of an AR model generally decays away from $h=0$, whereas that for an MA
+  process has finite support---in other words, at a certain lag, variates along
+  an MA sequence are completely uncorrelated. You can compare
+  \eqref{eq:ar-1-auto-cov} and \eqref{eq:ma-1-auto-cov} for the AR(1) and MA(1)
+  models
 
 \item (The spectral perspective, by the way, provides another nice way of
   viewing these complementary characteristics. In the spectral domain, the story
@@ -386,9 +387,9 @@ M\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as
   models with the role of $x_t$ and $w_t$ reversed
 
 \item But that's OK! We can generally take the most salient features that each
-  model represents, compactly, and combine them to get a compact representation
-  of both sets of features, simultaneously. That is exactly what an ARMA model
-  does 
+  model can represent compactly, and combine them to get a compact formulation
+  for a model that exhibits both sets of features, simultaneously. And that is 
+  exactly what an ARMA model does   
 
 \item Precisely, an ARMA model of orders $p,q \geq 0$, denoted ARMA($p,q$), is
   of the form 
@@ -454,7 +455,7 @@ M\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as
   $z \in \C$. (Note that these are just what we get by taking the AR and MA
   operators, and replacing the backshift operator $B$ by a complex argument $z$) 
 
-\item As it turns out, lots of important properties of ARMA models can be
+\item As it turns out, several important properties of ARMA models can be 
   derived by placing conditions on the AR and MA polynomials. Here we'll see the
   first one, to deal with parameter redundancy: \emph{when we speak of an ARMA
     model, we implicitly assume that the AR and MA polynomials $\phi(z)$ and
@@ -475,8 +476,8 @@ M\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as
   generalize calculations we saw earlier for AR(1) and MA(1) models
 
 \item Before we describe these, we recall the following terminology: for a
-  polynomial \smash{$f(z) = \sum_{j=0}^k a_j z^j$}, we say that $z$ is a
-  \emph{root} of $f$ provided $f(z) = 0$
+  polynomial \smash{$P(z) = \sum_{j=0}^k a_j z^j$}, we say that $z$ is a
+  \emph{root} of $P$ provided $P(z) = 0$
 
 \item And we say that a point $z \in \C$ lies \emph{outside of the unit circle} 
   (in the complex plane $\C$) provided that $|z| > 1$, where $|z|$ is the
@@ -489,7 +490,7 @@ M\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as
   coefficients $\psi_0,\psi_1,\psi_2,\dots$ in the causal representation can be
   determined by solving  
   \[
-  \psi(z) = \frac{\theta(z)}{\phi(z)} \iff 
+  \psi(z) = \phi(z)^{-1} \theta(z) \iff 
   \sum_{j=0}^\infty \psi_j z^j = \frac{1 + \theta_1 z + \theta_2 z^2 + \cdots +
     \theta_q z^q}{1 - \phi_1 z - \phi_2 z^2 - \cdots - \phi_p z^p}, \quad
   \text{for $|z| < 1$}
@@ -501,7 +502,7 @@ M\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as
   coefficients $\pi_1,\pi_2,\dots$ in the invertible representation can be 
   determined by solving   
   \[
-  \pi(z) = \frac{\phi(z)}{\theta(z)} \iff 
+  \pi(z) = \theta(z)^{-1} \phi(z) \iff 
   \sum_{j=0}^\infty \pi_j z^j = \frac{1 - \phi_1 z - \phi_2 z^2 - \cdots -
     \phi_p z^p}{1 + \theta_1 z + \theta_2 z^2 + \cdots + \theta_q z^q}, \quad 
   \text{for $|z| < 1$}
@@ -513,39 +514,141 @@ M\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as
   which determine the coefficients in the causal and invertible expansions)  
 
 \item We won't cover the proofs of these properties or go into further details
-  about them or their importance. You can see Appendix B.2 of SS for proofs,
-  or read more in Chapter 3.1 of SS about these properties, and read other parts
-  of the SS book for their consequences (and significance). At a high-level,
-  they are worth knowing because they are considered foundational results in
-  ARMA models (just like it is worth knowing foundations for regression models,
-  etc.)  
+  about them. But you will see several hints of their significance (what the
+  causal and invertible representations allow us to do) in what follows. At 
+  a high-level, they are worth knowing because they are considered foundational 
+  results for ARMA modeling (just like it is worth knowing foundations for 
+  regression modeling, and so on). You can refer to Appendix B.2 of SS for
+  proofs, or read more in Chapter 3 of SS
 
 \item Also, recall that causality implies stationarity, so what we have just
   learned is the general result that renders an ARMA($p,q$) process stationary 
+
+\item Finally, as a summary, here are three equivalent ways to represent a
+  causal, invertible ARMA($p,q$) model:
+  \begin{align*}
+  &\phi(B) x = \theta(B) w \\
+  &x = \psi(B) w, \quad \text{for $\psi(B) = \phi(B)^{-1} \theta(B)$} \\
+  &\pi(B) x = w, \quad \text{for $\pi(B) = \theta(B)^{-1} \phi(B)$}
+  \end{align*}
 \end{itemize}
 
-\subsection{Difference equations}
+\subsection{Auto-covariance}
 
-Diff equations --> don't cover.
-Auto-covariance
+\begin{itemize}
+\item The auto-covariance for an MA($q$) model was already given in
+  \eqref{eq:ma-q-auto-cov}. We can see that it has a finite bandwidth $2q+1$:
+  this is a signature structure of the MA($q$) model
 
-\section{Partial auto-covariance}
+\item The auto-covariance for a stationary AR(1) model was given in 
+  \eqref{eq:ar-1-auto-cov}. We can see that it decays away from $h=0$: this is
+  a signature structure of AR models. But what does the precise auto-covariance
+  look like for a general stationary AR($p$) model? How about a general
+  stationary ARMA($p,q$) model? 
+
+\item The answer is much more complicated, but still possible to characterize
+  precisely. We'll do it first for an AR($p$) model, and then look at an
+  ARMA($p,q$) model, which will have an analogous behavior 
+
+\item For an AR($p$) model \eqref{eq:ar-p}, assumed stationary (i.e., all roots
+  of $\phi(z)$ are outside of the unit circle), we can start with the process at
+  $t+h$, with $h \geq 0$ (without a loss of generality, because $\gamma$ is 
+  symmetric around zero), then multiply both sides by $x_t$, and take an
+  expectation to get     
+  \[
+  \E(x_{t+h} x_t) = \sum_{j=1}^p \phi_j \E(x_{t+h-j} x_t) + \E(w_{t+h} x_t)  
+  \]
+
+\item The last term on the right-hand side zero for $h>0$; recall, $x_t$ is a  
+  causal process, and only depends on white noise in the past. On the other
+  hand, when $h=0$, writing \smash{$x_t = \sum_{j=0}^\infty \psi_j
+    w_{t-j}$}, 
+  \[
+  \E(w_t x_t) = \sum_{j=0}^\infty \psi_j \E(w_t w_{t-j}) =  \sigma^2 \psi_0  
+  \]
+
+\item Combining the last two displays, we learn that the auto-covariance
+  function satisfies 
+  \begin{align*}
+  &\gamma(h) - \sum_{j=1}^p \phi_j \gamma(h-j) = 0, \quad h > 0 \\ 
+  &\gamma(0) - \sum_{j=1}^p \phi_j \gamma(-j) = \sigma^2 \psi_0, 
+  \end{align*}
+
+\item This is called a \emph{difference equation} of order $p$ for the
+  auto-covariance function $\gamma$. Some simple difference equations can be
+  solved explicitly without complicated mathematics, but to solve a difference  
+  equation in general requires knowing something (again) about the roots of a
+  certain complex polynomial associated with the difference equation, when it is
+  represented in operator notation. You can read Chapter 3.2 of SS for an
+  introduction to the theory of difference equations
+
+\item For an AR($p$), it turns out we can solve the difference equation in the
+  last display and get
+  \begin{equation}
+  \label{eq:ar-p-auto-cov}
+  \gamma(h) = P_1(h) z_1^{-h} + \cdots + P_r(h) z_r^{-h}
+  \end{equation}
+  where each $P_j$ is a polynomial, and each $z_j$ is a root of the AR
+  polynomial $\phi$. Because each $|z_j| > 1$ (all roots lie outside the unit
+  circle), we see that the auto-covariance function will decay to zero as $h \to
+  \infty$. In the case that some roots are complex, then what will actually 
+  happen is that the auto-covariance will dampen to zero but in doing so
+  oscillate in a sinusoidal fashion
+
+\item Now what about an ARMA($p,q$) model \eqref{eq:arma-pq}, assumed
+  stationary? Similarly, we start with the process at time $t+h$, $h \geq 0$,
+  multiply by $x_t$, and take an expectation to get
+  \[
+  \E(x_{t+h} x_t) = \sum_{j=1}^p \phi_j \E(x_{t+h-j} x_t) + \sum_{j=0}^q
+  \theta_j \E(w_{t+h-j} x_t)  
+  \]
+
+\item The last term on the right-hand side zero for $h>q$, whereas when $h \leq
+  q$, writing \smash{$x_t = \sum_{\ell=0}^\infty \psi_\ell  w_{t-\ell}$}, we see
+  that for $j \geq h$, 
+  \[
+  \E(w_{t+h-j} x_t) = \sum_{\ell=0}^\infty \psi_\ell \E(w_{t+h-j} w_{t-\ell}) =
+  \sigma^2 \psi_{j-h}   
+  \]
+
+\item Combining the last two displays, we learn that the auto-covariance
+  function satisfies 
+  \begin{alignat*}{2}
+  &\gamma(h) - \sum_{j=1}^p \phi_j \gamma(h-j) = 0, \quad &&h > q \\ 
+  &\gamma(h) - \sum_{j=1}^p \phi_j \gamma(h-j) = \sigma^2 \sum_{j=h}^q
+    \psi_{j-h}, \quad &&h \leq q
+  \end{alignat*}
+
+\item This is again a difference equation of order $p$ that determines $\gamma$,
+  but the initial conditions (i.e., what happens when $h \leq q$) are more
+  complicated. Nonetheless, the solution will still be of the form
+  \eqref{eq:ar-p-auto-cov}, and the qualitive behavior will still be the same as
+  in the AR($p$) case  
+\end{itemize}
+
+\subsection{Partial auto-covariance}
+
+\subsection{Identification and estimation}
+
+\section{ARMAX models}
+
+\subsection{Regression with correlated errors}
 
 \section{ARIMA models}
 
 Stationarity and differencing
 ARIMA(p,d,q)
 Backshift notation
-Seasonality extensions
 
-\subsection{Parameter estimation}
+\subsection{Seasonality extensions}
 
-complicated --> don't cover.
+\subsection{IMA (EWMA) models}
 
-\subsection{Regression with correlated errors}
-
-complicated --> mostly don't cover
+connection to exponential something
 
 \section{Forecasting}
+
+Long-range forecasts converge to zero (or to the mean, in a process with 
+nonzero mean)
 
 \end{document}
