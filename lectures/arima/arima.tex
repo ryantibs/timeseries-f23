@@ -439,22 +439,32 @@ M\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as
   \[
   x_t = \frac{1}{2} x_{t-1} + w_t - \frac{1}{2} w_{t-1}
   \]
-  which looks like an ARMA(1,1) model, but this is nothing else that white noise!
+  which looks like an ARMA(1,1) model, but it is nothing else that white noise!
  
 \item How do we resolve this issue? Doing so requires introducing another
   concept. The \emph{AR and MA polynomials} associated with the ARMA process
   \eqref{eq:arma-pq} are 
-  \begin{align*}
+  \begin{align}
+  \label{eq:ar-p-polynomial}
   \phi(z) &= 1 - \phi_1 z - \phi_2 z^2 - \cdots - \phi_p z^p \\
+  \label{eq:ma-q-polynomial}
   \theta(z) &= 1 + \theta_1 z + \theta_2 z^2 + \cdots + \theta_q z^q
-  \end{align*}
+  \end{align}
   respectively. To be clear, these are polynomials over \emph{complex numbers}
   $z \in \C$. (Note that these are just what we get by taking the AR and MA
   operators, and replacing the backshift operator $B$ by a complex argument $z$) 
 
 \item As it turns out, lots of important properties of ARMA models can be
   derived by placing conditions on the AR and MA polynomials. Here we'll see the
-  first one: \emph{asdasd}
+  first one, to deal with parameter redundancy: \emph{when we speak of an ARMA
+    model, we implicitly assume that the AR and MA polynomials $\phi(z)$ and
+    $\theta(z)$, in \eqref{eq:ar-p-polynomial} and \eqref{eq:ma-q-polynomial},
+    have no common factors}. This rules out a case like   
+  \[
+  x_t = \frac{1}{2} x_{t-1} + w_t - \frac{1}{2} w_{t-1}
+  \]
+  because the polynomials each have $1-z/2$ as a common factor. Hence we do not  
+  even refer to the above as an ARMA(1,1) model
 \end{itemize}
 
 \subsection{Causality and invertibility}
@@ -468,7 +478,7 @@ M\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as
 Diff equations --> don't cover.
 Auto-covariance
 
-\subsection{Partial auto-correlation function}
+\section{Partial auto-covariance}
 
 \section{ARIMA models}
 
