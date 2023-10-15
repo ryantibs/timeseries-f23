@@ -336,7 +336,7 @@ forecast::auto.arima(x)  </code></pre>
 ## 
 ## sigma^2 = 0.9657:  log likelihood = -1400
 ## AIC=2808.01   AICc=2808.05   BIC=2827.64</code></pre>
-<pre class="r"><code># Newer fable package (input must be a tsibble)
+<pre class="r"><code># Newer fable package, same result (input must be a tsibble)
 dat = tsibble(data.frame(x, Time = 1:length(x)), index = Time)
 dat |&gt; model(arima = fable::ARIMA(x ~ pdq())) |&gt; report()</code></pre>
 <pre><code>## Series: x 
@@ -349,6 +349,7 @@ dat |&gt; model(arima = fable::ARIMA(x ~ pdq())) |&gt; report()</code></pre>
 ## 
 ## sigma^2 estimated as 0.9657:  log likelihood=-1400
 ## AIC=2808.01   AICc=2808.05   BIC=2827.64</code></pre>
+<pre class="r"><code># Uh oh! This is basically a redundant parametrization of white noise</code></pre>
 </div>
 
 

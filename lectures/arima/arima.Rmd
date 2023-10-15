@@ -83,4 +83,6 @@ forecast::auto.arima(x)
 # Newer fable package, same result (input must be a tsibble)
 dat = tsibble(data.frame(x, Time = 1:length(x)), index = Time)
 dat |> model(arima = fable::ARIMA(x ~ pdq())) |> report()
+
+# Uh oh! This is basically a redundant parametrization of white noise
 ```

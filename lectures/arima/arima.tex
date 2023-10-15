@@ -101,6 +101,10 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   x_t = \phi x_{t-1} + w_t 
   \end{equation}
 
+\item Note that a random walk is the special case with $\phi = 1$. We already
+  know (from previous lectures) that this is nonstationary, so certainly
+  \eqref{eq:ar-1} cannot be stationary for any $\phi$
+
 \item Unraveling the iterations, we get
   \begin{align*}
   x_t &= \phi^2 x_{t-2} + \phi w_{t-1} + w_t \\
@@ -386,7 +390,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item Precisely, an ARMA model of orders $p,q \geq 0$, denoted ARMA($p,q$), is
   of the form 
   \begin{equation}
-    \label{eq:arma-pq}
+  \label{eq:arma-pq}
   x_t = \sum_{j=1}^p \phi_j x_{t-j} + \sum_{j=0}^q \theta_j w_{t-j}  
   \end{equation}
   where $w_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is a white noise sequence 
@@ -758,10 +762,10 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   are various approaches, typically iterative, for carrying out maximum
   likelihood, and different approaches will give different answers     
 
-\item We won't cover estimation at all, but we'll just note that a simple
-  approach is as follows (which dates back to Durbin in 1960). Start with some 
-  estimates \smash{$\hat{w}_t$} the noise variates $w_t$. Then use these as
-  covariates, i.e., regress $x_t$ on
+\item We won't cover estimation techniques in detail at all, but we'll just note
+  that a simple approach is as follows (which dates back to Durbin in
+  1960). Start with some estimates \smash{$\hat{w}_t$} the noise variates
+  $w_t$. Then use these as covariates, i.e., regress $x_t$ on
   \smash{$x_{t-p},\dots,x_{t-1},\hat{w}_{t-q},\dots,\hat{w}_{t-1}$}, over $t =
   t_0+1,t_0+2,\dots,n$, where $t_0 = \max\{p,q\}$. This is like a conditional  
   maximum likelihood approach (where we condition on the initial values
@@ -782,17 +786,19 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item At least, this topic seems to be more controversial ... some authors like
   Hyndman believe that this can be automated (via algorithms like the
   Hyndman-Khandakar algorithm), and this is what is implemented in
-  \verb|ARIMA()| in the \verb|fable| package. But other authors like Stoffer 
-  believe that this doesn't work,\footnote{See
-    \url{https://github.com/nickpoison/astsa/blob/master/fun_with_astsa/fun_with_astsa.md\#arima-estimation}.}
+  \verb|ARIMA()| in the \verb|fable| package when the order $p,q$ is left 
+  unspecified. But other authors like Stoffer believe that this doesn't
+  work,\footnote{See
+    \url{https://github.com/nickpoison/astsa/blob/master/fun_with_astsa/fun_with_astsa.md\#arima-estimation}.} 
   and recommend more human-expert-driven model building  
 
 \item If the point is to identify the ``right'' structure, from a model
   specification point of view, then Stoffer may have a point (see R notebook 
   examples) 
 
-\item But to HA's credit, their Chapter 9.8 does recommend more of a
-  human-in-the-loop procedure, involving several diagnostic steps
+\item But to HA's credit, their Chapter 9.8 does also recommend more of a 
+  human-in-the-loop procedure than simply calling \verb|ARIMA()| once, involving
+  several diagnostic steps 
 
 \item The gist of the non-automated part (which is fairly standard) is as
   follows: 
@@ -806,10 +812,15 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   \item Fit an ARMA model, inspect the residuals: they should look like white 
     noise 
   \end{enumerate}
-  Step 3 is at the heart of ARIMA, which we'll cover soon. Steps 4-5 are the
-  part that get automated by Hyndman-Khandakar: instead of just one ARMA model, 
-  it fits a number of different ARMA models (using a stepwise procedure) and
-  then uses an information criterion (like AICc) to select a final one
+
+\item Step 1 is at the heart of ARIMA, which we'll cover soon. Steps 2-3 are the
+  part that can be (but arguably, should not be) automated by Hyndman-Khandakar:  
+  instead of a single ARMA model, it fits a number of different ARMA models,
+  using a stepwise procedure, and then uses an information criterion (like AICc)
+  to select a final one 
+
+\item Chapter 3.7 in SS also goes into details about a similar sequence of steps
+  for building ARIMA models, and provides nice worked examples
 
 \item The ACF and PACF are great tools, and looking at them to get a sense of MA
   and AR dependence is generally helpful, but we will not concern ourselves too
@@ -824,11 +835,129 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \subsection{Regression with correlated errors}
 
+\begin{itemize}
+\item Very briefly, we describe regression with auto-correlated errors. Suppose
+  we assume a model 
+  \[
+  y_t = \sum_{j=1}^k x_{tj} \beta_j + z_t, \quad t = 1,\dots,n
+  \]
+  where instead of white noise, the error sequence $z_t$, $t = 1,\dots,n$ has
+  some ARMA structure
+
+\item In the case that the noise was AR($p$), with associated operator
+  $\phi(B)$, we could then simply apply this operator to both sides, to yield 
+  \[
+  \phi(B) y_t = \sum_{j=1}^k \phi(B) x_{tj} \beta_j + \phi(B) z_t, \quad t =
+  1,\dots,n  
+  \]
+  or defining $y'_t = \phi(B) y_t$, $x'_{tj} = \phi(B) x_{tj}$, $w_t = \phi(B)
+  z_t$,  
+  \[
+  y'_t = \sum_{j=1}^k x'_{tj} \beta_j + w_t, \quad t = 1,\dots,n
+  \]
+  where now $w_t$, $t = 1,\dots,n$ is white noise
+
+\item If we knew the coefficients $\phi_1,\dots,\phi_p$ that comprise the AR
+  operator $\phi(B)$, then we could just obtain estimates of the regression
+  coefficients $\beta_1,\dots,\beta_k$ by regressing $y'_t$ on $x'_t$. But since
+  we don't know the coefficients $\phi_1,\dots,\phi_p$ in general, these would
+  need to be estimated as well
+
+\item We could solve for $\beta_1,\dots,\beta_k$ and $\phi_1,\dots,\phi_p$
+  jointly using maximum likelihood, or least squares minimization (which are not
+  equivalent). For example, the latter would solve  
+  \[
+  \min_{\beta \in \R^k, \phi \in \R^p} \, \sum_{t=1}^n \bigg( \phi(B) y_t -
+  \sum_{j=1}^k \phi(B) x_{tj} \beta_j \bigg)^2
+  \]
+  which is called a nonlinear least squares problem (since each square is
+  applied to a nonlinear function of the parameters $\beta,\phi$)
+
+\item For (invertible) ARMA noise, the same approach carries over but with
+  $\pi(B) = \phi(B)^{-1} \theta(B)$ in place of $\phi(B)$, which only makes the
+  nonlinear least squares optimization much more complicated
+
+\item For more, you can read Chapter 3.8 of SS and Chapters 10.1-10.2 of HA. In
+  R, the \verb|ARIMA()| function in the \verb|fable| package allows us to fit 
+  regression models with ARIMA errors
+\end{itemize}
+
 \section{ARIMA models}
 
-Stationarity and differencing
-ARIMA(p,d,q)
-Backshift notation
+\begin{itemize}
+\item Finally, we arrive at ARIMA models. We've hinted at what these are about a
+  few times already, but it is nonetheless worth making the motivation explicit:
+  \emph{the main point behind the new ``I'' component here is to account for
+    nonstationary}. Well-behaved ARMA models (causal ones) are stationary, and
+  ARIMA allows us to handle nonstationary data   
+
+\item The ``I'' stands for ``integration'', so an ARIMA model is an
+  autoregressive \emph{integrated} moving average model. Integration is to be
+  understood here as the inverse of differencing, because we are effectively
+  just differencing the data to render it stationary, and then assuming the
+  differenced data has ARMA structure
+
+\item First, we define the differencing operator $\nabla$ that takes a given
+  sequence and returns pairwise differences,  
+  \[
+  \nabla x_t = x_t - x_{t-1}
+  \]
+
+\item We can extend this to powers by iterating, as in 
+  \[
+  \nabla^2 x_t = \nabla \nabla x_t = x_t - 2 x_{t-1} - x_{t-2}
+  \]
+
+\item Note that we can also write $\nabla$ in terms of the backshift operator
+  $B$ as $\nabla = 1 - B$, so that a general $d\th$ order difference is
+  \[
+  \nabla^d = (1-B)^d 
+  \]
+
+\item Now we can formally define, an ARIMA($p,d,q$) model, for orders $p,d,q  
+  \geq 0$: this is a model for $x_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ such
+  that $(1-B)^d x_t$ follows an ARMA($p,q$) model, i.e., 
+  \begin{equation}
+  \label{eq:arima-pdq}
+  \phi(B) (1-B)^d x_t = \theta(B) w_t
+  \end{equation}
+  where $w_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is a white noise sequence,
+  and $\phi(B),\theta(B)$ are the AR and MA operators, respectively, as before. 
+  In other words, $x_t$ is given by $d\th$ order integration of an ARMA($p,q$)
+  sequence 
+
+\item Note that ARIMA(0,1,0) says that the differences in the sequence are white
+  noise, 
+  \[
+  x_t = x_{t-1} + w_t
+  \]
+  which is nothing more than a random walk, which we already know is
+  nonstationary (the variance grows over time)
+
+\item Below is a summary of some of the basic models that the ARIMA framework
+  encompasses. We write $c$ for the intercept in the model, which was assumed
+  zero throughout for simplicity. However, recall, we can always fit ARIMA
+  models with nonzero intercept in \eqref{eq:arima-pdq}
+  \begin{center} \smallskip
+  \begin{tabular}{|l|l|}
+  \hline
+  White noise & ARIMA(0,0,0) with $c=0$ \\
+  \hline
+  Random walk & ARIMA(0,1,0) with $c=0$ \\
+  \hline 
+  Random walk with drift & ARIMA(0,1,0) with $c \not= 0$ \\
+  \hline
+  Autoregressive & ARIMA($p,0,0$) \\
+  \hline
+  Moving average & ARIMA($0,0,q$) \\
+  \hline
+  \end{tabular} \smallskip
+  \end{center}
+
+\item A general warning should be given about choosing large $d$; HA say that in
+  practice, $d > 2$ is never really needed, and also give a cautionary note
+  about taking $d = 2$ with $c \not= 0$ (more later)
+\end{itemize}
 
 \subsection{Seasonality extensions}
 
@@ -837,6 +966,8 @@ Backshift notation
 connection to exponential something
 
 \section{Forecasting}
+
+describe behavior of long-range forecasts for ARIMA as in HA....
 
 ARMAX models
 
