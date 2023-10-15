@@ -877,9 +877,13 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   $\pi(B) = \phi(B)^{-1} \theta(B)$ in place of $\phi(B)$, which only makes the
   nonlinear least squares optimization much more complicated
 
-\item For more, you can read Chapter 3.8 of SS and Chapters 10.1-10.2 of HA. In
-  R, the \verb|ARIMA()| function in the \verb|fable| package allows us to fit 
-  regression models with ARIMA errors
+\item Identifying the ARMA structure in regression errors can be done by fitting
+  a regression with regular (white noise) errors, and then applying the same
+  ideas as those described above for order selection in ARMA to the residuals
+  (inspect the ACF and PACF of residuals, and so on). For more, you can read
+  Chapter 3.8 of SS and Chapters 10.1-10.2 of HA. In R, the \verb|ARIMA()|
+  function in the \verb|fable| package allows us to fit regression models with
+  ARIMA errors  
 \end{itemize}
 
 \section{ARIMA models}
@@ -894,8 +898,8 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item The ``I'' stands for ``integration'', so an ARIMA model is an
   autoregressive \emph{integrated} moving average model. Integration is to be
   understood here as the inverse of differencing, because we are effectively
-  just differencing the data to render it stationary, and then assuming the
-  differenced data has ARMA structure
+  just differencing the data to render it stationary, then assuming the
+  differenced data follows ARMA  
 
 \item First, we define the differencing operator $\nabla$ that takes a given
   sequence and returns pairwise differences,  
