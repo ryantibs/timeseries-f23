@@ -50,3 +50,18 @@ plot(x2, main = paste("MA(1), phi = -0.9"), xlab = "", ylab = "")
 x = rnorm(100)
 arima(x, order = c(1,0,1))
 ```
+
+# Auto-correlation
+
+```{r}
+x1 = arima.sim(list(order = c(2,0,0), ar = c(1.5, -0.75)), n = 500)
+x2 = arima.sim(list(order = c(0,0,2), ma = c(0.9, 0.5)), n = 500)
+par(mfrow = c(1, 2))
+acf2(x1, main = "AR(2)")
+pacf(x1, main = "AR(2)", ylab = "PACF")
+
+acf2(x2, main = "MA(2)")
+pacf(x2, main = "MA(2)", ylab = "PACF")
+```
+
+# Partial auto-correlation

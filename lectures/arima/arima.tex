@@ -100,7 +100,6 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   \label{eq:ar-1}
   x_t = \phi x_{t-1} + w_t 
   \end{equation}
-  for  $t = 0, \pm 1, \pm 2, \pm 3, \dots$ 
 
 \item Unraveling the iterations, we get
   \begin{align*}
@@ -261,15 +260,11 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   Since this only depends on $h$, we can see that the process is indeed
   stationary 
 
-\item Actually, this (similarity between this and previous calculations) brings
-  us to emphasize the following connection: \emph{an AR(1) model with $|\phi| <
-    1$ is actually a particular infinite-order MA model}, as we saw in the
-  stationary representation \eqref{eq:ar-1-stationary}. But writing it as an
-  AR(1) process is simpler   
-
-\item We will see later that there is a more general connection to be made: an  
-  AR($p$) process with certain constraints on its coefficients can be written as
-  an MA($\infty$) process
+\item The similarity in these calculations brings us to pause to emphasize the
+  following connection: \emph{an AR(1) model with $|\phi| < 1$ is also a
+    particular infinite-order MA model}, as we saw in the stationary
+  representation \eqref{eq:ar-1-stationary}. We will see later that there are
+  more general connections to be made
 \end{itemize}
 
 \subsection{MA(1): issues with non-uniqueness}
@@ -280,7 +275,6 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   \label{eq:ma-1}
   x_t = w_t + \theta w_{t-1}
   \end{equation}
-  for  $t = 0, \pm 1, \pm 2, \pm 3, \dots$ 
 
 \item According to \eqref{eq:ma-q-auto-cov}, we can compute its auto-covariance 
   simply (recalling $\theta_0 = 1$) as
@@ -382,14 +376,12 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   concentrated around particular frequencies; recall our examples from the last
   lecture) 
 
-\item Sure, there is some duplicity in representation here. We can write some AR
-  models as infinite-order MA models; and we think of some MA models as AR
-  models with the role of $x_t$ and $w_t$ reversed
-
-\item But that's OK! We can generally take the most salient features that each
-  model can represent compactly, and combine them to get a compact formulation
-  for a model that exhibits both sets of features, simultaneously. And that is 
-  exactly what an ARMA model does   
+\item Sure, there is some duplicity in representation here, as we will see---we
+  can write some AR models as infinite-order MA models, and some MA models as  
+  infinite-order AR models. But that's OK! We can generally take the most
+  salient features that each model represents, and combine them to get a simple
+  model formulation that exhibits both sets of features, simultaneously. This is
+  exactly what an ARMA model does      
 
 \item Precisely, an ARMA model of orders $p,q \geq 0$, denoted ARMA($p,q$), is
   of the form 
@@ -513,6 +505,18 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   any common factors in $\phi(z)$ and $\theta(z)$ would cancel in their ratios 
   which determine the coefficients in the causal and invertible expansions)  
 
+\item Interestingly, these results can also be interpreted as follows:
+  \begin{itemize}
+  \item An AR($q$) process, such that the roots of $\phi$ lie outside the unit
+    circle, can also be written as an MA($\infty$) process (this is what
+    causality \eqref{eq:causal} means)
+
+  \item An MA($q$) process, such that the roots of $\theta$ lie outside the 
+  unit circle, can also be written as an AR($\infty$) process (this is what 
+  invertibility \eqref{eq:invertible} means, as it says
+  \smash{$x_t = -\sum_{j=1}^\infty \pi_j x_{t-j} + w_t$})
+  \end{itemize}
+
 \item We won't cover the proofs of these properties or go into further details
   about them. But you will see several hints of their significance (what the
   causal and invertible representations allow us to do) in what follows. At 
@@ -551,12 +555,12 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   ARMA($p,q$) model, which will have an analogous behavior 
 
 \item For an AR($p$) model \eqref{eq:ar-p}, assumed causal (i.e., all roots of
-  $\phi(z)$ are outside of the unit circle), we can take the process at $t+h$,
-  where $h \geq 0$ (without a loss of generality, because $\gamma$ is symmetric 
-  around zero), then multiply both sides by $x_t$, and take an expectation to
-  get      
+  $\phi(z)$ are outside of the unit circle), we can focus on the auto-covariance  
+  at lags $ h \geq 0$ (without a loss of generality, because $\gamma$ is
+  symmetric around zero), 
   \[
-  \E(x_{t+h} x_t) = \sum_{j=1}^p \phi_j \E(x_{t+h-j} x_t) + \E(w_{t+h} x_t)  
+  \Cov(x_t, x_{t+h}) = \sum_{j=1}^p \phi_j \Cov(x_t, x_{t+h-j}) + \Cov(x_t,
+  w_{t+h})  
   \]
 
 \item The last term on the right-hand side zero for $h>0$; recall, $x_t$ is a  
@@ -564,7 +568,8 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   hand, when $h=0$, writing \smash{$x_t = \sum_{j=0}^\infty \psi_j
     w_{t-j}$}, 
   \[
-  \E(w_t x_t) = \sum_{j=0}^\infty \psi_j \E(w_t w_{t-j}) =  \sigma^2 \psi_0  
+  \Cov(x_t, w_t) = \sum_{j=0}^\infty \psi_j \Cov(w_{t-j}, w_t) =  \sigma^2
+  \psi_0   
   \]
 
 \item Combining the last two displays, we learn that the auto-covariance
@@ -582,7 +587,8 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   represented in operator notation. You can read Chapter 3.2 of SS for an
   introduction to the theory of difference equations
 
-\item For an AR($p$), it turns out we can solve the difference equation in the
+\item For an AR($p$) model, it turns out we can solve the difference equation in
+  the 
   last display and get
   \begin{equation}
   \label{eq:ar-p-auto-cov}
@@ -596,19 +602,18 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   oscillate in a sinusoidal fashion
 
 \item Now what about an ARMA($p,q$) model \eqref{eq:arma-pq}, assumed
-  causal? Similarly, we take the process at time $t+h$, $h \geq 0$, multiply by
-  $x_t$, and take an expectation to get  
+  causal? Similarly, we can focus on the auto-covariance a lags $h \geq 0$, 
   \[
-  \E(x_{t+h} x_t) = \sum_{j=1}^p \phi_j \E(x_{t+h-j} x_t) + \sum_{j=0}^q
-  \theta_j \E(w_{t+h-j} x_t)  
+  \Cov(x_t, x_{t+h}) = \sum_{j=1}^p \phi_j \Cov(x_t, x_{t+h-j}) + \sum_{j=0}^q 
+  \theta_j \Cov(x_t, w_{t+h-j})  
   \]
 
 \item The last term on the right-hand side zero for $h>q$, whereas when $h \leq
   q$, writing \smash{$x_t = \sum_{\ell=0}^\infty \psi_\ell  w_{t-\ell}$}, we see
   that for $j \geq h$, 
   \[
-  \E(w_{t+h-j} x_t) = \sum_{\ell=0}^\infty \psi_\ell \E(w_{t+h-j} w_{t-\ell}) =
-  \sigma^2 \psi_{j-h}   
+  \Cov(x_t, w_{t+h-j}) = \sum_{\ell=0}^\infty \psi_\ell \Cov(w_{t-\ell},
+  w_{t+h-j}) = \sigma^2 \psi_{j-h}   
   \]
 
 \item Combining the last two displays, we learn that the auto-covariance
@@ -620,19 +625,19 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   \end{alignat*}
 
 \item This is again a difference equation of order $p$ that determines $\gamma$,
-  but the initial conditions (i.e., what happens when $h \leq q$) are more
-  complicated. Nonetheless, the solution will still be of the form
-  \eqref{eq:ar-p-auto-cov}, and the qualitative behavior will still be the same
-  as in the AR($p$) case  
+  but the boundary condition (what happens when $h \leq q$) is more
+  complicated. Nonetheless, the solution is still the form
+  \eqref{eq:ar-p-auto-cov}, and the qualitative behavior is still the same as in
+  the AR($p$) case   
 
-\item Figure \ref{fig:auto-cov} shows example auto-correlation functions for
+\item Figure \ref{fig:auto-cor} shows example auto-correlation functions for
   simple MA and AR models
 
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.85\textwidth]{fig/ma-1.pdf}
-\caption{Sample auto-covariance functions for ...}
-\label{fig:auto-cov}
+\caption{Sample auto-correlation functions for ...}
+\label{fig:auto-cor}
 \end{figure}
 \end{itemize}
 
@@ -642,14 +647,14 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
 \item The auto-covariance function for an MA model provides a considerable
   amount of information that will help identify its structure: since it is zero
   for lags $h>q$, if we were to compute a sample version based on data, then by
-  seeing where the sample auto-correlations ``drop off'', we could roughly
+  seeing where the sample auto-correlation ``cuts off'', we could roughly
   identify the order $q$ of the underlying MA process (see Figure
-  \ref{fig:auto-cov} again)   
+  \ref{fig:auto-cor} again)   
 
 \item For an AR (or ARMA) model, this is not the case. As we saw from
   \eqref{eq:ar-p-auto-cov}, the auto-covariance decays to zero, but this tells
   us little about the AR order of dependence $p$ (see also Figure
-  \ref{fig:auto-cov}). Thus it is worth pursuing a type of \emph{modified}
+  \ref{fig:auto-cor}). Thus it is worth pursuing a type of \emph{modified}
   correlation function for the AR model that behaves like the auto-correlation
   does for the MA model 
 
@@ -659,12 +664,12 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   as    
   \begin{align*}
   &\rho_{XY|Y} = \Cor(X - \hat{X}, Y - \hat{Y}), \quad \text{where} \\
-  &\text{$\hat{X}$ is the regression of $X$ on $Z$}, \quad \text{and} \\
-  &\text{$\hat{Y}$ is the regression of $Y$ on $Z$}
+  &\text{$\hat{X}$ is the linear regression of $X$ on $Z$}, \quad \text{and} \\
+  &\text{$\hat{Y}$ is the linear regression of $Y$ on $Z$}
   \end{align*}
-  Here, and throughout this subsection, by ``regression'' we mean linear
-  regression in the population sense, so that precisely \smash{$\hat{X} =
-    \Cov(Z)^{-1} \E(ZX)$} and \smash{$\hat{Y} = \Cov(Z)^{-1} \E(ZY)$} 
+  Here, and in what follows, by ``linear regression'' we mean regression in the
+  population sense, so that precisely \smash{$\hat{X} = \Cov(Z)^{-1} \E(ZX)$}
+  and \smash{$\hat{Y} = \Cov(Z)^{-1} \E(ZY)$}  
 
 \item Said differently, the partial correlation of two random variables given
   $Z$ is the correlation \emph{after we remove (``partial out'') the linear
@@ -687,15 +692,15 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   \begin{align*}
   &\phi_x(h) = \Cor(x_t - \hat{x}_t, x_{t+h} - \hat{x}_{t+h}), \quad
     \text{where} \\ 
-  &\text{$\hat{x}_t$ is the regression of $x_t$ on $x_{t+1},\dots,x_{t+h-1}$}, 
-  \quad \text{and} \\ 
-  &\text{$\hat{x}_{t+h}$ is the regression of $x_{t+h}$ on
+  &\text{$\hat{x}_t$ is the linear regression of $x_t$ on
+    $x_{t+1},\dots,x_{t+h-1}$}, \quad \text{and} \\ 
+  &\text{$\hat{x}_{t+h}$ is the linear regression of $x_{t+h}$ on 
     $x_{t+1},\dots,x_{t+h-1}$}  
   \end{align*}
 
 \item To best see the effect of this definition we can go straight back to the
-  causal AR($p$) model. When $h>p$, it can be shown that the population 
-  regression \smash{$\hat{x}_{t+h}$} of $x_{t+h}$ on $x_{t+1},\dots,x_{t+h-1}$
+  causal AR($p$) model. When $h>p$, it can be shown that the population linear 
+  regression \smash{$\hat{x}_{t+h}$}, of $x_{t+h}$ on $x_{t+1},\dots,x_{t+h-1}$, 
   is 
   \[
   \hat{x}_{t+h} = \sum_{j=0}^p \phi_j x_{t-j}
@@ -706,27 +711,27 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   \phi_x(h) = \Cor(x_t - \hat{x}_t, w_{t+h}) = 0
   \]
   because causality implies that $x_t$ can only depend on white noise through
-  time $t$ and \smash{$\hat{x}_t$} can only depend on white noise through time
+  time $t$, and \smash{$\hat{x}_t$} can only depend on white noise through time
   $t+h-1$ 
 
 \item That is, the \emph{partial auto-correlation function for an AR($p$) model
   is exactly zero at all lags $h > p$}
 
-\item Figure \ref{fig:partial-auto-cov} ....
+\item Figure \ref{fig:partial-auto-cor} ....
 
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.85\textwidth]{fig/ma-1.pdf}
-\caption{Partial auto-covariance functions for ...}
-\label{fig:partial-auto-cov}
+\caption{Sample partial auto-covariance functions for ...}
+\label{fig:partial-auto-cor}
 \end{figure}
 
 \item The table below summarizes the behavior of the auto-correlation function
-  (ACF) and partial auto-correlation function (PACF) for AR($p$) and MA($q$)
-  models. By ``tails off'' we mean decays to zero as $h \to \infty$ without
-  dropping to zero exactly; by ``cuts off'' we mean drops to zero at a finite
-  lag $h$
-  \begin{center}
+  (ACF) and partial auto-correlation function (PACF) for causal AR($p$) and
+  invertible MA($q$) models. By ``tails off'' we mean decays to zero as $h \to
+  \infty$ without dropping to zero exactly; by ``cuts off'' we mean drops to
+  zero at a finite lag $h$
+  \begin{center} \smallskip
   \begin{tabular}{c|c|c|c|}
   & AR($p$) & MA($q$) & ARMA($p,q$) \\
   \hline
@@ -734,11 +739,12 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   \hline
   PACF & drops off at lag $p$ & tails off & tails off \\
   \hline
-  \end{tabular}
+  \end{tabular} \smallskip
   \end{center}
-  The fact that the partial auto-correlation function for an MA($q$) model
-  ``tails off'' was not derived in these notes, but you can read more in Section
-  3.3 of SS if you are curious. Same with the behavior of ARMA($p,q$)
+  The fact that the partial auto-correlation function for an invertible MA($q$)
+  model ``tails off'' was not derived in these notes, but you can read more in
+  Section 3.3 of SS if you are curious. Same with the behavior of causal,
+  invertible ARMA($p,q$) 
 \end{itemize}
 
 \subsection{Estimation and selection}
