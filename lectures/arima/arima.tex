@@ -13,8 +13,8 @@ Ryan Tibshirani}
 \RaggedRight
 \vspace{-50pt}
 
-Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
-9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).   
+Related reading: Chapters 3.1, 3.3, and 3.6 in Shumway and Stoffer (SS);
+Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).   
 
 \section{AR models}
 
@@ -728,7 +728,8 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   \infty$ without dropping to zero exactly; by ``cuts off'' we mean drops to
   zero at a finite lag $h$
   \begin{center} \smallskip
-  \begin{tabular}{c|c|c|c|}
+  \begin{tabular}{|c|c|c|c|}
+  \hline
   & AR($p$) & MA($q$) & ARMA($p,q$) \\
   \hline
   ACF & tails off & drops off at lag $q$ & tails off \\
@@ -744,6 +745,82 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
 \end{itemize}
 
 \subsection{Estimation and selection}
+
+\begin{itemize}
+\item Estimation in an ARMA($p,q$) model---estimating the coefficients
+  $\phi_1,\dots,\phi_p,\theta_1,\dots\theta_q$ in \eqref{eq:arma-pq}---is in 
+  general fairly complicated. Much more so than in linear regression 
+
+\item Estimation is usually performed by maximum likelihood (assuming Gaussian
+  errors), but there are many other (nonequivalent) approaches, such as the
+  method of moments. Maximum likelihood is no longer a simple least squares 
+  minimization (as it is for regression) over a linear parameterization. There
+  are various approaches, typically iterative, for carrying out maximum
+  likelihood, and different approaches will give different answers     
+
+\item We won't cover estimation at all, but we'll just note that a simple
+  approach is as follows (which dates back to Durbin in 1960). Start with some 
+  estimates \smash{$\hat{w}_t$} the noise variates $w_t$. Then use these as
+  covariates, i.e., regress $x_t$ on
+  \smash{$x_{t-p},\dots,x_{t-1},\hat{w}_{t-q},\dots,\hat{w}_{t-1}$}, over $t =
+  t_0+1,t_0+2,\dots,n$, where $t_0 = \max\{p,q\}$. This is like a conditional  
+  maximum likelihood approach (where we condition on the initial values
+  \smash{$x_1,\dots,x_{t_0},w_1,\dots,w_{t_0}$} and our estimates
+  \smash{$\hat{w}_t$})
+
+\item You can read about other approaches in Chapter 3.5 of SS, Chapter 9.6 of
+  HA, or references therein  
+
+\item Both the \verb|astsa| package (written by Stoffer of SS) and \verb|fable|
+  package (written by Hyndman of HA) provide functionality for fitting ARIMA
+  models in R   
+
+\item If there's one thing even more complicated than fitting ARIMA models, it's
+  choosing an ARIMA model---that is, \emph{order selection}, or determining the 
+  choice of $p,q$ from data 
+
+\item At least, this topic seems to be more controversial ... some authors like
+  Hyndman believe that this can be automated (via algorithms like the
+  Hyndman-Khandakar algorithm), and this is what is implemented in
+  \verb|ARIMA()| in the \verb|fable| package. But other authors like Stoffer 
+  believe that this doesn't work,\footnote{See
+    \url{https://github.com/nickpoison/astsa/blob/master/fun_with_astsa/fun_with_astsa.md\#arima-estimation}.}
+  and recommend more human-expert-driven model building  
+
+\item If the point is to identify the ``right'' structure, from a model
+  specification point of view, then Stoffer may have a point (see R notebook 
+  examples) 
+
+\item But to HA's credit, their Chapter 9.8 does recommend more of a
+  human-in-the-loop procedure, involving several diagnostic steps
+
+\item The gist of the non-automated part (which is fairly standard) is as
+  follows: 
+  \begin{enumerate}
+  \item[0.] Plot the data to identify (and possibly remove) any outliers. 
+   Apply data transformation (e.g., Box-Cox), if needed, to stabilize the
+   variance   
+  \item If the data appears nonstationary, take differences until it is
+    stationary 
+  \item Plot the ACF and PACF to determine possible MA and AR orders 
+  \item Fit an ARMA model, inspect the residuals: they should look like white 
+    noise 
+  \end{enumerate}
+  Step 3 is at the heart of ARIMA, which we'll cover soon. Steps 4-5 are the
+  part that get automated by Hyndman-Khandakar: instead of just one ARMA model, 
+  it fits a number of different ARMA models (using a stepwise procedure) and
+  then uses an information criterion (like AICc) to select a final one
+
+\item The ACF and PACF are great tools, and looking at them to get a sense of MA
+  and AR dependence is generally helpful, but we will not concern ourselves too
+  much with the formality of ARMA order selection (just like we did not with
+  model selection in regression) 
+
+\item Since our focus is on prediction, we will adopt the following simple
+  perspective (just like in regression): \emph{an ARMA model is useful if it
+    predicts well}. And as before, we can assess this with time series
+  cross-validation   
+\end{itemize}
 
 \subsection{Regression with correlated errors}
 

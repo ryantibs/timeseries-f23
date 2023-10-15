@@ -55,19 +55,32 @@ arima(x, order = c(1,0,1))
 
 ```{r auto-cor}
 x1 = arima.sim(list(order = c(2, 0, 0), ar = c(1.5, -0.75)), n = 500)
-x2 = arima.sim(list(order = c(0, 0, 3), ma = c(0.9, 0.9, 0.9)), n = 500)
+x2 = arima.sim(list(order = c(0, 0, 3), ma = c(0.9, 0.85, 0.8)), n = 500)
 
 par(mfrow = c(2, 2), mar = c(4.5, 4.5, 0.5, 0.5))
+xlim = c(1, 25)
 ylim = c(-1, 1)
 cex = 1.25
-acf(x1, ylim = ylim)
+acf(x1, xlim = xlim, ylim = ylim)
 legend("topright", legend = "AR(2)", bty = "n", cex = cex) 
-acf(x2, ylim = ylim)
+acf(x2, xlim = xlim, ylim = ylim)
 legend("topright", legend = "MA(3)", bty = "n", cex = cex) 
-pacf(x1, ylim = ylim, ylab = "PACF") 
+pacf(x1, xlim = xlim, ylim = ylim, ylab = "PACF") 
 legend("topright", legend = "AR(2)", bty = "n", cex = cex) 
-pacf(x2, ylim = ylim, ylab = "PACF")
+pacf(x2, xlim = xlim, ylim = ylim, ylab = "PACF")
 legend("topright", legend = "MA(3)", bty = "n", cex = cex) 
 ```
 
-# Partial auto-correlation
+# Auto ARIMA?
+
+```{r auto-arima}
+set.seed(666)
+x = rnorm(1000)         
+
+# Older forecast package
+forecast::auto.arima(x)  
+
+# Newer fable package, same result (input must be a tsibble)
+dat = tsibble(data.frame(x, Time = 1:length(x)), index = Time)
+dat |> model(arima = fable::ARIMA(x ~ pdq())) |> report()
+```
