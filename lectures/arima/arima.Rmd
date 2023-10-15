@@ -25,8 +25,8 @@ library(epidatasets)
 # AR(1) processes
 
 ```{r ar}
-x1 = arima.sim(list(order = c(1,0,0), ar = 0.9), n = 100)
-x2 = arima.sim(list(order = c(1,0,0), ar = -0.9), n = 100)
+x1 = arima.sim(list(order = c(1, 0, 0), ar = 0.9), n = 100)
+x2 = arima.sim(list(order = c(1, 0, 0), ar = -0.9), n = 100)
 
 par(mfrow = c(2, 1), mar = c(2, 0.5, 3, 0.5))
 plot(x1, main = paste("AR(1), phi = +0.9"), xlab = "", ylab = "")
@@ -36,8 +36,8 @@ plot(x2, main = paste("AR(1), phi = -0.9"), xlab = "", ylab = "")
 # MA(1) processes
 
 ```{r ma}
-x1 = arima.sim(list(order = c(0,0,1), ma = 0.9), n = 100)
-x2 = arima.sim(list(order = c(0,0,1), ma = -0.9), n = 100)
+x1 = arima.sim(list(order = c(0, 0, 1), ma = 0.9), n = 100)
+x2 = arima.sim(list(order = c(0, 0, 1), ma = -0.9), n = 100)
 
 par(mfrow = c(2, 1), mar = c(2, 0.5, 3, 0.5))
 plot(x1, main = paste("MA(1), phi = +0.9"), xlab = "", ylab = "")
@@ -53,15 +53,21 @@ arima(x, order = c(1,0,1))
 
 # Auto-correlation
 
-```{r}
-x1 = arima.sim(list(order = c(2,0,0), ar = c(1.5, -0.75)), n = 500)
-x2 = arima.sim(list(order = c(0,0,2), ma = c(0.9, 0.5)), n = 500)
-par(mfrow = c(1, 2))
-acf2(x1, main = "AR(2)")
-pacf(x1, main = "AR(2)", ylab = "PACF")
+```{r auto-cor}
+x1 = arima.sim(list(order = c(2, 0, 0), ar = c(1.5, -0.75)), n = 500)
+x2 = arima.sim(list(order = c(0, 0, 3), ma = c(0.9, 0.9, 0.9)), n = 500)
 
-acf2(x2, main = "MA(2)")
-pacf(x2, main = "MA(2)", ylab = "PACF")
+par(mfrow = c(2, 2), mar = c(4.5, 4.5, 0.5, 0.5))
+ylim = c(-1, 1)
+cex = 1.25
+acf(x1, ylim = ylim)
+legend("topright", legend = "AR(2)", bty = "n", cex = cex) 
+acf(x2, ylim = ylim)
+legend("topright", legend = "MA(3)", bty = "n", cex = cex) 
+pacf(x1, ylim = ylim, ylab = "PACF") 
+legend("topright", legend = "AR(2)", bty = "n", cex = cex) 
+pacf(x2, ylim = ylim, ylab = "PACF")
+legend("topright", legend = "MA(3)", bty = "n", cex = cex) 
 ```
 
 # Partial auto-correlation

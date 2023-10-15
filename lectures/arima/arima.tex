@@ -630,13 +630,15 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   \eqref{eq:ar-p-auto-cov}, and the qualitative behavior is still the same as in
   the AR($p$) case   
 
-\item Figure \ref{fig:auto-cor} shows example auto-correlation functions for
-  simple MA and AR models
+\item Figure \ref{fig:auto-cor}, top row, shows sample auto-correlation
+  functions for simple MA and AR models 
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.85\textwidth]{fig/ma-1.pdf}
-\caption{Sample auto-correlation functions for ...}
+\includegraphics[width=0.85\textwidth]{fig/auto-cor-1.pdf}
+\caption{Top row: sample auto-correlation functions for data from AR(2) and
+  MA(3) models. Bottom row: sample partial auto-correlation functions for these
+  same data.} 
 \label{fig:auto-cor}
 \end{figure}
 \end{itemize}
@@ -648,12 +650,12 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   amount of information that will help identify its structure: since it is zero
   for lags $h>q$, if we were to compute a sample version based on data, then by
   seeing where the sample auto-correlation ``cuts off'', we could roughly
-  identify the order $q$ of the underlying MA process (see Figure
+  identify the order $q$ of the underlying MA process (see top right of Figure 
   \ref{fig:auto-cor} again)   
 
 \item For an AR (or ARMA) model, this is not the case. As we saw from
   \eqref{eq:ar-p-auto-cov}, the auto-covariance decays to zero, but this tells
-  us little about the AR order of dependence $p$ (see also Figure
+  us little about the AR order of dependence $p$ (see also top left of Figure 
   \ref{fig:auto-cor}). Thus it is worth pursuing a type of \emph{modified}
   correlation function for the AR model that behaves like the auto-correlation
   does for the MA model 
@@ -668,8 +670,8 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   &\text{$\hat{Y}$ is the linear regression of $Y$ on $Z$}
   \end{align*}
   Here, and in what follows, by ``linear regression'' we mean regression in the
-  population sense, so that precisely \smash{$\hat{X} = \Cov(Z)^{-1} \E(ZX)$}
-  and \smash{$\hat{Y} = \Cov(Z)^{-1} \E(ZY)$}  
+  population sense, so that precisely \smash{$\hat{X} = Z^\T \Cov(Z)^{-1}
+    \E(ZX)$} and \smash{$\hat{Y} = Z^\T \Cov(Z)^{-1} \E(ZY)$}   
 
 \item Said differently, the partial correlation of two random variables given
   $Z$ is the correlation \emph{after we remove (``partial out'') the linear
@@ -717,14 +719,8 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
 \item That is, the \emph{partial auto-correlation function for an AR($p$) model
   is exactly zero at all lags $h > p$}
 
-\item Figure \ref{fig:partial-auto-cor} ....
-
-\begin{figure}[htb]
-\centering
-\includegraphics[width=0.85\textwidth]{fig/ma-1.pdf}
-\caption{Sample partial auto-covariance functions for ...}
-\label{fig:partial-auto-cor}
-\end{figure}
+\item Figure \ref{fig:auto-cor}, bottom row, shows sample partial
+  auto-correlation functions for AR and MA models
 
 \item The table below summarizes the behavior of the auto-correlation function
   (ACF) and partial auto-correlation function (PACF) for causal AR($p$) and
@@ -743,7 +739,7 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   \end{center}
   The fact that the partial auto-correlation function for an invertible MA($q$)
   model ``tails off'' was not derived in these notes, but you can read more in
-  Section 3.3 of SS if you are curious. Same with the behavior of causal,
+  Section 3.3 of SS if you are curious. Same with the behavior of a causal,
   invertible ARMA($p,q$) 
 \end{itemize}
 
