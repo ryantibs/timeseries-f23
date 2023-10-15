@@ -527,9 +527,9 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
 \item Finally, as a summary, here are three equivalent ways to represent a
   causal, invertible ARMA($p,q$) model:
   \begin{align*}
-  &\phi(B) x = \theta(B) w \\
-  &x = \psi(B) w, \quad \text{for $\psi(B) = \phi(B)^{-1} \theta(B)$} \\
-  &\pi(B) x = w, \quad \text{for $\pi(B) = \theta(B)^{-1} \phi(B)$}
+  &\phi(B) x_t = \theta(B) w_t \\
+  &x_t = \psi(B) w_t, \quad \text{for $\psi(B) = \phi(B)^{-1} \theta(B)$} \\ 
+  &\pi(B) x_t = w_t, \quad \text{for $\pi(B) = \theta(B)^{-1} \phi(B)$} 
   \end{align*}
 \end{itemize}
 
@@ -540,21 +540,21 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   \eqref{eq:ma-q-auto-cov}. We can see that it has a finite bandwidth $2q+1$:
   this is a signature structure of the MA($q$) model
 
-\item The auto-covariance for a stationary AR(1) model was given in 
-  \eqref{eq:ar-1-auto-cov}. We can see that it decays away from $h=0$: this is
+\item The auto-covariance for a causal AR(1) model was given in
+  \eqref{eq:ar-1-auto-cov}. We can see that it decays away from $h=0$: this is 
   a signature structure of AR models. But what does the precise auto-covariance
-  look like for a general stationary AR($p$) model? How about a general
-  stationary ARMA($p,q$) model? 
+  look like for a general causal AR($p$) model? How about a general causal
+  ARMA($p,q$) model?  
 
 \item The answer is much more complicated, but still possible to characterize
   precisely. We'll do it first for an AR($p$) model, and then look at an
   ARMA($p,q$) model, which will have an analogous behavior 
 
-\item For an AR($p$) model \eqref{eq:ar-p}, assumed stationary (i.e., all roots
-  of $\phi(z)$ are outside of the unit circle), we can start with the process at
-  $t+h$, with $h \geq 0$ (without a loss of generality, because $\gamma$ is 
-  symmetric around zero), then multiply both sides by $x_t$, and take an
-  expectation to get     
+\item For an AR($p$) model \eqref{eq:ar-p}, assumed causal (i.e., all roots of
+  $\phi(z)$ are outside of the unit circle), we can take the process at $t+h$,
+  where $h \geq 0$ (without a loss of generality, because $\gamma$ is symmetric 
+  around zero), then multiply both sides by $x_t$, and take an expectation to
+  get      
   \[
   \E(x_{t+h} x_t) = \sum_{j=1}^p \phi_j \E(x_{t+h-j} x_t) + \E(w_{t+h} x_t)  
   \]
@@ -596,8 +596,8 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
   oscillate in a sinusoidal fashion
 
 \item Now what about an ARMA($p,q$) model \eqref{eq:arma-pq}, assumed
-  stationary? Similarly, we start with the process at time $t+h$, $h \geq 0$,
-  multiply by $x_t$, and take an expectation to get
+  causal? Similarly, we take the process at time $t+h$, $h \geq 0$, multiply by
+  $x_t$, and take an expectation to get  
   \[
   \E(x_{t+h} x_t) = \sum_{j=1}^p \phi_j \E(x_{t+h-j} x_t) + \sum_{j=0}^q
   \theta_j \E(w_{t+h-j} x_t)  
@@ -622,15 +622,126 @@ Related reading: Chapters 3.1 and 3.3 Shumway and Stoffer (SS); Chapters
 \item This is again a difference equation of order $p$ that determines $\gamma$,
   but the initial conditions (i.e., what happens when $h \leq q$) are more
   complicated. Nonetheless, the solution will still be of the form
-  \eqref{eq:ar-p-auto-cov}, and the qualitive behavior will still be the same as
-  in the AR($p$) case  
+  \eqref{eq:ar-p-auto-cov}, and the qualitative behavior will still be the same
+  as in the AR($p$) case  
+
+\item Figure \ref{fig:auto-cov} shows example auto-correlation functions for
+  simple MA and AR models
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.85\textwidth]{fig/ma-1.pdf}
+\caption{Sample auto-covariance functions for ...}
+\label{fig:auto-cov}
+\end{figure}
 \end{itemize}
 
 \subsection{Partial auto-covariance}
 
-\subsection{Identification and estimation}
+\begin{itemize}
+\item The auto-covariance function for an MA model provides a considerable
+  amount of information that will help identify its structure: since it is zero
+  for lags $h>q$, if we were to compute a sample version based on data, then by
+  seeing where the sample auto-correlations ``drop off'', we could roughly
+  identify the order $q$ of the underlying MA process (see Figure
+  \ref{fig:auto-cov} again)   
 
-\section{ARMAX models}
+\item For an AR (or ARMA) model, this is not the case. As we saw from
+  \eqref{eq:ar-p-auto-cov}, the auto-covariance decays to zero, but this tells
+  us little about the AR order of dependence $p$ (see also Figure
+  \ref{fig:auto-cov}). Thus it is worth pursuing a type of \emph{modified}
+  correlation function for the AR model that behaves like the auto-correlation
+  does for the MA model 
+
+\item Such a modification will be given to us by the \emph{partial
+    auto-correlation function}. In general, the partial correlation between
+  random variables $X,Y$ given $Z$ is denoted \smash{$\rho_{XY|Z}$} and defined
+  as    
+  \begin{align*}
+  &\rho_{XY|Y} = \Cor(X - \hat{X}, Y - \hat{Y}), \quad \text{where} \\
+  &\text{$\hat{X}$ is the regression of $X$ on $Z$}, \quad \text{and} \\
+  &\text{$\hat{Y}$ is the regression of $Y$ on $Z$}
+  \end{align*}
+  Here, and throughout this subsection, by ``regression'' we mean linear
+  regression in the population sense, so that precisely \smash{$\hat{X} =
+    \Cov(Z)^{-1} \E(ZX)$} and \smash{$\hat{Y} = \Cov(Z)^{-1} \E(ZY)$} 
+
+\item Said differently, the partial correlation of two random variables given
+  $Z$ is the correlation \emph{after we remove (``partial out'') the linear
+    dependence of each random variable on $Z$}     
+
+\item We note that when $X,Y,Z$ are jointly normal, then this definition
+  coincides with conditional correlation: \smash{$\rho_{XY|Z} = \Cor(X,Y|Z)$},
+  but not in general 
+
+\item We are now ready to define the partial auto-correlation function for a
+  stationary time series $x_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$, denoted
+  $\phi_x(h)$ at a lag $h$. Without a loss of generality we will only define it
+  for $h \geq 0$, since it will be symmetric around zero (due to stationarity). 
+  First, at lag $h=0$ or $h=1$, we simply define: 
+  \begin{align*}
+  \phi_x(0) &= 1 \\
+  \phi_x(1) &= \Cor(x_t, x_{t+1}) 
+  \end{align*}
+  Next, at all lags $h \geq 2$, we define: 
+  \begin{align*}
+  &\phi_x(h) = \Cor(x_t - \hat{x}_t, x_{t+h} - \hat{x}_{t+h}), \quad
+    \text{where} \\ 
+  &\text{$\hat{x}_t$ is the regression of $x_t$ on $x_{t+1},\dots,x_{t+h-1}$}, 
+  \quad \text{and} \\ 
+  &\text{$\hat{x}_{t+h}$ is the regression of $x_{t+h}$ on
+    $x_{t+1},\dots,x_{t+h-1}$}  
+  \end{align*}
+
+\item To best see the effect of this definition we can go straight back to the
+  causal AR($p$) model. When $h>p$, it can be shown that the population 
+  regression \smash{$\hat{x}_{t+h}$} of $x_{t+h}$ on $x_{t+1},\dots,x_{t+h-1}$
+  is 
+  \[
+  \hat{x}_{t+h} = \sum_{j=0}^p \phi_j x_{t-j}
+  \]
+  Thus \smash{$x_{t+h} - \hat{x}_{t+h} = x_{t+h} -  \sum_{j=0}^p \phi_j x_{t-j}
+    = w_{t+h}$}, and the partial auto-correlation is
+  \[
+  \phi_x(h) = \Cor(x_t - \hat{x}_t, w_{t+h}) = 0
+  \]
+  because causality implies that $x_t$ can only depend on white noise through
+  time $t$ and \smash{$\hat{x}_t$} can only depend on white noise through time
+  $t+h-1$ 
+
+\item That is, the \emph{partial auto-correlation function for an AR($p$) model
+  is exactly zero at all lags $h > p$}
+
+\item Figure \ref{fig:partial-auto-cov} ....
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.85\textwidth]{fig/ma-1.pdf}
+\caption{Partial auto-covariance functions for ...}
+\label{fig:partial-auto-cov}
+\end{figure}
+
+\item The table below summarizes the behavior of the auto-correlation function
+  (ACF) and partial auto-correlation function (PACF) for AR($p$) and MA($q$)
+  models. By ``tails off'' we mean decays to zero as $h \to \infty$ without
+  dropping to zero exactly; by ``cuts off'' we mean drops to zero at a finite
+  lag $h$
+  \begin{center}
+  \begin{tabular}{c|c|c|c|}
+  & AR($p$) & MA($q$) & ARMA($p,q$) \\
+  \hline
+  ACF & tails off & drops off at lag $q$ & tails off \\
+  \hline
+  PACF & drops off at lag $p$ & tails off & tails off \\
+  \hline
+  \end{tabular}
+  \end{center}
+  The fact that the partial auto-correlation function for an MA($q$) model
+  ``tails off'' was not derived in these notes, but you can read more in Section
+  3.3 of SS if you are curious. Same with the behavior of ARMA($p,q$)
+\end{itemize}
+
+\subsection{Estimation and selection}
 
 \subsection{Regression with correlated errors}
 
@@ -647,6 +758,8 @@ Backshift notation
 connection to exponential something
 
 \section{Forecasting}
+
+ARMAX models
 
 Long-range forecasts converge to zero (or to the mean, in a process with 
 nonzero mean)
