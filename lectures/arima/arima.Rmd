@@ -86,3 +86,58 @@ dat |> model(arima = fable::ARIMA(x ~ pdq())) |> report()
 
 # Uh oh! This is basically a redundant parametrization of white noise
 ```
+
+# ARIMA for CAR exports
+
+```{r car}
+car = global_economy |> filter(Code == "CAF")
+
+# Small bit of exploratory analysis
+car |>
+  ggplot(aes(x = Year, y = Exports)) + 
+  geom_line() + geom_point() +
+  labs(y = "Exports (% of GDP)") +
+  theme_bw() 
+
+car |> 
+  ggplot(aes(x = Year, y = difference(Exports))) + 
+  geom_line() + geom_point() +
+  theme_bw() 
+
+par(mar = c(4.5, 4.5, 0.5, 0.5))
+xlim = c(1, 15)
+ylim = c(-0.5, 0.5)
+acf(diff(car$Exports), xlim = xlim, ylim = ylim)
+pacf(diff(car$Exports), xlim = xlim, ylim = ylim, ylab = "PACF")
+
+# Now go and fit ARIMA models
+car_fit = car |>
+  model(arima210 = ARIMA(Exports ~ pdq(2,1,0)),
+        arima013 = ARIMA(Exports ~ pdq(0,1,3)),
+        stepwise = ARIMA(Exports ~ pdq()))
+
+car_fit |> pivot_longer(!Country, names_to = "Model name",
+                         values_to = "Orders")
+
+# Glance at various metric
+car_fit |> glance() |> arrange(AICc)
+
+# Plot roots for the ARI model
+car_fit |> select(arima210) |> gg_arma()
+
+# Plot residuals from the ARI model
+car_fit |> select(arima210) |> gg_tsresiduals() 
+
+# Make 5-year horizon forecasts from the ARI model
+car_fit |>  
+  select(Country, arima210) |>
+  forecast(h = 5) |> 
+  autoplot(car) + labs(title = "ARIMA(2,1,0)") + theme_bw()
+
+# Make 5-year horizon forecasts from a random walk
+car |>
+  model(rw = ARIMA(Exports ~ pdq(0,1,0) + 0)) |>
+  forecast(h = 5) |> 
+  autoplot(car) + labs(title = "Random walk") + theme_bw()
+```
+

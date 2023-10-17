@@ -742,10 +742,11 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   \hline
   \end{tabular} \smallskip
   \end{center}
-  The fact that the partial auto-correlation function for an invertible MA($q$)
-  model ``tails off'' was not derived in these notes, but you can read more in
-  Section 3.3 of SS if you are curious. Same with the behavior of a causal,
-  invertible ARMA($p,q$) 
+
+\item The fact that the partial auto-correlation function for an invertible
+  MA($q$) model ``tails off'' was not derived in these notes, but you can read
+  more in Section 3.3 of SS if you are curious. Same with the behavior of a
+  causal, invertible ARMA($p,q$) 
 \end{itemize}
 
 \subsection{Estimation and selection}
@@ -820,7 +821,8 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   to select a final one 
 
 \item Chapter 3.7 in SS also goes into details about a similar sequence of steps
-  for building ARIMA models, and provides nice worked examples
+  for building ARIMA models, with worked examples. We'll also go through an
+  example shortly, in the ARIMA section 
 
 \item The ACF and PACF are great tools, and looking at them to get a sense of MA
   and AR dependence is generally helpful, but we will not concern ourselves too
@@ -830,7 +832,8 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item Since our focus is on prediction, we will adopt the following simple
   perspective (just like in regression): \emph{an ARMA model is useful if it
     predicts well}. And as before, we can assess this with time series
-  cross-validation   
+  cross-validation. We'll go through an example later, in the forecasting
+  section   
 \end{itemize}
 
 \subsection{Regression with correlated errors}
@@ -961,9 +964,71 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item A general warning should be given about choosing large $d$; HA say that in
   practice, $d > 2$ is never really needed, and also give a cautionary note
   about taking $d = 2$ with $c \not= 0$ (more later)
+
+\item Now we walk through an example from HA on using ARIMA to model (and
+  forecast) Central African Republic exports. The data is shown in Figure
+  \ref{fig:car-exploratory}, top row. It does not look stationary  
+
+\item Taking first differences of the data, as shown in the second row, renders
+  the data reasonably stationary-looking 
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.675\textwidth]{fig/car-1.pdf}
+\includegraphics[width=0.675\textwidth]{fig/car-2.pdf}
+\includegraphics[width=0.45\textwidth]{fig/car-3.pdf}
+\includegraphics[width=0.45\textwidth]{fig/car-4.pdf}
+\caption{Top row: exports (as a percentage of GDP) for Central African
+  Republic. Middle row: first differences of exports. Bottom row: ACF and PACF
+  functions of first differences.}
+\label{fig:car-exploratory}
+\end{figure}
+
+\item ACF and PACF plots, as shown in the third row, applied to first
+  differences, are suggestive of an MA(3) and AR(2) model, respectively. Thus we 
+  can go and fit each model: ARIMA(2,1,0) and ARIMA(0,1,3) (note that these are
+  ARIMA models with $d=1$, since we are going to specify the differencing as
+  part of the model itself). We can also use the Hyndman-Khandakar stepwise
+  algorithm. This ends up choosing ARIMA(2,1,2) 
+
+\item For prediction-focused tasks (and probably/necessarily, longer sequences),
+  we would look at an estimate of (say) MAE using time series cross-validation
+  to help us choose a model. Here, HA recommend looking at AICc, which is what
+  is also built into the \verb|fable| package's reporting of the \verb|ARIMA()| 
+  output. This leads us to choose ARIMA(2,1,0). The residuals from this model
+  also look close to white noise (see the R notebook for diagnostics) which is
+  good  
+
+\item Forecasts from our fitted ARIMA(2,1,2) model are shown in the rop row of
+  Figure \ref{fig:car-forecasts}, for a 5-year horizon. Also plotted are
+  prediction intervals around the forecast (more on this in the last 
+  section). Qualitatively, the forecasts aren't very impressive at first
+  glance---they look more or less like what we'd get if we used a random walk
+  (zero mean function, growing variance function), which is just ARIMA(0,1,0)   
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.85\textwidth]{fig/car-7.pdf}
+\includegraphics[width=0.85\textwidth]{fig/car-8.pdf}
+\caption{Top row: forecasts from ARIMA(2,1,2). Bottom row: forecasts from
+  ARIMA(0,1,0) with $c=0$, i.e., a random walk.}
+\label{fig:car-forecasts}
+\end{figure}
+
+\item However, HA comment that the prediction intervals here are narrower than
+  they would be for a random walk, which is due to the contribution of the
+  nontrivial AR and MA components that we've been able to pick up and model. To
+  check this, we plot forecasts from ARIMA(0,1,0) in the bottom row of Figure
+  \ref{fig:car-forecasts}, and indeed you can see they have wider uncertainty 
+  bands 
 \end{itemize}
 
 \subsection{Seasonality extensions}
+
+\begin{itemize}
+\item Seasonality is typically handled in ARIMA models by seasonal
+  differencing. This assume that the seasonal periods are known, and 
+\end{itemize}
 
 \subsection{IMA (EWMA) models}
 
@@ -971,11 +1036,12 @@ connection to exponential something
 
 \section{Forecasting}
 
-describe behavior of long-range forecasts for ARIMA as in HA....
+simple algorithm from HA
 
-ARMAX models
+qualitative behavior of long-range forecasts for ARIMA as in HA....
 
-Long-range forecasts converge to zero (or to the mean, in a process with 
-nonzero mean)
+\subsection{Prediction intervals}
+
+\subsection{ARMAX models}
 
 \end{document}
