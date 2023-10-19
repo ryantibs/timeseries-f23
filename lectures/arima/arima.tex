@@ -251,7 +251,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \item To check this, we compute the auto-covariance function using a similar
   calculation to those we've done before, writing $\theta_0 = 1$ for
-  convenience:  
+  convenience,
   \begin{align}
   \nonumber
   \Cov(x_t, x_{t+h}) &= \Cov\bigg( \sum_{j=0}^q \theta_j w_{t-j}, 
@@ -259,7 +259,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   \nonumber
   &= \sum_{j,\ell=0}^q \theta_j \theta_\ell \Cov( w_{t-j}, w_{t+h-\ell} ) \\
   \label{eq:ma-q-auto-cov}
-  &= \sigma^2 \sum_{j=0}^q \theta_j \theta_{j+h}
+  &= \sum_{j : 0 \leq j,  j +h \leq q} \theta_j \theta_{j+h} 
   \end{align}
   Since this only depends on $h$, we can see that the process is indeed
   stationary 
@@ -414,9 +414,9 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   \label{eq:arma-pq-operator}
   \phi(B) x_t = \theta(B) w_t  
   \end{equation}
-  where  $\phi(B) = 1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p$ and
-  $\theta(B) = 1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q$ are the AR
-  and MA operators, respectively, as before 
+  where $\phi(B) = 1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p$ and
+  $\theta(B) = 1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q$ are the AR 
+  and MA operators, as before 
 \end{itemize}
 
 \subsection{Parameter redundancy}
@@ -545,8 +545,8 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \begin{itemize}
 \item The auto-covariance for an MA($q$) model was already given in
-  \eqref{eq:ma-q-auto-cov}. We can see that it has a finite bandwidth $2q+1$:
-  this is a signature structure of the MA($q$) model
+  \eqref{eq:ma-q-auto-cov}. We can see that it is zero when $|h| > q$: this is a
+  signature structure of the MA($q$) model 
 
 \item The auto-covariance for a causal AR(1) model was given in
   \eqref{eq:ar-1-auto-cov}. We can see that it decays away from $h=0$: this is 
@@ -776,9 +776,9 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item You can read about other approaches in Chapter 3.5 of SS, Chapter 9.6 of
   HA, or references therein  
 
-\item Both the \verb|astsa| package (written by Stoffer of SS) and \verb|fable|
-  package (written by Hyndman of HA) provide functionality for fitting ARIMA
-  models in R   
+\item R provides an \verb|arima()| function in base R; in addition, both the
+  \verb|astsa| package (written by Stoffer of SS) and \verb|fable| package
+  (written by Hyndman of HA) provide functionality for ARIMA modeling
 
 \item If there's one thing even more complicated than fitting ARIMA models, it's
   choosing an ARIMA model---that is, \emph{order selection}, or determining the 
@@ -923,10 +923,10 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \item Now we can formally define, an ARIMA($p,d,q$) model, for orders $p,d,q  
   \geq 0$: this is a model for $x_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ such
-  that $(1-B)^d x_t$ follows an ARMA($p,q$) model, i.e., 
+  that $\nabla^d x_t$ follows an ARMA($p,q$) model, i.e., 
   \begin{equation}
   \label{eq:arima-pdq}
-  \phi(B) (1-B)^d x_t = \theta(B) w_t
+  \phi(B) \nabla^d x_t = \theta(B) w_t
   \end{equation}
   where $w_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is a white noise sequence,
   and $\phi(B),\theta(B)$ are the AR and MA operators, respectively, as before. 
@@ -942,9 +942,13 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   nonstationary (the variance grows over time)
 
 \item Below is a summary of some of the basic models that the ARIMA framework
-  encompasses. We write $c$ for the intercept in the model, which was assumed
-  zero throughout for simplicity. However, recall, we can always fit ARIMA
-  models with nonzero intercept in \eqref{eq:arima-pdq}
+  encompasses. We write $c$ for the intercept in the model, as in 
+  \begin{equation}
+  \label{eq:arima-pdq-intercept}
+  \phi(B) \nabla^d x_t = c + \theta(B) w_t
+  \end{equation}
+  Recall, this was assumed zero in \eqref{eq:arima-pdq}, and throughout, only
+  for simplicity---in general, we allow it 
   \begin{center} \smallskip
   \begin{tabular}{|l|l|}
   \hline
@@ -1021,13 +1025,74 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   check this, we plot forecasts from ARIMA(0,1,0) in the bottom row of Figure
   \ref{fig:car-forecasts}, and indeed you can see they have wider uncertainty 
   bands 
+
+\item A general note to close out our example: the \verb|ARIMA()| function in
+  the \verb|fable| package can be handy \emph{but also a bit dangerous} because
+  it may automate away some part of the model building procedure even when you 
+  think you've specified a model manually. Check out the R notebook for an
+  example and guidance on how to explicitly get what you want ... 
 \end{itemize}
 
 \subsection{Seasonality extensions}
 
 \begin{itemize}
 \item Seasonality is typically handled in ARIMA models by seasonal
-  differencing. This assume that the seasonal periods are known, and 
+  differencing. This assumes that the seasonal periods are known
+
+\item For example, let's suppose that the seasonal period is known to be
+  $s$. Then, to start off as simple as possible, a \emph{purely seasonal ARMA}
+  model with orders $P,Q \geq 0$ and period $s$, denoted ARMA$(P,Q)_s$, is of 
+  the form   
+  \begin{equation}
+  \label{eq:pure-sarma-pq}
+  \Phi(B^s) x_t = \Theta(B^s) w_t  
+  \end{equation}
+  where $\Phi(B^s) = 1 - \Phi_1 B^s - \Phi_2 B^{2s} - \cdots - \Phi_P B^{Ps}$
+  and $\Theta(B) = 1 + \Theta_1 B + \Theta_2 B^{2s} + \cdots + \Theta_Q
+  B^{Qs}$. Note that these model AR and MA dynamics, but on the scale of
+  seasons: since all backshifts are in multiples of $s$
+
+\item To select orders for seasonal dynamics we would follow ideas just like
+  those for regular (nonseasonal) ARMA models: look at ACF and PACF plots, but
+  for lags on the seasonal scale, in multiples of $s$
+
+\item To make this more sophisticated, we can add in AR and MA dynamics on
+  the original scale, which leads to a \emph{seasonal ARMA} model of orders 
+  $p,q,P,Q \geq 0$ and period $s$, denoted ARMA$(p,q)(P,Q)_s$,   
+  \begin{equation}
+  \label{eq:sarma-pq}
+  \Phi(B^s) \phi(B) x_t = \Theta(B^s) \theta(B) w_t  
+  \end{equation}
+  where $\phi(B) = 1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p$ and
+  $\theta(B) = 1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q$ are the AR 
+  and MA operators, as before, and $\Phi(B^s), \Theta(B^s)$ are the seasonal
+  operators, as above
+
+\item The full scale sophistication is achieved by adding in integration to
+  account for nonstationarity. However, now we can also account for
+  nonstationarity on the seasonal scale; first define a $D\th$ order seasonal
+  difference eperator
+  \[
+  \nabla_s^D = (1 - B^s)^D 
+  \]
+  Then define the \emph{seasonal ARIMA} (SARIMA) model of orders $p,d,q,P,D,Q 
+  \geq 0$ and period $s$, denoted ARIMA$(p,d,q)(P,D,Q)_s$,   
+  \begin{equation}
+  \label{eq:sarima-pdq}
+  \Phi(B^s) \phi(B) \nabla_s^D \nabla^d x_t = \Theta(B^s) \theta(B) w_t  
+  \end{equation}
+  As usual, we are omitting an intercept $c$ for simplicity, but in general we
+  could include this on the right-hand side. (Phew! That's the full beast. We've
+  maxed out in complexity, at least for this lecture ...)
+
+\item Estimation is even more complicated in SARIMA models (more parameters, 
+  more nonlinearity) but thankfully software does it for us
+
+\item We won't go into any further details than what we have discussed already,
+  but will walk through an example from HA to model (and forecast) US
+  employment numbers in leisure/hospitality jobs. The data is shown in Figure
+  \ref{fig:jobs-exploratory}, top row. It has a clear seasonal pattern with
+  (safe guess) a 1 year period 
 \end{itemize}
 
 \subsection{IMA (EWMA) models}

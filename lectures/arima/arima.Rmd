@@ -25,8 +25,8 @@ library(epidatasets)
 # AR(1) processes
 
 ```{r ar}
-x1 = arima.sim(list(order = c(1, 0, 0), ar = 0.9), n = 100)
-x2 = arima.sim(list(order = c(1, 0, 0), ar = -0.9), n = 100)
+x1 = arima.sim(list(order = c(1,0,0), ar = 0.9), n = 100)
+x2 = arima.sim(list(order = c(1,0,0), ar = -0.9), n = 100)
 
 par(mfrow = c(2, 1), mar = c(2, 0.5, 3, 0.5))
 plot(x1, main = paste("AR(1), phi = +0.9"), xlab = "", ylab = "")
@@ -36,8 +36,8 @@ plot(x2, main = paste("AR(1), phi = -0.9"), xlab = "", ylab = "")
 # MA(1) processes
 
 ```{r ma}
-x1 = arima.sim(list(order = c(0, 0, 1), ma = 0.9), n = 100)
-x2 = arima.sim(list(order = c(0, 0, 1), ma = -0.9), n = 100)
+x1 = arima.sim(list(order = c(0,0,1), ma = 0.9), n = 100)
+x2 = arima.sim(list(order = c(0,0,1), ma = -0.9), n = 100)
 
 par(mfrow = c(2, 1), mar = c(2, 0.5, 3, 0.5))
 plot(x1, main = paste("MA(1), phi = +0.9"), xlab = "", ylab = "")
@@ -54,8 +54,8 @@ arima(x, order = c(1,0,1))
 # Auto-correlation
 
 ```{r auto-cor}
-x1 = arima.sim(list(order = c(2, 0, 0), ar = c(1.5, -0.75)), n = 500)
-x2 = arima.sim(list(order = c(0, 0, 3), ma = c(0.9, 0.85, 0.8)), n = 500)
+x1 = arima.sim(list(order = c(2,0,0), ar = c(1.5, -0.75)), n = 500)
+x2 = arima.sim(list(order = c(0,0,3), ma = c(0.9, 0.85, 0.8)), n = 500)
 
 par(mfrow = c(2, 2), mar = c(4.5, 4.5, 0.5, 0.5))
 xlim = c(1, 25)
@@ -119,10 +119,11 @@ car_fit = car |>
 car_fit |> pivot_longer(!Country, names_to = "Model name",
                          values_to = "Orders")
 
-# Glance at various metric
-car_fit |> glance() |> arrange(AICc)
+# Glance at various metrics across the three models
+car_fit |> glance() |> select(.model:BIC) |> arrange(AICc) 
 
-# Plot roots for the ARI model
+# Print coefficients, plot roots for the ARI model
+car_fit |> select(arima210) |> coef()
 car_fit |> select(arima210) |> gg_arma()
 
 # Plot residuals from the ARI model
@@ -141,3 +142,24 @@ car |>
   autoplot(car) + labs(title = "Random walk") + theme_bw()
 ```
 
+# General warning ...
+
+```{r oh-no}
+# WARNING!!! The ARIMA() function may actually still do some automatic model 
+# selection outside of the specified orders p,d,q. This can be dangerous because
+# it may decide to do something that you didn't realize! It will decide whether
+# to include a constant c or seasonal orders P,D,Q based on the data. To shut 
+# this off, you have to FULLY specify the model
+
+# Here's an example:
+oh_no = car |>
+  model(model1 = ARIMA(Exports ~ pdq(2,0,0)),
+        model2 = ARIMA(Exports ~ 0 + pdq(2,0,0) + PDQ(0,0,0)))
+
+# Thought you clearly specified as AN(2) model in the first line, right? WRONG. 
+# Take a look. You'll see it decided to include a constant ...
+oh_no |> select(model1) |> report()
+
+# The second specification is the one that always returns the AR(2) model
+oh_no |> select(model2) |> report()
+```
