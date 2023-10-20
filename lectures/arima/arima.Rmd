@@ -96,13 +96,12 @@ car = global_economy |> filter(Code == "CAF")
 car |>
   ggplot(aes(x = Year, y = Exports)) + 
   geom_line() + geom_point() +
-  labs(y = "Exports (% of GDP)") +
-  theme_bw() 
+  labs(title = "Central African Republic (CAR) exports",
+       y = "Exports (% of GDP)") + theme_bw() 
 
 car |> 
   ggplot(aes(x = Year, y = difference(Exports))) + 
-  geom_line() + geom_point() +
-  theme_bw() 
+  geom_line() + geom_point() + theme_bw() 
 
 par(mar = c(4.5, 4.5, 0.5, 0.5))
 xlim = c(1, 15)
@@ -114,7 +113,7 @@ pacf(diff(car$Exports), xlim = xlim, ylim = ylim, ylab = "PACF")
 car_fit = car |>
   model(arima210 = ARIMA(Exports ~ pdq(2,1,0)),
         arima013 = ARIMA(Exports ~ pdq(0,1,3)),
-        stepwise = ARIMA(Exports ~ pdq()))
+        auto = ARIMA(Exports))
 
 car_fit |> pivot_longer(!Country, names_to = "Model name",
                          values_to = "Orders")
@@ -122,14 +121,14 @@ car_fit |> pivot_longer(!Country, names_to = "Model name",
 # Glance at various metrics across the three models
 car_fit |> glance() |> select(.model:BIC) |> arrange(AICc) 
 
-# Print coefficients, plot roots for the ARI model
+# Print coefficients, plot roots for the AR model
 car_fit |> select(arima210) |> coef()
 car_fit |> select(arima210) |> gg_arma()
 
-# Plot residuals from the ARI model
+# Plot residuals from the AR model
 car_fit |> select(arima210) |> gg_tsresiduals() 
 
-# Make 5-year horizon forecasts from the ARI model
+# Make 5-year horizon forecasts from the AR model
 car_fit |>  
   select(Country, arima210) |>
   forecast(h = 5) |> 
@@ -162,4 +161,60 @@ oh_no |> select(model1) |> report()
 
 # The second specification is the one that always returns the AR(2) model
 oh_no |> select(model2) |> report()
+```
+
+# SARIMA for US employment
+
+```{r leisure}
+leisure = us_employment |>
+  filter(Title == "Leisure and Hospitality", year(Month) > 2000) |>
+  mutate(Employed = Employed/1000) |>
+  select(Month, Employed)
+
+# Small bit of exploratory analysis
+leisure |>
+  ggplot(aes(x = Month, y = Employed)) + 
+  geom_line() + geom_point() +
+  labs(title = "US employment: leisure and hospitality",
+       y = "Employed (millions of people)") + theme_bw() 
+
+leisure |> 
+  ggplot(aes(x = Month, y = difference(Employed, lag = 12))) + 
+  geom_line() + geom_point() + theme_bw() 
+
+leisure |> 
+  ggplot(aes(x = Month, y = difference(difference(Employed, lag = 12)))) + 
+  geom_line() + geom_point() + theme_bw() 
+
+par(mar = c(4.5, 4.5, 0.5, 0.5))
+xlim = c(1, 25)
+ylim = c(-0.3, 0.2)
+acf(diff(diff(leisure$Employed, lag = 12)), xlim = xlim, ylim = ylim)
+pacf(diff(diff(leisure$Employed, lag = 12)), xlim = xlim, ylim = ylim, 
+     ylab = "PACF")
+
+# Now go and fit SARIMA models
+leisure_fit = leisure |>
+  model(arima210110 = ARIMA(Employed ~ pdq(2,1,0) + PDQ(1,1,0, period = 12)),
+        arima012011 = ARIMA(Employed ~ pdq(0,1,2) + PDQ(0,1,1, period = 12)),
+        auto = ARIMA(Employed))
+
+leisure_fit |> pivot_longer(everything(), names_to = "Model name",
+                            values_to = "Orders")
+
+# Glance at various metrics across the three models
+leisure_fit |> glance() |> select(.model:BIC) |> arrange(AICc) 
+
+# Print coefficients, plot roots for the AR model
+leisure_fit |> select(arima210110) |> coef()
+leisure_fit |> select(arima210110) |> gg_arma()
+
+# Plot residuals from the auto AR model
+leisure_fit |> select(arima210110) |> gg_tsresiduals() 
+
+# Make 3-year horizon forecasts from the AR model
+leisure_fit |>  
+  select(arima210110) |>
+  forecast(h = 36) |> 
+  autoplot(leisure) + labs(title = "ARIMA(2,1,0)(1,1,0)[12]") + theme_bw()
 ```

@@ -259,7 +259,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   \nonumber
   &= \sum_{j,\ell=0}^q \theta_j \theta_\ell \Cov( w_{t-j}, w_{t+h-\ell} ) \\
   \label{eq:ma-q-auto-cov}
-  &= \sum_{j : 0 \leq j,  j +h \leq q} \theta_j \theta_{j+h} 
+  &= \sum_{j \,:\, 0 \leq j,  j +h \leq q} \theta_j \theta_{j+h} 
   \end{align}
   Since this only depends on $h$, we can see that the process is indeed
   stationary 
@@ -817,8 +817,8 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item Step 1 is at the heart of ARIMA, which we'll cover soon. Steps 2-3 are the
   part that can be (but arguably, should not be) automated by Hyndman-Khandakar:  
   instead of a single ARMA model, it fits a number of different ARMA models,
-  using a stepwise procedure, and then uses an information criterion (like AICc)
-  to select a final one 
+  using a stepwise search procedure, and then uses an information criterion
+  (like AICc) to select a final one 
 
 \item Chapter 3.7 in SS also goes into details about a similar sequence of steps
   for building ARIMA models, with worked examples. We'll also go through an
@@ -988,12 +988,13 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \label{fig:car-exploratory}
 \end{figure}
 
-\item ACF and PACF plots, as shown in the third row, applied to first
-  differences, are suggestive of an MA(3) and AR(2) model, respectively. Thus we 
-  can go and fit each model: ARIMA(2,1,0) and ARIMA(0,1,3) (note that these are
-  ARIMA models with $d=1$, since we are going to specify the differencing as
-  part of the model itself). We can also use the Hyndman-Khandakar stepwise
-  algorithm. This ends up choosing ARIMA(2,1,2) 
+\item ACF and PACF plots are shown in the third row of Figure
+  \ref{fig:car-exploratory}. To be clear, these are applied to first differences
+  of the data. They are suggestive of MA(3) and AR(2) dynamics,
+  respectively. Thus we can go and fit each model: ARIMA(2,1,0) and ARIMA(0,1,3)
+  (note that these are ARIMA models with $d=1$, since we are going to specify
+  the differencing as part of the model itself). We can also use the
+  Hyndman-Khandakar algorithm. This ends up choosing ARIMA(2,1,2)   
 
 \item For prediction-focused tasks (and probably/necessarily, longer sequences),
   we would look at an estimate of (say) MAE using time series cross-validation
@@ -1012,8 +1013,8 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \begin{figure}[p]
 \centering
-\includegraphics[width=0.85\textwidth]{fig/car-7.pdf}
-\includegraphics[width=0.85\textwidth]{fig/car-8.pdf}
+\includegraphics[width=0.825\textwidth]{fig/car-7.pdf}
+\includegraphics[width=0.825\textwidth]{fig/car-8.pdf}
 \caption{Top row: forecasts from ARIMA(2,1,2). Bottom row: forecasts from
   ARIMA(0,1,0) with $c=0$, i.e., a random walk.}
 \label{fig:car-forecasts}
@@ -1053,15 +1054,15 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   seasons: since all backshifts are in multiples of $s$
 
 \item To select orders for seasonal dynamics we would follow ideas just like
-  those for regular (nonseasonal) ARMA models: look at ACF and PACF plots, but
-  for lags on the seasonal scale, in multiples of $s$
+  those for regular (nonseasonal) ARMA models: look at ACF and PACF plots,
+  \emph{but for lags on the seasonal scale}, in multiples of $s$ 
 
 \item To make this more sophisticated, we can add in AR and MA dynamics on
   the original scale, which leads to a \emph{seasonal ARMA} model of orders 
   $p,q,P,Q \geq 0$ and period $s$, denoted ARMA$(p,q)(P,Q)_s$,   
   \begin{equation}
   \label{eq:sarma-pq}
-  \Phi(B^s) \phi(B) x_t = \Theta(B^s) \theta(B) w_t  
+  \phi(B) \Phi(B^s) x_t = \theta(B) \Theta(B^s) w_t  
   \end{equation}
   where $\phi(B) = 1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p$ and
   $\theta(B) = 1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q$ are the AR 
@@ -1076,23 +1077,80 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   \nabla_s^D = (1 - B^s)^D 
   \]
   Then define the \emph{seasonal ARIMA} (SARIMA) model of orders $p,d,q,P,D,Q 
-  \geq 0$ and period $s$, denoted ARIMA$(p,d,q)(P,D,Q)_s$,   
+  \geq 0$ and period $s$, denoted ARIMA$(p,d,q)(P,D,Q)_s$, 
   \begin{equation}
   \label{eq:sarima-pdq}
-  \Phi(B^s) \phi(B) \nabla_s^D \nabla^d x_t = \Theta(B^s) \theta(B) w_t  
+  \phi(B) \Phi(B^s) \nabla^d \nabla_s^D x_t = \theta(B) \Theta(B^s) w_t  
   \end{equation}
   As usual, we are omitting an intercept $c$ for simplicity, but in general we
-  could include this on the right-hand side. (Phew! That's the full beast. We've
-  maxed out in complexity, at least for this lecture ...)
+  could include this on the right-hand side in \eqref{eq:sarima-pdq}. (Phew!
+  That's the full beast. We've maxed out in complexity, at least for this
+  lecture ...) 
 
 \item Estimation is even more complicated in SARIMA models (more parameters, 
   more nonlinearity) but thankfully software does it for us
 
 \item We won't go into any further details than what we have discussed already,
   but will walk through an example from HA to model (and forecast) US
-  employment numbers in leisure/hospitality jobs. The data is shown in Figure
-  \ref{fig:jobs-exploratory}, top row. It has a clear seasonal pattern with
-  (safe guess) a 1 year period 
+  employment numbers in leisure/hospitality. The data is shown in Figure
+  \ref{fig:leisure-exploratory}, top row. It has a clear seasonal pattern with
+  (safe guess) a 1 year period  
+
+\item Taking seasonal differences (i.e., applying $\nabla_s$ with $s = 12$,
+  since this is monthly data) has removed the seasonality, but the result, in
+  the middle row of Figure \ref{fig:leisure-exploratory}, is still very clearly
+  nonstationary   
+
+\item Additionally taking monthly differences (i.e., applying the composite 
+  operator $\nabla \nabla_s$), in the bottom row of Figure
+  \ref{fig:leisure-exploratory}, is reasonably stationary-looking    
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.6\textwidth]{fig/leisure-1.pdf}
+\includegraphics[width=0.6\textwidth]{fig/leisure-2.pdf}
+\includegraphics[width=0.6\textwidth]{fig/leisure-3.pdf}
+\caption{Top row: number of US jobs (in millions) in leisure/hospitality. Middle
+  row: seasonal (yearly) differences. Bottom row: differences of seasonal
+  differences.} 
+\label{fig:leisure-exploratory}
+\end{figure}
+
+\item ACF and PACF plots are displayed in the top row of Figure
+  \ref{fig:leisure-forecasts}. To be clear, these are applied to the differences
+  of yearly differences ($\nabla \nabla_s x_t$, $t = 1,2,3,\dots$, as plotted in
+  the bottom row of Figure \ref{fig:leisure-forecasts}). The ACF shows two
+  moderate correlations at lags 1 and 2 and then a big spike at lag 12. This is
+  suggestive of an nonseasonal MA(2) and a seasonal MA(1), and thus we can go
+  and fit an ARIMA$(0,1,2)(0,1,1)_{12}$ model. Meanwhile, the PACF shows again
+  to moderate correlations at lags 1 and 2 and a big spike at lag 12. This
+  suggests a nonseasonal AR(2) and a seasonal AR(1), so we can go and fit an
+  ARIMA$(2,1,0)(1,1,0)_{12}$ model. Lastly, we can also try the
+  Hyndman-Khandakar algorithm. This ends up choosing ARIMA$(1,1,1)(2,1,1)_{12}$  
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.45\textwidth]{fig/leisure-4.pdf}
+\includegraphics[width=0.45\textwidth]{fig/leisure-5.pdf}
+\includegraphics[width=0.825\textwidth]{fig/leisure-8.pdf}
+\caption{Top row: ACF and PACF functions of differences of seasonal
+  differences. Bottom row: forecasts from ARIMA(2,1,2).}
+\label{fig:leisure-forecasts}
+\end{figure} 
+
+\item AICc (see the R notebook for details and diagnostics)
+  tells us to choose the ARIMA$(1,1,1)(2,1,1)_{12}$ model. But that seems a bit 
+  doubtful because it suggests there is a second-order autoregressive dynamic 
+  on the yearly scale, which makes the model much more complicated. As usual,
+  if we cared about prediction, then we should probably just use time series
+  cross-validation to evaluate the different models. More on this in the
+  forecasting section. For now, we'll just produce 3-year forecasts from the 
+  ARIMA$(0,1,2)(0,1,1)_{12}$ model
+
+\item These are shown in the bottom row of \ref{fig:leisure-forecasts}. They
+  actually seem fairly plausible and interesting. Note that the seasonality was
+  nicely captured by the seasonal differencing, and the increasing trend seems
+  to have been nicely captured by the nonseasonal differencing
 \end{itemize}
 
 \subsection{IMA (EWMA) models}
@@ -1104,6 +1162,10 @@ connection to exponential something
 simple algorithm from HA
 
 qualitative behavior of long-range forecasts for ARIMA as in HA....
+
+\subsection{Cautionary tale for CV}
+
+CV has to evaluate the whole procedure. Must rerun auto at each time point ...
 
 \subsection{Prediction intervals}
 
