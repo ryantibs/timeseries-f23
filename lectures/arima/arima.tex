@@ -1155,11 +1155,109 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \section{Forecasting}
 
-simple algorithm from HA
+\begin{itemize}
+\item ARIMA models, especially with seasonality extensions, can be powerful 
+  forecasters, as we've seen in a couple of examples. Some authors treat
+  torecasting with ARIMA in a complex and notation-heavy way, but in fact it can
+  be explained intuitively (which we borrow from HA)
 
-qualitative behavior of long-range forecasts for ARIMA as in HA....
+\item As before, we will use the notation \smash{$\hat{x}_{t+h | t}$} to denote
+  a forecast of $x_{t+h}$ made using data up until time $t$. Obtaining this
+  forecast with an ARIMA model can be done with the following three steps
 
-\subsection{Cautionary tale for CV}
+\begin{enumerate}
+\item Start with the ARIMA equation
+  \begin{equation}
+  \label{eq:sarima-pdq-c}
+  \phi(B) \Phi(B^s) \nabla^d \nabla_s^D x_t = c + \theta(B) \Theta(B^s) w_t   
+  \end{equation}
+  Plug in for parameter estimates, and rearrange so that $x_t$ is on the
+  left-hand side an all other terms are on the right-hand side 
+
+\item Rewrite the equation by replacing $t$ with $t+h$
+
+\item On the right-hand side of the equation, replace future observations
+  ($x_{t+k}$, $k \geq 1$) with their forecasts, future errors ($w_{t+k}$, $k
+  \geq 1$) with zero, and past errors ($w_{t-k}$, $k \geq 0$) with their ARIMA 
+  residuals   
+\end{enumerate}
+
+\item Beginning with $h = 1$, we iterate this procedure for $h = 2,3,\dots$ as
+  needed in order to get the forecasts at the ultimate horizon we desire  
+
+\item It helps to walk through an example. Consider forecasting with a fitted 
+  ARIMA(3,1,1) model, which we start by writing as
+  \[
+  (1 - \hat\phi_1 B - \hat\phi_2 B^2 - \hat\phi_3 B^2) (x_t - x_{t-1}) = \hat{c}
+  + (1 + \hat\theta_1 B) w_t
+  \]
+
+\item We expand this as 
+  \[
+  x_t - \hat\phi_1 x_{t-1} - \hat\phi_2 x_{t-2} - \hat\phi_3 x_{t-3} - 
+  (x_{t-1} - \hat\phi_1 x_{t-2} - \hat\phi_2 x_{t-3} - \hat\phi_3 x_{t-4}) = 
+  \hat{c} + w_t + \hat\theta_1 w_{t-1}
+  \]
+
+\item And rearrange as
+  \[
+  x_t = \hat{c} + (1 + \hat\phi_1) x_{t-1} + (\hat\phi_2 - \hat\phi_1) x_{t-2} + 
+  (\hat\phi_3 - \hat\phi_2) x_{t-3} - \hat\phi_3 x_{t-4} + w_t + \hat\theta_1
+  w_{t-1} 
+  \]
+
+\item To make a 1-step ahead forecast, we first replace $t$ by $t+1$ above:  
+  \[
+  x_{t+1} = \hat{c} + (1 + \hat\phi_1) x_t + (\hat\phi_2 - \hat\phi_1) x_{t-1} + 
+  (\hat\phi_3 - \hat\phi_2) x_{t-2} - \hat\phi_3 x_{t-3} + w_{t+1} +
+  \hat\theta_1 w_t  
+  \]
+  and then we set $w_{t+1} = 0$, and replace $w_t$ by \smash{$\hat{w}_t$}, which
+  is the residual from our fitted ARIMA model, yielding 
+  \[
+  \hat{x}_{t+1 | t} = \hat{c} + (1 + \hat\phi_1) x_t + (\hat\phi_2 - \hat\phi_1)
+  x_{t-1} + (\hat\phi_3 - \hat\phi_2) x_{t-2} - \hat\phi_3 x_{t-3} +
+  \hat\theta_1 \hat{w}_t  
+  \]
+
+\item To make a 2-step ahead forecast, we similarly start with 
+  \[
+  x_{t+2} = \hat{c} + (1 + \hat\phi_1) x_{t+1} + (\hat\phi_2 - \hat\phi_1) x_t +
+  (\hat\phi_3 - \hat\phi_2) x_{t-1} - \hat\phi_3 x_{t-2} + w_{t+2} +
+  \hat\theta_1 w_{t+1}
+  \]
+  and then we set $w_{t+2} = w_{t+1} = 0$, and replace $x_{t+1}$ by
+  \smash{$\hat{x}_{t+1 | t}$}, yielding  
+  \[
+  \hat{x}_{t+2 | t} = \hat{c} + (1 + \hat\phi_1) \hat{x}_{t+1 | t} + (\hat\phi_2
+  - \hat\phi_1) x_t + (\hat\phi_3 - \hat\phi_2) x_{t-1} - \hat\phi_3 x_{t-2}  
+  \]
+
+\item This process can be iterated any number of times to obtain forecasts
+  arbitrarily far into the future 
+\end{itemize}
+
+\subsection{Qualitative behavior of long-term forecasts}
+
+\begin{itemize}
+\item \emph{Should} we keep iterating the process above to generate forecasts
+  arbitrarily far into the future? 
+
+\item The answer is almost certainly ``no'', in any application! You should be 
+  more careful. Short of detecting and projecting seasonality, ARIMA models are 
+  limited for long-term forecasts 
+
+\item It is important to have a qualitative sense of what long-term forecasts
+  look like in ARIMA. Again, we borrow this nice explanation from HA. Starting
+  with \eqref{eq:sarima-pdq-c}, we can break down the explanation into cases: 
+
+\begin{enumerate}
+\item 
+\end{enumerate}
+
+\end{itemize}
+
+\subsection{Time series cross-validation}
 
 CV has to evaluate the whole procedure. Must rerun auto at each time point ...
 
@@ -1207,18 +1305,18 @@ CV has to evaluate the whole procedure. Must rerun auto at each time point ...
 \allowdisplaybreaks
 \item The 1-step ahead prediction from this model is therefore  
   \begin{align*}
-  \hat{x}_{t|t-1} &= \sum_{j=1}^\infty (1-\lambda) \lambda^{j-1} x_{t-j} \\
-  &= (1-\lambda) x_{t-1} + \sum_{j=2}^\infty (1-\lambda) \lambda^{j-1} x_{t-j}
+  \hat{x}_{t+1 | t} &= \sum_{j=1}^\infty (1-\lambda) \lambda^{j-1} x_{t+1-j} \\  
+  &= (1-\lambda) x_t + \sum_{j=2}^\infty (1-\lambda) \lambda^{j-1} x_{t+1-j} 
     \\
-  &= (1-\lambda) x_{t-1} + \sum_{j=1}^\infty (1-\lambda) \lambda^j x_{t-1-j} \\
-  &= (1-\lambda) x_{t-1} + \sum_{j=1}^\infty (1-\lambda) \lambda^{j-1} x_{t-1-j}
-    \\
-  &= (1-\lambda) x_{t-1} + \lambda \hat{x}_{t-1|t-2}
+  &= (1-\lambda) x_t + \sum_{j=1}^\infty (1-\lambda) \lambda^j x_{t-j} \\
+  &= (1-\lambda) x_t + \lambda \sum_{j=1}^\infty (1-\lambda) \lambda^{j-1}
+    x_{t-j} \\
+  &= (1-\lambda) x_t + \lambda \hat{x}_{t | t-1}
   \end{align*}
 
 \item In other words, the 1-step ahead prediction is a weighted combination of
-  the latest observation $x_{t-1}$ and the previous prediction
-  \smash{$\hat{x}_{t-1|t-2}$}
+  the current observation $x_t$ and the previous prediction \smash{$\hat{x}_{t |
+      t-1}$}
 
 \item Larger values of $\lambda$ (closer to 1) lead to smoother forecasts, since
   we are ``borrowing'' more from the previous forecast, in the last
