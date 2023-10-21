@@ -944,7 +944,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item Below is a summary of some of the basic models that the ARIMA framework
   encompasses. We write $c$ for the intercept in the model, as in 
   \begin{equation}
-  \label{eq:arima-pdq-intercept}
+  \label{eq:arima-pdq-c}
   \phi(B) \nabla^d x_t = c + \theta(B) w_t
   \end{equation}
   Recall, this was assumed zero in \eqref{eq:arima-pdq}, and throughout, only
@@ -1162,15 +1162,20 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   be explained intuitively (which we borrow from HA)
 
 \item As before, we will use the notation \smash{$\hat{x}_{t+h | t}$} to denote
-  a forecast of $x_{t+h}$ made using data up until time $t$. Obtaining this
-  forecast with an ARIMA model can be done with the following three steps
+  a forecast of $x_{t+h}$ made using data up through $t$
+
+\item Some potentially helpful nomenclature: $t+h$ here is called the
+  \emph{target time} (time of the target we are trying to forecasting), and $t$
+  is called the \emph{forecast time} (time at which we make the forecast) 
+
+\item Obtaining the forecast \smash{$\hat{x}_{t+h | t}$} from an ARIMA model can 
+  be done by iterating the following steps: 
 
 \begin{enumerate}
 \item Start with the ARIMA equation
-  \begin{equation}
-  \label{eq:sarima-pdq-c}
+  \[
   \phi(B) \Phi(B^s) \nabla^d \nabla_s^D x_t = c + \theta(B) \Theta(B^s) w_t   
-  \end{equation}
+  \]
   Plug in for parameter estimates, and rearrange so that $x_t$ is on the
   left-hand side an all other terms are on the right-hand side 
 
@@ -1183,7 +1188,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \end{enumerate}
 
 \item Beginning with $h = 1$, we iterate this procedure for $h = 2,3,\dots$ as
-  needed in order to get the forecasts at the ultimate horizon we desire  
+  needed to get the forecasts at the ultimate horizon we desire  
 
 \item It helps to walk through an example. Consider forecasting with a fitted 
   ARIMA(3,1,1) model, which we start by writing as
@@ -1244,20 +1249,39 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   arbitrarily far into the future? 
 
 \item The answer is almost certainly ``no'', in any application! You should be 
-  more careful. Short of detecting and projecting seasonality, ARIMA models are 
-  limited for long-term forecasts 
+  more careful. Short of detecting and projecting seasonality, ARIMA models are  
+  limited for long-term forecasts (in general, long-term forecasts are very hard
+  without precise domain-specific knowledge of what the long-range dynamics look
+  like ... and even then, most domains to not offer much certainty there!)  
 
 \item It is important to have a qualitative sense of what long-term forecasts
   look like in ARIMA. Again, we borrow this nice explanation from HA. Starting
-  with \eqref{eq:sarima-pdq-c}, we can break down the explanation into cases: 
+  with \eqref{eq:arima-pdq-c}, a nonseasonal ARIMA model, we can break down the
+  explanation into cases (recall $c$ is the intercept, and $d$ is the
+  differencing order):  
 
 \begin{enumerate}
-\item 
+\item If $c = 0$ and $d = 0$, then the long-term forecasts will converge
+  to zero 
+\item If $c = 0$ and $d = 1$, then the long-term forecasts will converge
+  to a nonzero constant 
+\item If $c = 0$ and $d = 2$, then the long-term forecasts will follow a
+  linear trend
+\item  If $c \not= 0$ and $d = 0$, then the long-term forecasts will
+  converge to the historical mean 
+\item  If $c \not= 0$ and $d = 1$, then the long-term forecasts will
+  follow a linear trend
+\item  If $c \not= 0$ and $d = 2$, then the long-term forecasts will
+  follow a quadratic trend (can be dangerous! some software packages do not
+  allow $d \geq 2$ when $c \not= 0$ ...)
 \end{enumerate}
 
+\item You will verify this on your homework for some simple ARIMA models, where
+  you'll also work out the qualitative behavior for long-term forecasts from
+  seasonal ARIMA models 
 \end{itemize}
 
-\subsection{Time series cross-validation}
+\subsection{Split-sample and cross-validation}
 
 CV has to evaluate the whole procedure. Must rerun auto at each time point ...
 
