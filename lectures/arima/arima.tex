@@ -1409,10 +1409,41 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
   this near the end of the course when we discuss calibration 
 \end{itemize}
 
-\subsection{ARMAX models}
+\subsection{ARIMAX models}
 
 \begin{itemize}
-\item 
+\item In practice, including auxiliary features in an ARIMA model can make it
+  much more powerful. This is true in general: finding good predictors can make
+  a huge difference in forecasting!
+
+\item Auxiliary features are often referred to as \emph{exogenous} in the
+  context of time series models, and an ARIMA model with exogenous predictors is
+  often abbreviated ARIMAX 
+
+\item Formally, an ARIMAX($p,d,q$) model is an extension of the ARIMA model 
+  \eqref{eq:arima-pdq} of the form 
+  \[
+  \phi(B) \nabla^d x_t = \theta(B) w_t + \beta^\T u_t
+  \]
+  where $u_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is an exogenous predictor
+  sequence  white noise sequence
+
+\item Forecasting with ARIMAX models is a little more complicated because, for
+  ``true'' ex-ante forecasts, we will typically not have the values of the
+  exogenous predictor available that we need (think about the steps we outlined
+  for forecasting with ARIMA models, and how we substituted future observations
+  with their forecasted values---unless we build a separate forecast model for
+  $u_t$, we will not know how to impute them) 
+
+\item As usual (as we described in the regression lecture), we can use lagged
+  exogenous features as predictors in order to circumvent this issue
+
+\item (Note: be careful not to confuse an ARIMAX model with a regression with 
+  correlated errors! They are not the same thing. In both models, there are
+  exogenous predictors and and errors with an MA dynamic, but the distinguishing 
+  factor is the AR dynamic: in an ARIMAX model, the ``response'', which is $x_t$
+  in our notation here, obeys an AR dynamic; in a regression with correlated
+  errors, the errors obey an AR dynamic) 
 \end{itemize}
 
 \subsection{IMA models}
@@ -1451,7 +1482,6 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
   &= \sum_{j=1}^\infty (1-\lambda) \lambda^{j-1} x_{t-j} + w_t 
   \end{align*}
 
-\allowdisplaybreaks
 \item The 1-step ahead prediction from this model is therefore  
   \begin{align*}
   \hat{x}_{t+1 | t} &= \sum_{j=1}^\infty (1-\lambda) \lambda^{j-1} x_{t+1-j} \\  
