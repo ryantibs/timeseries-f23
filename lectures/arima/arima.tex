@@ -1283,7 +1283,77 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \subsection{Split-sample and cross-validation}
 
-CV has to evaluate the whole procedure. Must rerun auto at each time point ...
+\def\SplitMSE{\mathrm{SplitMSE}} 
+\def\CVMSE{\mathrm{CVMSE}}
+
+\begin{itemize}
+\item Finally, we arrive at our bread-and-butter tools for evaluating ARIMA
+  models for their predictive accuracy: split-sample and time series
+  cross-validation (CV)
+
+\item They apply exactly as described in the regression lecture: to recap, in
+  split-sample validation, we pick a time $t_0$, train our model (regression,
+  ARIMA, whatever) on data up through $t_0$, and then we evaluate forecasts  
+  \smash{$\hat{x}_{t |  t_0}$} over times $t > t_0$:
+  \[
+  \SplitMSE = \frac{1}{n-t_0} \sum_{t = t_0+1}^n \big( \hat{x}_{t | t_0} - x_t
+  \big)^2   
+  \]
+  In time series CV, we use data before $t_0$ as a burn-in period (usually we
+  would choose a smaller $t_0$ for time series CV than for split-sample) to
+  ensure the initial model is decent, and then iteratively retrain at each $t >
+  t_0$ in order to make forecasts. For $h$-step ahead forecasts:   
+  \[
+  \CVMSE = \frac{1}{n-t_0} \sum_{t = t_0+1}^n \big( \hat{x}_{t | t-h} - x_t
+  \big)^2    
+  \]
+  (Instead of MSE, we could also use MAE, or MAPE, or MASE as our metric ...) 
+
+\item There is not much more to say other than to reiterate that these are our
+  most robust (assumption-lean) tools for assessing utility in a predictive 
+  context
+
+\item There is one important warning to give however! This applies to
+  cross-validation, generally, in any setting. Cross-validation evaluates the
+  prediction error of \emph{an entire procedure}. Thus the entire procedure
+  \emph{must be rerun} each time predictions are to be validated. So, e.g., if
+  we are using auto-ARIMA (as implemented by \verb|ARIMA()| in the \verb|fable|
+  package) to select an ARIMA order for us, then we must rerun auto-ARIMA at
+  each time $t > t_0$ in order to evaluate forecasts in the last display. (And,
+  note, it will generally pick different orders at each $t > t_0$ ... the way to
+  think about it is that we are evaluating the prediction error of auto-ARIMA 
+  \emph{procedure} itself) 
+
+\item In other words, we \emph{cannot} run auto-ARIMA once over all time, and
+  then take the selected ARIMA order and apply this retrospectively. That would
+  not yield an honest estimate of prediction error (since we would have used the 
+  future at $t > t_0$ to select the ARIMA order). The table below summarizes 
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+Wrong way: & 
+\parbox[c]{0.77\textwidth}{ \smallskip
+Run auto-ARIMA at time $n$ (all time) to select $p,d,q$, and use this 
+retrospectively in time series CV to fit ARIMA($p,d,q$) at each $t > t_0$ and
+make forecasts \smallskip}  
+\\ \hline
+Right way: & 
+\parbox[c]{0.77\textwidth}{ \smallskip
+Run auto-ARIMA at each $t > t_0$ to select (time-dependent) $p,d,q$, and use
+this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip} 
+\\ \hline
+\end{tabular}  
+\end{center}
+
+\item (Note: we are not advertising or advocating for the use of auto-ARIMA, but
+  are simply explaining that this would be the right way to validate it) 
+
+\item Finally, as a general rule-of-thumb, we recall Occam's razor: if a number
+  of models all have reasonably similar split-sample or cross-validated
+  prediction error, then we would generally prefer to use the simplest among 
+  them 
+\end{itemize}
 
 \subsection{Prediction intervals}
 
