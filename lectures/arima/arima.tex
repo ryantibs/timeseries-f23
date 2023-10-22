@@ -1244,17 +1244,17 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   arbitrarily far into the future 
 \end{itemize}
 
-\subsection{Qualitative behavior of long-term forecasts}
+\subsection{Behavior of long-term forecasts}
 
 \begin{itemize}
 \item \emph{Should} we keep iterating the process above to generate forecasts
   arbitrarily far into the future? 
 
-\item The answer is almost certainly ``no'', in any application! You should be 
-  more careful. Short of detecting and projecting seasonality, ARIMA models are  
-  limited for long-term forecasts (in general, long-term forecasts are very hard
-  without precise domain-specific knowledge of what the long-range dynamics look
-  like ... and even then, most domains to not offer much certainty there!)  
+\item The answer is almost certainly ``no'', in most applications! You should 
+  be more careful. Short of detecting and projecting seasonality, ARIMA models
+  are limited for long-term forecasts (in general, long-term forecasts are very
+  hard without precise domain-specific knowledge of what the long-range dynamics
+  look like ... and even then, many domains to not offer much to say there ...)  
 
 \item It is important to have a qualitative sense of what long-term forecasts
   look like in ARIMA. Again, we borrow this nice explanation from HA. Starting
@@ -1289,7 +1289,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \def\CVMSE{\mathrm{CVMSE}}
 
 \begin{itemize}
-\item Finally, we arrive at our bread-and-butter tools for evaluating ARIMA
+\item At last, we arrive to our bread-and-butter tools for evaluating ARIMA  
   models for their predictive accuracy: split-sample and time series
   cross-validation (CV)
 
@@ -1302,9 +1302,9 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   \big)^2   
   \]
   In time series CV, we use data before $t_0$ as a burn-in period (usually we
-  would choose a smaller $t_0$ for time series CV than for split-sample) to
-  ensure the initial model is decent, and then iteratively retrain at each $t >
-  t_0$ in order to make forecasts. For $h$-step ahead forecasts:   
+  would choose a smaller $t_0$ here than for split-sample) to ensure the initial
+  model is decent, and then iteratively retrain at each $t > t_0$ in order to
+  make forecasts. For $h$-step ahead forecasts:    
   \[
   \CVMSE = \frac{1}{n-t_0} \sum_{t = t_0+1}^n \big( \hat{x}_{t | t-h} - x_t
   \big)^2    
@@ -1324,7 +1324,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   each time $t > t_0$ in order to evaluate forecasts in the last display. (And,
   note, it will generally pick different orders at each $t > t_0$ ... the way to
   think about it is that we are evaluating the prediction error of auto-ARIMA 
-  \emph{procedure} itself) 
+  \emph{procedure} itself, not any particular selected order) 
 
 \item In other words, we \emph{cannot} run auto-ARIMA once over all time, and
   then take the selected ARIMA order and apply this retrospectively. That would
@@ -1352,10 +1352,9 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
 \item (Note: we are not advertising or advocating for the use of auto-ARIMA, but
   are simply explaining that this would be the right way to validate it) 
 
-\item Finally, as a general rule-of-thumb, we recall Occam's razor: if a number
-  of models all have reasonably similar split-sample or cross-validated
-  prediction error, then we would generally prefer to use the simplest among 
-  them 
+\item Finally, as a rule-of-thumb, we recall Occam's razor: if a number of
+  models all have reasonably similar split-sample or cross-validated prediction
+  error, then we would generally prefer to use the simplest among them 
 \end{itemize}
 
 \subsection{Prediction intervals}
@@ -1373,10 +1372,10 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
 \item There are various ways to compute prediction intervals. One method is to
   obtain an estimate \smash{$\hat\sigma^2_h$} of the variance of the ``$h$-step
   ahead forecast distribution''. This is in quotes because we have not defined
-  this precisely, but we will avoid going into details because this approach is
+  this precisely, and we will avoid going into details because this approach is
   not always tractable, and also requires more assumptions about the ARIMA
   model, including (typically) normality of the noise distribution. But in any
-  case, having computed such an estimate, we would model the $h$-step ahead
+  case, having computed such an estimate, we could model the $h$-step ahead
   forecast distribution at time $t$ as
   \[
   N\big( \hat{x}_{t+h | t}, \hat\sigma^2_h \big)
@@ -1395,18 +1394,19 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
   \verb|forecast()| function when \verb|bootstrap = TRUE|. The gist of the idea
   is as follows: in step 3, instead of replacing future errors ($w_{t+k}$, $k
   \geq 0$) by zero, we replace them by a bootstrap draw (i.e., a uniform sample
-  with replacement) from the empirical distribution of ARIMA residuals. Given a
+  with replacement) from the empirical distribution of past residuals. Given a
   bunch of sample paths, we can then read off empirical quantiles at $t+h$ for a
-  prediction interval 
+  prediction interval  
 
 \item Unfortunately, neither of these methods (nor any other traditional
   methods) for producing prediction intervals are guaranteed to actually give
   \emph{coverage} in practice. That is, you would hope that our 95\% prediction 
   intervals actually cover 95\% of the time, but this need not be the case
 
-\item Fortunately, we will learn that there are some relatively simple methods
-  that will endow prediction intervals with long-run coverage. We'll talk about
-  this near the end of the course when we discuss calibration 
+\item Fortunately, we will learn that there are some relatively simple
+  correction methods that can act as post-processors to endow any given sequence
+  of prediction intervals with long-run coverage. We will talk about this near the 
+  end of the course when we discuss calibration  
 \end{itemize}
 
 \subsection{ARIMAX models}
@@ -1426,7 +1426,7 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
   \phi(B) \nabla^d x_t = \theta(B) w_t + \beta^\T u_t
   \]
   where $u_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is an exogenous predictor
-  sequence  white noise sequence
+  sequence 
 
 \item Forecasting with ARIMAX models is a little more complicated because, for
   ``true'' ex-ante forecasts, we will typically not have the values of the
@@ -1440,10 +1440,10 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
 
 \item (Note: be careful not to confuse an ARIMAX model with a regression with 
   correlated errors! They are not the same thing. In both models, there are
-  exogenous predictors and and errors with an MA dynamic, but the distinguishing 
+  exogenous predictors and and errors with MA dynamics, but the distinguishing  
   factor is the AR dynamic: in an ARIMAX model, the ``response'', which is $x_t$
-  in our notation here, obeys an AR dynamic; in a regression with correlated
-  errors, the errors obey an AR dynamic) 
+  in our notation here, exhibits AR dynamics; in a regression with correlated
+  errors, the errors exhibit AR dynamics) 
 \end{itemize}
 
 \subsection{IMA models}
