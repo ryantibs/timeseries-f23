@@ -284,7 +284,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   simply (recalling $\theta_0 = 1$) as
   \begin{equation}
   \label{eq:ma-1-auto-cov}  
-  \gamma(h) = \begin{cases}
+  \gamma_x(h) = \begin{cases}
   (1+\theta^2) \sigma^2 & h = 0 \\
   \theta \sigma^2 & |h| = 1 \\
   0 & |h| > 1 \\
@@ -560,7 +560,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \item For an AR($p$) model \eqref{eq:ar-p}, assumed causal (i.e., all roots of
   $\phi(z)$ are outside of the unit circle), we can focus on the auto-covariance  
-  at lags $ h \geq 0$ (without a loss of generality, because $\gamma$ is
+  at lags $ h \geq 0$ (without a loss of generality, because $\gamma_x$ is
   symmetric around zero), 
   \[
   \Cov(x_t, x_{t+h}) = \sum_{j=1}^p \phi_j \Cov(x_t, x_{t+h-j}) + \Cov(x_t,
@@ -579,12 +579,12 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item Combining the last two displays, we learn that the auto-covariance
   function satisfies 
   \begin{align*}
-  &\gamma(h) - \sum_{j=1}^p \phi_j \gamma(h-j) = 0, \quad h > 0 \\ 
-  &\gamma(0) - \sum_{j=1}^p \phi_j \gamma(-j) = \sigma^2 \psi_0, 
+  &\gamma_x(h) - \sum_{j=1}^p \phi_j \gamma_x(h-j) = 0, \quad h > 0 \\ 
+  &\gamma_x(0) - \sum_{j=1}^p \phi_j \gamma_x(-j) = \sigma^2 \psi_0, 
   \end{align*}
 
 \item This is called a \emph{difference equation} of order $p$ for the
-  auto-covariance function $\gamma$. Some simple difference equations can be
+  auto-covariance function $\gamma_x$. Some simple difference equations can be
   solved explicitly without complicated mathematics, but to solve a difference  
   equation in general requires knowing something (again) about the roots of a
   certain complex polynomial associated with the difference equation, when it is
@@ -596,7 +596,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   last display and get
   \begin{equation}
   \label{eq:ar-p-auto-cov}
-  \gamma(h) = P_1(h) z_1^{-h} + \cdots + P_r(h) z_r^{-h}
+  \gamma_x(h) = P_1(h) z_1^{-h} + \cdots + P_r(h) z_r^{-h}
   \end{equation}
   where each $P_j$ is a polynomial, and each $z_j$ is a root of the AR
   polynomial $\phi$. Because each $|z_j| > 1$ (all roots lie outside the unit
@@ -623,15 +623,15 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item Combining the last two displays, we learn that the auto-covariance
   function satisfies 
   \begin{alignat*}{2}
-  &\gamma(h) - \sum_{j=1}^p \phi_j \gamma(h-j) = 0, \quad &&h > q \\ 
-  &\gamma(h) - \sum_{j=1}^p \phi_j \gamma(h-j) = \sigma^2 \sum_{j=h}^q
+  &\gamma_x(h) - \sum_{j=1}^p \phi_j \gamma_x(h-j) = 0, \quad &&h > q \\ 
+  &\gamma_x(h) - \sum_{j=1}^p \phi_j \gamma_x(h-j) = \sigma^2 \sum_{j=h}^q
     \psi_{j-h}, \quad &&h \leq q
   \end{alignat*}
 
-\item This is again a difference equation of order $p$ that determines $\gamma$,
-  but the boundary condition (what happens when $h \leq q$) is more
+\item This is again a difference equation of order $p$ that determines
+  $\gamma_x$, but the boundary condition (what happens when $h \leq q$) is more
   complicated. Nonetheless, the solution is still the form
-  \eqref{eq:ar-p-auto-cov}, and the qualitative behavior is still the same as in
+  \eqref{eq:ar-p-auto-cov}, and the qualitative behavior is still the same as in 
   the AR($p$) case   
 
 \item Figure \ref{fig:auto-cor}, top row, shows sample auto-correlation
