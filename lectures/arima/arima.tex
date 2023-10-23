@@ -985,8 +985,8 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \includegraphics[width=0.45\textwidth]{fig/car-3.pdf}
 \includegraphics[width=0.45\textwidth]{fig/car-4.pdf}
 \caption{Top row: exports (as a percentage of GDP) for Central African
-  Republic. Middle row: first differences of exports. Bottom row: ACF and PACF
-  functions of first differences.}
+  Republic (from HA). Middle row: first differences of exports. Bottom row: ACF 
+  and PACF functions of first differences.}
 \label{fig:car-exploratory}
 \end{figure}
 
@@ -1112,9 +1112,9 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \includegraphics[width=0.6\textwidth]{fig/leisure-1.pdf}
 \includegraphics[width=0.6\textwidth]{fig/leisure-2.pdf}
 \includegraphics[width=0.6\textwidth]{fig/leisure-3.pdf}
-\caption{Top row: number of US jobs (in millions) in leisure/hospitality. Middle
-  row: seasonal (yearly) differences. Bottom row: differences of seasonal
-  differences.} 
+\caption{Top row: number of US jobs (in millions) in leisure/hospitality (from
+  HA). Middle row: seasonal (yearly) differences. Bottom row: differences of
+  seasonal differences.} 
 \label{fig:leisure-exploratory}
 \end{figure}
 
@@ -1451,9 +1451,9 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
 \begin{itemize}
 \item Forecasting with the ARIMA(0,1,1) model, also written as IMA(1,1), bears
   an interesting connection to what is called \emph{simple exponential 
-    smooting}. This is also sometimes called an \emph{exponentially weighted
-    moving averages} (EWMA) forecaster. It tends to be popular in economics (SS 
-  call it ``frequently used and abused'')    
+    smooting} (SES). This is also sometimes called an \emph{exponentially
+    weighted moving averages} (EWMA) forecaster. It tends to be popular in
+  economics (SS call it ``frequently used and abused'')     
 
 \item To develop the connection, consider the IMA model with an MA coefficient
   of $\theta = -(1-\alpha)$, where $0 < \alpha < 1$. We can write this as  
