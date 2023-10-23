@@ -259,7 +259,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   \nonumber
   &= \sum_{j,\ell=0}^q \theta_j \theta_\ell \Cov( w_{t-j}, w_{t+h-\ell} ) \\
   \label{eq:ma-q-auto-cov}
-  &= \sum_{j \,:\, 0 \leq j,  j +h \leq q} \theta_j \theta_{j+h} 
+  &= \sum_{j \,:\, 0 \leq j,  j +h \leq q} \theta_j \theta_{j+h} \sigma^2
   \end{align}
   Since this only depends on $h$, we can see that the process is indeed
   stationary 
