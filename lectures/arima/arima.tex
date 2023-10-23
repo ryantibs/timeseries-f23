@@ -1456,53 +1456,52 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
   call it ``frequently used and abused'')    
 
 \item To develop the connection, consider the IMA model with an MA coefficient
-  of $\theta = -\lambda$, where $|\lambda| < 1$. We can write this as 
+  of $\theta = -(1-\alpha)$, where $0 < \alpha < 1$. We can write this as  
   \[
-  x_t - x_{t-1} = w_t - \lambda w_{t-1}
+  x_t - x_{t-1} = w_t - (1-\alpha) w_{t-1}
   \]
 
-\item Because $|\lambda| < 1$, this has an invertible representation: writing 
-  $y_t = x_t - x_{t-1}$, recall what we developed in \eqref{eq:ma-1-invertible},
-  which yields
+\item Because $\alpha < 1$, this has an invertible representation: writing $y_t
+  = x_t - x_{t-1}$, recall what we developed in \eqref{eq:ma-1-invertible},
+  which yields 
   \[
-  w_t = \sum_{j=0}^\infty \lambda^j y_{t-j} 
+  w_t = \sum_{j=0}^\infty (1-\alpha)^j y_{t-j} 
   \]
   or
   \[
-  y_t = -\sum_{j=1}^\infty \lambda^j y_{t-j} + w_t
+  y_t = -\sum_{j=1}^\infty (1-\alpha)^j y_{t-j} + w_t
   \]
   
 \item Substituting $y_t = x_t - x_{t-1}$, and rearranging, this gives 
   \begin{align*}
-  x_t &= x_{t-1} - \sum_{j=1}^\infty \lambda^j (x_{t-j} - x_{t-j-1}) + w_t \\ 
-  &= x_{t-1} + \sum_{j=1}^\infty \lambda^j x_{t-j-1} - \sum_{j=1}^\infty
-    \lambda^j x_{t-j} + w_t \\
-  &= \sum_{j=1}^\infty \lambda^{j-1} x_{t-j} - \sum_{j=1}^\infty \lambda^j
+  x_t &= x_{t-1} - \sum_{j=1}^\infty (1-\alpha)^j (x_{t-j} - x_{t-j-1}) + w_t \\
+  &= x_{t-1} + \sum_{j=1}^\infty (1-\alpha)^j x_{t-j-1} - \sum_{j=1}^\infty
+    (1-\alpha)^j x_{t-j} + w_t \\
+  &= \sum_{j=1}^\infty (1-\alpha)^{j-1} x_{t-j} - \sum_{j=1}^\infty (1-\alpha)^j
     x_{t-j} + w_t \\
-  &= \sum_{j=1}^\infty (1-\lambda) \lambda^{j-1} x_{t-j} + w_t 
+  &= \sum_{j=1}^\infty \alpha (1-\alpha)^{j-1} x_{t-j} + w_t 
   \end{align*}
 
 \item The 1-step ahead prediction from this model is therefore  
   \begin{align*}
-  \hat{x}_{t+1 | t} &= \sum_{j=1}^\infty (1-\lambda) \lambda^{j-1} x_{t+1-j} \\  
-  &= (1-\lambda) x_t + \sum_{j=2}^\infty (1-\lambda) \lambda^{j-1} x_{t+1-j} 
+  \hat{x}_{t+1 | t} &= \sum_{j=1}^\infty \alpha (1-\alpha)^{j-1} x_{t+1-j} \\  
+  &= \alpha x_t + \sum_{j=2}^\infty \alpha (1-\alpha)^{j-1} x_{t+1-j} 
     \\
-  &= (1-\lambda) x_t + \sum_{j=1}^\infty (1-\lambda) \lambda^j x_{t-j} \\
-  &= (1-\lambda) x_t + \lambda \sum_{j=1}^\infty (1-\lambda) \lambda^{j-1}
+  &= \alpha x_t + \sum_{j=1}^\infty \alpha (1-\alpha)^j x_{t-j} \\
+  &= \alpha x_t + (1-\alpha) \sum_{j=1}^\infty \alpha (1-\alpha)^{j-1}
     x_{t-j} \\
-  &= (1-\lambda) x_t + \lambda \hat{x}_{t | t-1}
+  &= \alpha x_t + (1-\alpha) \hat{x}_{t | t-1}
   \end{align*}
 
 \item In other words, the 1-step ahead prediction is a weighted combination of
   the current observation $x_t$ and the previous prediction \smash{$\hat{x}_{t |
       t-1}$}
 
-\item Larger values of $\lambda$ (closer to 1) lead to smoother forecasts, since
+\item Smaller values of $\alpha$ (closer to 0) lead to smoother forecasts, since
   we are ``borrowing'' more from the previous forecast, in the last
   display
 
 \item This is the simplest in a class of methods based on exponential smoothing,
-  which we will cover in the next lecture (and the relevance of the term
-  ``exponential'' here will become apparent then) 
+  which we will cover in the next lecture
 \end{itemize}
 \end{document}
