@@ -1425,7 +1425,7 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
 \item Formally, an ARIMAX($p,d,q$) model is an extension of the ARIMA model 
   \eqref{eq:arima-pdq} of the form 
   \[
-  \phi(B) \nabla^d x_t = \theta(B) w_t + \beta^\T u_t
+  \phi(B) \nabla^d x_t = \beta^\T u_t + \theta(B) w_t
   \]
   where $u_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is an exogenous predictor
   sequence 
