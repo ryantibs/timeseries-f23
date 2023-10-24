@@ -53,7 +53,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   condition. In ARIMA, to develop the theory cleanly, we let time extend back to
   $-\infty$. In  exponential smoothing, we instead usually index time starting
   at $t = 0$, in which case the right-hand side in \eqref{eq:ses-exp} would end
-  with $\alpha (1-\alpha)^t x_0$, and we often take $x_0 = 0$ for simplicity)
+  with $\alpha (1-\alpha)^t x_0$)
 
 \item To make $h$-step ahead forecasts, we iterate \eqref{eq:ses}, where (as 
   usual) we replace future observations by their forecasts. This simply  
@@ -133,13 +133,93 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 
 \begin{itemize}
 \item An extension of the SES forecaster in \eqref{eq:ses-component} is
-  \emph{Holt's linear trend method} 
+  \emph{Holt's linear trend} method. This changes the forecast equation (first
+  line) and the level equation (second line) to accomodate an estimate of the
+  slope $b_t$ of the series at time $t$. And it adds a trend equation to evolve
+  the slope
+
+\item Precisely, in component form (which we will stick to henceforth): 
+  \begin{equation}
+  \label{eq:holt}
+  \begin{aligned}
+  \hat{x}_{t+h | t} &= \ell_t + b_t h \\
+  \ell_t &= \alpha x_t + (1-\alpha) (\ell_{t-1} + b_{t-1}) \\
+  b_t &= \beta (\ell_t - \ell_{t-1}) + (1-\beta) b_{t-1} 
+  \end{aligned}
+  \end{equation}
+  Now $\beta$ is an additional parameter to be estimated, where both $\alpha,
+  \beta \in [0,1]$ 
+
+\item As before, the level equation updates $\ell_t$ as an $\alpha$-weighted
+  combination of the current observation $x_t$ and the previous 1-step ahead
+  forecast \smash{$\hat{x}_{t | t-1} = \ell_{t-1} + b_{t-1}$} 
+
+\item The trend equation updates $b_t$ as a $\beta$-weighted combination of the
+  current trend $\ell_t - \ell_{t-1}$ and the previous trend $b_{t-1}$
+
+\item Critically, the forecast trajectory from Holt's linear trend method is no
+  longer flat but (as the name suggests, and as is apparent from
+  \eqref{eq:holt}) a linear function, with slope $b_t$
+
+\item The middle row of Figure \ref{fig:internet} shows the forecast from Holt's
+  linear trend method on the internet useage today. To be clear, now both
+  $\alpha,\beta$ have been estimated from the data. We can see that it predicts
+  a downward trajectory, since $b_t$ at the last time $t$ appears to be
+  negative. However, its prediction intervals are very wide, suggesting that the 
+  model is highly uncertain of trend directionality  
 \end{itemize}
 
 \subsection{Damped trends}
 
 \begin{itemize}
-\item 
+\item Linear trend forecasts at long horizons can be somewhat erratic; we've 
+  already seen that the forecast variance is quite high in the example in Figure
+  \ref{fig:internet} (as evidenced by the wide prediction intervals) and this
+  wasn't even a super long horizon ...
+
+\item As a kind of regularization, we can \emph{dampen} the forecasts from
+  Holt's linear trend method. This is often called \emph{damped Holt's} or the
+  \emph{damped linear trend} method 
+
+\item In addition to $\alpha,\beta \in [0,1]$ as in \eqref{eq:holt}, we
+  introduce a third parameter $\phi \in [0,1]$, to dampen the forecast
+  trajectory: 
+  \begin{equation}
+  \label{eq:damped}
+  \begin{aligned}
+  \hat{x}_{t+h | t} &= \ell_t + b_t (\phi + \phi^2 + \cdots + \phi^h) \\ 
+  \ell_t &= \alpha x_t + (1-\alpha) (\ell_{t-1} + b_{t-1} \phi) \\
+  b_t &= \beta (\ell_t - \ell_{t-1}) + (1-\beta) b_{t-1} \phi
+  \end{aligned}
+  \end{equation}
+
+\item The interpretation in the damped method \eqref{eq:damped} is essentially
+  the same as in Holt's method \eqref{eq:holt}, but you can think of it like
+  this: the contribution of a given slope to a forecast diminishes at each step
+  by a multiplicative factor of $\phi$ 
+
+\item As $h \to \infty$, the forecasts from the damped linear trend method
+  approach a particular constant (finite) level, namely
+  \[
+  \hat{x}_{t+h | t} \to \ell_t + b_t \sum_{j=1}^\infty \phi^j = \ell_t + b_t
+  \frac{\phi}{1-\phi} 
+  \]
+  For example, when $\phi = 0.9$, this limit is $\ell_t + 9 b_t$
+
+\item HA say that a practical range for $\phi$ is usually 0.8 to 0.98; when
+  $\phi$ is below 0.8, the dampening is too strong (and short-term forecasts are
+  not ``trended'' enough); when $\phi$ is above 0.98, it is too weak (and you
+  cannot distinguish the forecasts from Holt's linear trend method for
+  reasonably horizons). In fact, the \verb|ETS()| function limits the range of
+  $\phi$ to be $[0.8, 0.98]$, by default
+
+\item The bottom row of Figure \ref{fig:internet} shows the forecasts from the
+  damped linear trend method on the internet useage data. To be clear, all of 
+  $\alpha,\beta,\phi$ are estimated from the data. We can see a weak downward
+  trend, that quickly flattens out. The prediction intervals are also much 
+  narrower. Inspection of the fitted model (see the R notebook) shows that we
+  the dampening coeffcient estimate is \smash{$\hat\phi = 0.81$}, so it has
+  quite a pronounced effect here
 \end{itemize}
 
 \section{Seasonality extensions}
