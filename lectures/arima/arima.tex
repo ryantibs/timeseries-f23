@@ -382,10 +382,10 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \item Sure, there is some duplicity in representation here, as we will see---we
   can write some AR models as infinite-order MA models, and some MA models as  
-  infinite-order AR models. But that's OK! We can generally take the most
-  salient features that each model represents, and combine them to get a simple
-  model formulation that exhibits both sets of features, simultaneously. This is
-  exactly what an ARMA model does      
+  infinite-order AR models. But that's OK! We can take the most salient features
+  that each model represents, and combine them to get a simple model formulation
+  that exhibits both sets of features, simultaneously. This is exactly what an
+  ARMA model does       
 
 \item Precisely, an ARMA model of orders $p,q \geq 0$, denoted ARMA($p,q$), is
   of the form 
@@ -1291,7 +1291,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \begin{itemize}
 \item At last, we arrive to our bread-and-butter tools for evaluating ARIMA  
   models for their predictive accuracy: split-sample and time series
-  cross-validation (CV)
+  cross-validation (CV) 
 
 \item They apply exactly as described in the regression lecture: to recap, in
   split-sample validation, we pick a time $t_0$, train our model (regression,
@@ -1313,7 +1313,10 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \item There is not much more to say other than to reiterate that these are our
   most robust (assumption-lean) tools for assessing utility in a predictive 
-  context. You'll get continued practice with time series CV on your homework
+  context. You'll get continued practice with time series CV on your
+  homework. The \verb|fable| package that we'll use for a lot of forecasting
+  tools has a handy (though memory-inefficient) way of implementing this, which
+  saves you from writing a loop by hand 
 
 \item There is one important warning to give however! This applies to
   cross-validation, generally, in any setting. Cross-validation evaluates the
@@ -1329,8 +1332,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item In other words, we \emph{cannot} run auto-ARIMA once over all time, and
   then take the selected ARIMA order and apply this retrospectively. That would
   not yield an honest estimate of prediction error (since we would have used the 
-  future at $t > t_0$ to select the ARIMA order). The table below
-  summarizes:
+  future at $t > t_0$ to select the ARIMA order). Summary:
 
 \begin{center}
 \begin{tabular}{|l|l|}
@@ -1365,9 +1367,9 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
     \ref{fig:car-forecasts} and \ref{fig:leisure-forecasts}, you can see bands
     around the point forecasts (which are the dark lines) 
 
-\item These bands represent \emph{prediction intervals}, which are generally
-  very useful in practice, since they reflect uncertainty in the predictions
-  that are made (and are often useful for downstream decision-making) 
+\item These bands represent \emph{prediction intervals}, which are typically
+  quite important in practice, since they reflect uncertainty in the predictions 
+  that are made (and can be useful for downstream decision-making)  
 
 \item There are various ways to compute prediction intervals. One method is to
   obtain an estimate \smash{$\hat\sigma^2_h$} of the variance of the ``$h$-step
