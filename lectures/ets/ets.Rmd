@@ -1,0 +1,53 @@
+---
+title: 'Lecture 6: Autoregressive Integrated Moving Average Models'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+    code_folding: show
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(dev = c("png", "pdf"), fig.path = "fig/",
+                     cache = TRUE, autodep = TRUE, cache.comments = TRUE)
+```
+
+# Load packages
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(astsa)
+library(fpp3)
+library(epidatasets)
+```
+
+# Internet useage
+
+```{r internet, fig.width=8, fig.height=10}
+www = as_tsibble(WWWusage)
+
+# Fit models
+www_fit = www |>
+  model(SES = ETS(value ~ error("A") + trend("N") + season("N")),
+        Holt = ETS(value ~ error("A") + trend("A") + season("N")),
+        Damped = ETS(value ~ error("A") + trend("Ad") + season("N")))
+  
+# Make forecasts
+www_fit |>
+  forecast(h = 10) |>
+  mutate(.model = factor(.model, levels = c("SES", "Holt", "Damped"))) |>
+  autoplot(www) + 
+  labs(x = "Minute", y = "Number of users",
+       title = "Internet usage per minute") +
+  facet_grid(vars(.model)) + theme_bw() +
+  theme(legend.position = "bottom", legend.title = element_blank())
+
+# Inspect fitted coefficients
+www_fit |> select(SES) |> coef()
+www_fit |> select(Holt) |> coef()
+www_fit |> select(Damped) |> coef()
+
+# An example of how you would retrieve the components
+www_fit |> select(Damped) |> components()
+```
