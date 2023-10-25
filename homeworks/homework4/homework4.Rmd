@@ -1,0 +1,123 @@
+---
+title: 'Homework 4: [YOUR NAME HERE]'
+subtitle: 'Introduction to Time Series, Fall 2023'
+date: 'Due Friday November 3 at 9pm'
+output:
+  html_document
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(cache = TRUE, autodep = TRUE, cache.comments = TRUE)
+```
+
+The total number of points possible for this homework is XY. The number of 
+points for each question is written below, and questions marked as "bonus" are 
+optional. Submit the **knitted html file** from this Rmd to Gradescope. 
+
+If you collaborated with anybody for this homework, put their names here:
+
+# Backshift commuting
+
+1. (1 pt) 
+Let $B$ denote the backshift operator. Given any integers $k,\ell \geq 0$, 
+explain why $B^k B^\ell = B^\ell B^k$.
+
+SOLUTION GOES HERE
+
+2. (2 pts)
+Using Q1, if $\phi_1,\dots,\phi_k$ and $\varphi_1,\dots,\varphi_\ell$ are any
+coefficients, show that
+\[
+(1 + \phi_1 B + \cdots + \phi_k B^k) 
+(1 + \varphi_1 B + \cdots + \varphi_\ell B^\ell) = 
+(1 + \varphi_1 B + \cdots + \varphi_\ell B^\ell) 
+(1 + \phi_1 B + \cdots + \phi_k B^k) 
+\]
+
+SOLUTION GOES HERE
+
+3. (2 pts)
+Verify the result in Q2 with a small code example.
+
+```{r}
+# CODE GOES HERE
+```
+
+4. (3 pts) 
+Using Q2, show that we can write a SARIMA model equivalently as 
+\[
+\phi(B) \Phi(B^s) \nabla^d \nabla_s^D x_t = 
+\theta(B) \Theta(B^s) w_t 
+\]
+and
+\[
+\Phi(B^s) \phi(B) \nabla_s^D \nabla^d x_t = 
+\Theta(B^s) \theta(B) w_t.
+\]
+
+SOLUTION GOES HERE
+
+# Long-range ARIMA
+
+5. (1 pt)
+Let $\nabla = (1 - B)$ denote the difference operator. Suppose that $\nabla x_t
+= 0$ for all $t$. Prove that $x_t$ must be a constant sequence.
+
+6. (2 pts)
+Suppose that $\nabla x_t = u$ for all $t$, where $u$ is an arbitrary constant. 
+Prove that $x_t$ must be a linear function of $t$, of the form $x_t = a + bt$.
+
+SOLUTION GOES HERE
+
+7. (3 pts)
+Suppose that $\nabla x_t = u + vt$ for all $t$, where $u,v$ are again arbitrary
+constants. Prove that $x_t$ must be a quadratic function of $t$, of the form 
+$x_t = a + bt + ct^2$.
+
+SOLUTION GOES HERE
+
+8. (1 pt)
+Using Q7, prove that if $\nabla^2 x_t = u$ for all $t$, where $u$ is a constant,
+then $x_t$ must be a quadratic function of $t$.
+
+SOLUTION GOES HERE
+
+9. (4 pts) 
+Consider an ARMA(1,1) model:
+\[
+(1 - \phi B) x_t = (1 + \theta B) w_t.
+\]
+Suppose our estimates pass the "unit root test", $|\hat\phi|, |\hat\theta| < 1$, 
+which will be assumed implicitly henceforth. Unravel the forecast iteration 
+described in lecture to show that $\hat{x}_{t+h | t}$ approaches zero as $h \to
+\infty$.
+
+SOLUTION GOES HERE
+
+10. (2 pts) 
+Consider an ARMA(1,1) model, with intercept: 
+\[
+(1 - \phi B) x_t = c + (1 + \theta B) w_t.
+\]
+Unravel the forecast iteration to show that $\hat{x}_{t+h | t}$ approaches a
+nonzero constant as $h \to \infty$.
+
+SOLUTION GOES HERE
+
+11. (Bonus)
+Now consider the extension to ARIMA($1,d,1$):
+\[
+(1 - \phi B) \nabla^d x_t = c + (1 + \theta B) w_t.
+\]
+Use Q5--Q10 to argue the following: 
+- If $c = 0$ and $d = 1$, then $\hat{x}_{t+h | t}$ approaches a constant as $h 
+  \to \infty$.
+- If $c = 0$ and $d = 2$, then $\hat{x}_{t+h | t}$ approaches a linear trend as 
+  $h \to \infty$.
+- If $c \not= 0$ and $d = 1$, then $\hat{x}_{t+h | t}$ approaches a linear trend
+  as $h \to \infty$.
+- If $c \not= 0$ and $d = 2$, then $\hat{x}_{t+h | t}$ approaches a quadratic 
+  trend as $h \to \infty$.
+
+# Time series CV
+

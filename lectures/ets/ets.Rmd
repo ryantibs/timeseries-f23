@@ -51,3 +51,21 @@ www_fit |> select(Damped) |> coef()
 # An example of how you would retrieve the components
 www_fit |> select(Damped) |> components()
 ```
+
+# Australian holiday travel
+
+```{r travel}
+holiday = tourism |>
+  filter(Purpose == "Holiday") |>
+  summarize(Trips = sum(Trips)/1e3)
+
+# Fit Holt-Winters model
+holiday_fit = holiday |>
+  model(HoltWinters = ETS(Trips ~ error("A") + trend("A") + season("A")))
+
+# Make forecasts
+holiday_fit |> forecast(h = "3 years") |>
+  autoplot(holiday) +
+  labs(y = "Overnight trips (millions)",
+       title =" Australian holiday travel") + theme_bw()
+```

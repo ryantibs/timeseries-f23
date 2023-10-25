@@ -133,12 +133,13 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 
 \begin{itemize}
 \item An extension of the SES forecaster in \eqref{eq:ses-component} is
-  \emph{Holt's linear trend} method. This changes the forecast equation (first
-  line) and the level equation (second line) to accomodate an estimate of the
-  slope $b_t$ of the series at time $t$. And it adds a trend equation to evolve
-  the slope
+  \emph{Holt's linear trend} method. This changes both the forecast equation
+  (first line) and the level equation (second line) to accomodate an estimate of
+  the slope $b_t$ of the series at time $t$. We add a trend equation to evolve
+  the slope component 
 
-\item Precisely, in component form (which we will stick to henceforth): 
+\item Precisely, Holt's linear trend method in component form (which we will
+  stick to henceforth) is:
   \begin{equation}
   \label{eq:holt}
   \begin{aligned}
@@ -192,11 +193,14 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   b_t &= \beta (\ell_t - \ell_{t-1}) + (1-\beta) b_{t-1} \phi
   \end{aligned}
   \end{equation}
+  Note that when $\phi = 1$, this reduces to Holt's linear trend method in
+  \eqref{eq:holt} 
 
-\item The interpretation in the damped method \eqref{eq:damped} is essentially
-  the same as in Holt's method \eqref{eq:holt}, but you can think of it like
-  this: the contribution of a given slope to a forecast diminishes at each step
-  by a multiplicative factor of $\phi$ 
+\item The interpretation in the damped method \eqref{eq:damped} is mostly the
+  same as in Holt's method \eqref{eq:holt}, but you can think of the
+  modification like this: the contribution of a given slope to a forecast in the
+  future diminishes at each step into the future, by a multiplicative factor of
+  $\phi$   
 
 \item As $h \to \infty$, the forecasts from the damped linear trend method
   approach a particular constant (finite) level, namely
@@ -216,7 +220,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \item The bottom row of Figure \ref{fig:internet} shows the forecasts from the
   damped linear trend method on the internet useage data. To be clear, all of 
   $\alpha,\beta,\phi$ are estimated from the data. We can see a weak downward
-  trend, that quickly flattens out. The prediction intervals are also much 
+  trend, that is quickly attenuated. The prediction intervals are also much 
   narrower. Inspection of the fitted model (see the R notebook) shows that we
   the dampening coeffcient estimate is \smash{$\hat\phi = 0.81$}, so it has
   quite a pronounced effect here
@@ -225,15 +229,55 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \section{Seasonality extensions}
 
 \begin{itemize}
-\item Holt-Winters
-\item dampening is also possible
+\item To account for seasonality, on top of trend, we can use what is called the   
+  \emph{Holt-Winters} method. This changes the forecast and level equations in
+  \eqref{eq:holt} in order to adjust for a seasonal effect, but the trend
+  equation stays the same. We add a seasonality equation to evolve the seasonal
+  component    
+
+\item We assume a known seasonal period $m$. That is, observations occurring
+  every $m$ time points share a common (but unknown) seasonal effect. The
+  Holt-Winters method is then:  
+  \begin{equation}
+  \label{eq:holt-winters}
+  \begin{aligned}
+  \hat{x}_{t+h | t} &= \ell_t + b_t h + s_{t+h-mk} \\  
+  \ell_t &= \alpha (x_t - s_t) + (1-\alpha) (\ell_{t-1} + b_{t-1}) \\ 
+  b_t &= \beta (\ell_t - \ell_{t-1}) + (1-\beta) b_{t-1} \\
+  s_t &= \gamma (x_t - \ell_t) + (1-\gamma) s_{t-m}
+  \end{aligned}
+  \end{equation}
+  The parameters of the model are $\alpha,\beta,\gamma \in [0,1]$
+
+\item In the forecast equation (first line), we define $k \geq 0$ to be the
+  integer such that $t+h-mk \in [t-m, t]$: the seasonal component we are using
+  to adjust the forecast should be the latest one (whatever was available in the
+  last period). This is equivalent to seeking $mk \in [h, h+m]$. You can check
+  that this is accomplished by setting \smash{$k = \lceil h/m \rceil$} 
+
+\item The interpretation of Holt-Winters \eqref{eq:holt-winters} is similar to 
+  Holt's method \eqref{eq:holt}, except that we \emph{seasonally-adjust} the 
+  observations in the level and trend equations. The seasonal equation updates
+  $s_t$ as a $\gamma$-weighted combination of the level-adjusted observation
+  $x_t - \ell_t$ and the previously-relevant seasonal component $s_{t-m}$   
+
+\item (We can also introduce dampening into \eqref{eq:holt-winters}, which is
+  just as in \eqref{eq:damped}, but we skip writing this out for brevity)
+
+\item Figure \ref{fig:} shows an example of Holt-Winters in action, on
+  Australian holiday travel data from HA. Its ability to pick up (and evolve!)
+  seasonality is impressive. This is arguably the most powerful aspect of
+  exponential smoothing methods in general (more so than their ability to model
+  and evolve trends)  
+
+
 \end{itemize}
 
 \subsection{Multiplicative version}
 
 \begin{itemize}
 \item 
-\item dampening is also possible
+\item A multiplicative version of tracking trends is also possible. HA  
 \end{itemize}
 
 \section{ETS models}
