@@ -1,5 +1,5 @@
 ---
-title: 'Lecture 6: Autoregressive Integrated Moving Average Models'
+title: 'Lecture 7: Exponential Smoothing With Trend and Seasonality'
 output:
   html_document:
     toc: true
@@ -49,12 +49,12 @@ www_fit |> select(Holt) |> coef()
 www_fit |> select(Damped) |> coef()
 
 # An example of how you would retrieve the components
-www_fit |> select(Damped) |> components()
+www_fit |> select(Damped) |> components() |> head(10)
 ```
 
 # Australian holiday travel
 
-```{r travel}
+```{r holiday}
 holiday = tourism |>
   filter(Purpose == "Holiday") |>
   summarize(Trips = sum(Trips)/1e3)

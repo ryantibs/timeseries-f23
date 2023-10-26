@@ -3,7 +3,7 @@
 \def\ParSkip{} 
 \input{../../common/ryantibs}
 
-\title{Lecture 7: Exponential Smoothing with Trend and Seasonality \\ 
+\title{Lecture 7: Exponential Smoothing With Trend and Seasonality \\ 
 \Large And a Brief Tour of Other Popular Forecasting Methods \\ \smallskip
 \large Introduction to Time Series, Fall 2023 \\ \smallskip
 Ryan Tibshirani}
@@ -264,13 +264,17 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \item (We can also introduce dampening into \eqref{eq:holt-winters}, which is
   just as in \eqref{eq:damped}, but we skip writing this out for brevity)
 
-\item Figure \ref{fig:} shows an example of Holt-Winters in action, on
+\item Figure \ref{fig:holiday} shows an example of Holt-Winters in action, on 
   Australian holiday travel data from HA. Its ability to pick up (and evolve!)
-  seasonality is impressive. This is arguably the most powerful aspect of
-  exponential smoothing methods in general (more so than their ability to model
-  and evolve trends)  
+  trend and seasonality appears impressive
 
-
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.825\textwidth]{fig/holiday-1.pdf}
+\caption{Forecasts on Australian holiday travel data (from HA) at 12-steps
+  ahead, from the Holt-Winters method.} 
+\label{fig:holiday}
+\end{figure}
 \end{itemize}
 
 \subsection{Multiplicative version}
