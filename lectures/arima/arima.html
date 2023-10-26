@@ -285,17 +285,17 @@ plot(x2, main = paste(&quot;MA(1), phi = -0.9&quot;), xlab = &quot;&quot;, ylab 
 <div id="parameter-redundancy" class="section level1">
 <h1>Parameter redundancy</h1>
 <pre class="r"><code>x = rnorm(100)
-arima(x, order = c(1,0,1))</code></pre>
+arima(x, order = c(1,0,1), include.mean = FALSE)</code></pre>
 <pre><code>## 
 ## Call:
-## arima(x = x, order = c(1, 0, 1))
+## arima(x = x, order = c(1, 0, 1), include.mean = FALSE)
 ## 
 ## Coefficients:
-##           ar1     ma1  intercept
-##       -0.6951  0.7839     0.0747
-## s.e.   0.2437  0.2055     0.1046
+##           ar1     ma1
+##       -0.6921  0.7822
+## s.e.   0.2445  0.2061
 ## 
-## sigma^2 estimated as 0.9891:  log likelihood = -141.37,  aic = 290.73</code></pre>
+## sigma^2 estimated as 0.9942:  log likelihood = -141.62,  aic = 289.24</code></pre>
 </div>
 <div id="auto-correlation" class="section level1">
 <h1>Auto-correlation</h1>

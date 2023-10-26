@@ -48,7 +48,7 @@ plot(x2, main = paste("MA(1), phi = -0.9"), xlab = "", ylab = "")
 
 ```{r par-redundancy}
 x = rnorm(100)
-arima(x, order = c(1,0,1))
+arima(x, order = c(1,0,1), include.mean = FALSE)
 ```
 
 # Auto-correlation
