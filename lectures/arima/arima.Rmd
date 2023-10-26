@@ -209,7 +209,7 @@ leisure_fit |> glance() |> select(.model:BIC) |> arrange(AICc)
 leisure_fit |> select(arima210110) |> coef()
 leisure_fit |> select(arima210110) |> gg_arma()
 
-# Plot residuals from the auto AR model
+# Plot residuals from the AR model
 leisure_fit |> select(arima210110) |> gg_tsresiduals() 
 
 # Make 3-year horizon forecasts from the AR model
