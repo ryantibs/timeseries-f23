@@ -244,10 +244,11 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   \hat{x}_{t+h | t} &= \ell_t + b_t h + s_{t+h-mk} \\  
   \ell_t &= \alpha (x_t - s_t) + (1-\alpha) (\ell_{t-1} + b_{t-1}) \\ 
   b_t &= \beta (\ell_t - \ell_{t-1}) + (1-\beta) b_{t-1} \\
-  s_t &= \gamma (x_t - \ell_t) + (1-\gamma) s_{t-m}
+  s_t &= \gamma (x_t - \ell_{t-1} - b_{t-1}) + (1-\gamma) s_{t-m} 
   \end{aligned}
   \end{equation}
-  The parameters of the model are $\alpha,\beta,\gamma \in [0,1]$
+  The parameters of the model are $\alpha, \beta \in [0,1]$ and $\gamma \in [0,
+  1-\alpha]$ 
 
 \item In the forecast equation (first line), we define $k \geq 0$ to be the
   integer such that $t+h-mk \in [t-m, t]$: the seasonal component we are using
@@ -258,11 +259,19 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \item The interpretation of Holt-Winters \eqref{eq:holt-winters} is similar to 
   Holt's method \eqref{eq:holt}, except that we \emph{seasonally-adjust} the 
   observations in the level and trend equations. The seasonal equation updates
-  $s_t$ as a $\gamma$-weighted combination of the level-adjusted observation
-  $x_t - \ell_t$ and the previously-relevant seasonal component $s_{t-m}$   
+  $s_t$ as a $\gamma$-weighted combination of $x_t - \ell_{t-1} -  b_{t-1}$ and
+  the last relevant seasonal component $s_{t-m}$ 
 
-\item (We can also introduce dampening into \eqref{eq:holt-winters}, which is
-  just as in \eqref{eq:damped}, but we skip writing this out for brevity)
+\item We can view $x_t - \ell_{t-1} -  b_{t-1}$ as the result of solving for $s^*$
+  in the equation:    
+  \[
+  x_t = \ell_{t-1} + b_{t-1} + s^*
+  \]
+  This is like the 1-step ahead forecast equation a time $t-1$, but where we
+  replace the forecast \smash{$\hat{x}_{t |  t-1}$} by the observation $x_t$ 
+
+\item Note: we can also introduce dampening into \eqref{eq:holt-winters}, which
+  is just as in \eqref{eq:damped}, but do not write this out for brevity
 
 \item Figure \ref{fig:holiday} shows an example of Holt-Winters in action, on 
   Australian holiday travel data from HA. Its ability to pick up (and evolve!)
@@ -280,9 +289,43 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \subsection{Multiplicative version}
 
 \begin{itemize}
-\item 
-\item A multiplicative version of tracking trends is also possible. HA  
+\item The seasonal effect in the Holt-Winters method \eqref{eq:holt-winters} is
+  \emph{additive}. If we look at the forecast equation, in the first line, then
+  we see that the seasonal component is being added to the level and trend  
+  components in order to produce the forecast 
+
+\item A \emph{multiplicative} version of Holt-Winters is also possible:
+  \begin{equation}
+  \label{eq:holt-winters-mult}
+  \begin{aligned}
+  \hat{x}_{t+h | t} &= (\ell_t + b_t h) s_{t+h-mk} \\   
+  \ell_t &= \alpha \frac{x_t}{s_t} + (1-\alpha) (\ell_{t-1} + b_{t-1}) \\ 
+  b_t &= \beta (\ell_t - \ell_{t-1}) + (1-\beta) b_{t-1} \\
+  s_t &= \gamma \frac{x_t}{\ell_{t-1} - b_{t-1}} + (1-\gamma) s_{t-m} 
+  \end{aligned}
+  \end{equation}
+  The parameters are again $\alpha, \beta \in [0,1]$ and $\gamma \in [0,
+  1-\alpha]$  
+
+\item The equations in \eqref{eq:holt-winters-mult} are motivated and
+  interpreted just as in \eqref{eq:holt-winters}, except the contribution of the
+  seasonal component is multiplicative. We can see this in the forecast
+  equation, in the first line: we take the non-seasonal forecast (level and
+  trend) and multiply it by the seasonal component 
+
+\item We can view $x_t / (\ell_{t-1} +  b_{t-1})$, in the seasonal equation, as
+  the result of solving for $s^*$ in the equation: 
+  \[
+  x_t = (\ell_{t-1} + b_{t-1}) s^*
+  \]
+  This is again like the 1-step ahead forecast equation a time $t-1$, but where
+  we replace the forecast \smash{$\hat{x}_{t | t-1}$} by the observation $x_t$
 \end{itemize}
+
+%\subsection{Seasonal-trend decomposition}
+
+%\begin{itemize}
+%\end{itemize}
 
 \section{ETS models}
 
