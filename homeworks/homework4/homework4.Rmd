@@ -203,7 +203,7 @@ from the regression lecture, and/or from previous homeworks.)
 Consider the `leisure` data set from the HA book, which the code excerpt below
 (taken from the ARIMA lecture) prepares for us. Use time series CV, implemented
 using `stretch_tsibble()`, `model()`, and `forecast()`, as described above, to 
-evaluate the MAE of the following four models: 
+evaluate the MAE of the following four models:
 
 - ARIMA$(2,1,0)$
 - ARIMA$(0,1,2)$
@@ -212,12 +212,13 @@ evaluate the MAE of the following four models:
 
 The last models are motivated by the exploratory analysis done in lecture. The 
 first two remove the seasonal component, which should not be very good (since 
-there is clear seasonality in this data). A key difference in how you implement
-time series CV to the above examples: you should consider 1-step, 2-step, all 
-the way through 12-step ahead forecasts. But do not worry! This can be handled
-easily with an appropriate call to `forecast()`. For each model, calculate the
-MAE by averaging over all forecast horizons (1 through 12). Report the results 
-and rank the models by their MAE.
+there is clear seasonality in the data). For each model you should use a burn-in
+period of length 50 (i.e., set `.init = 50` in the call to `stretch_tsibble()`). 
+A key difference in how you implement time series CV to the above examples: you 
+should consider 1-step, 2-step, all the way through 12-step ahead forecasts. But
+do not worry! This can be handled with an appropriate call to `forecast()`. For 
+each model, calculate the MAE by averaging over all forecast horizons (1 through
+12). Report the results and rank the models by their MAE.
 
 ```{r}
 leisure = us_employment |>

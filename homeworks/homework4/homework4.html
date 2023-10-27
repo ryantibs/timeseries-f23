@@ -326,7 +326,7 @@ dat_fc</code></pre>
 <li>ARIMA<span class="math inline">\((2,1,0)(1,1,0)_{12}\)</span></li>
 <li>ARIMA<span class="math inline">\((0,1,2)(0,1,1)_{12}\)</span></li>
 </ul>
-<p>The last models are motivated by the exploratory analysis done in lecture. The first two remove the seasonal component, which should not be very good (since there is clear seasonality in this data). A key difference in how you implement time series CV to the above examples: you should consider 1-step, 2-step, all the way through 12-step ahead forecasts. But do not worry! This can be handled easily with an appropriate call to <code>forecast()</code>. For each model, calculate the MAE by averaging over all forecast horizons (1 through 12). Report the results and rank the models by their MAE.</p>
+<p>The last models are motivated by the exploratory analysis done in lecture. The first two remove the seasonal component, which should not be very good (since there is clear seasonality in the data). For each model you should use a burn-in period of length 50 (i.e., set <code>.init = 50</code> in the call to <code>stretch_tsibble()</code>). A key difference in how you implement time series CV to the above examples: you should consider 1-step, 2-step, all the way through 12-step ahead forecasts. But do not worry! This can be handled with an appropriate call to <code>forecast()</code>. For each model, calculate the MAE by averaging over all forecast horizons (1 through 12). Report the results and rank the models by their MAE.</p>
 <pre class="r"><code>leisure = us_employment |&gt;
   filter(Title == &quot;Leisure and Hospitality&quot;, year(Month) &gt; 2000) |&gt;
   mutate(Employed = Employed/1000) |&gt;
