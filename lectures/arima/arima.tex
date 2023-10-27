@@ -709,10 +709,10 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   regression \smash{$\hat{x}_{t+h}$}, of $x_{t+h}$ on $x_{t+1},\dots,x_{t+h-1}$, 
   is 
   \[
-  \hat{x}_{t+h} = \sum_{j=0}^p \phi_j x_{t-j}
+  \hat{x}_{t+h} = \sum_{j=1}^p \phi_j x_{t+h-j}
   \]
-  Thus \smash{$x_{t+h} - \hat{x}_{t+h} = x_{t+h} -  \sum_{j=0}^p \phi_j x_{t-j}
-    = w_{t+h}$}, and the partial auto-correlation is
+  Thus \smash{$x_{t+h} - \hat{x}_{t+h} = x_{t+h} -  \sum_{j=1}^p \phi_j
+    x_{t+h-j} = w_{t+h}$}, and the partial auto-correlation is
   \[
   \phi_x(h) = \Cor(x_t - \hat{x}_t, w_{t+h}) = 0
   \]
@@ -730,16 +730,16 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   (ACF) and partial auto-correlation function (PACF) for causal AR($p$) and
   invertible MA($q$) models. By ``tails off'' we mean decays to zero as $h \to
   \infty$ without dropping to zero exactly; by ``cuts off'' we mean drops to
-  zero at a finite lag $h$
+  zero at a given finite lag $h$
 
   \begin{center} \smallskip
   \begin{tabular}{|c|c|c|c|}
   \hline
   & AR($p$) & MA($q$) & ARMA($p,q$) \\
   \hline
-  ACF & tails off & drops off at lag $q$ & tails off \\
+  ACF & tails off & cuts off at lag $q$ & tails off \\
   \hline
-  PACF & drops off at lag $p$ & tails off & tails off \\
+  PACF & cuts off at lag $p$ & tails off & tails off \\
   \hline
   \end{tabular} \smallskip
   \end{center}

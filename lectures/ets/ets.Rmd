@@ -47,14 +47,11 @@ www_fit |>
 www_fit |> select(SES) |> coef()
 www_fit |> select(Holt) |> coef()
 www_fit |> select(Damped) |> coef()
-
-# An example of how you would retrieve the components
-www_fit |> select(Damped) |> components() |> head(10)
 ```
 
 # Australian holiday travel
 
-```{r holiday}
+```{r holidayholiday}
 holiday = tourism |>
   filter(Purpose == "Holiday") |>
   summarize(Trips = sum(Trips)/1e3)
@@ -68,4 +65,19 @@ holiday_fit |> forecast(h = "3 years") |>
   autoplot(holiday) +
   labs(y = "Overnight trips (millions)",
        title =" Australian holiday travel") + theme_bw()
+```
+
+# ST decomposition
+
+```{r st-decomposition}
+# Fit additive and multiplicative Holt-Winters  
+holiday_fit = holiday |>
+    model(
+      HWAdd = ETS(Trips ~ error("A") + trend("A") + season("M")),
+      HWMult = ETS(Trips ~ error("A") + trend("A") + season("A")))
+
+# An example of how we would pull out the components
+holiday_fit |> select(HWAdd) |> components() |> head(10)
+                            
+# Plot the decomposition according to the components
 ```

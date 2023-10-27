@@ -308,8 +308,8 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   1-\alpha]$  
 
 \item The equations in \eqref{eq:holt-winters-mult} are motivated and
-  interpreted just as in \eqref{eq:holt-winters}, except the contribution of the
-  seasonal component is multiplicative. We can see this in the forecast
+  interpreted just as in \eqref{eq:holt-winters}, except that the contribution
+  of the seasonal component is multiplicative. We can see this in the forecast 
   equation, in the first line: we take the non-seasonal forecast (level and
   trend) and multiply it by the seasonal component 
 
@@ -320,12 +320,32 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   \]
   This is again like the 1-step ahead forecast equation a time $t-1$, but where
   we replace the forecast \smash{$\hat{x}_{t | t-1}$} by the observation $x_t$
+
+\item In practice, the additive and multiplicative methods can sometimes result
+  in fairly similar component estimates---this happens with the holiday travel
+  data, for example (the next subsection gives evidence of this). But in other 
+  problems they can result in significant differences, so it is worth
+  thinking about whether the seasonal effect in the problem at hand could 
+  \emph{plausibly} be multiplicative, and if so, worth trying out and evaluating
+  this formulation as well
 \end{itemize}
 
-%\subsection{Seasonal-trend decomposition}
+\subsection{Seasonal-trend decomposition}
 
-%\begin{itemize}
-%\end{itemize}
+\begin{itemize}
+\item We've talked about seasonal-trend (ST) decompositions of time series at
+  various points in the past, and touched on multiple approaches for fitting
+  them
+
+\item Here we note that the Holt-Winters method, either in additive or
+  multiplicative form, is not just a forecaster but also provides us with an ST
+  decomposition of the given time series by extracting the fitted level
+  $\ell_t$, trend $b_t$, and seasonal $s_t$ sequences  
+
+\item Figure \ref{fig:st_decomposition} shows an example on the holiday travel
+  data. Both additive and multiplicative methods return fairly similar component
+  estimates. 
+\end{itemize}
 
 \section{ETS models}
 
