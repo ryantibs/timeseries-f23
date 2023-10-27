@@ -789,18 +789,17 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   Hyndman believe that this can be automated (via algorithms like the
   Hyndman-Khandakar algorithm), and this is what is implemented in
   \verb|ARIMA()| in the \verb|fable| package when the order $p,q$ is left 
-  unspecified. But other authors like Stoffer believe that this doesn't
-  work,\footnote{See
-    \url{https://github.com/nickpoison/astsa/blob/master/fun_with_astsa/fun_with_astsa.md\#arima-estimation}.} 
+  unspecified. This kind of automated model building is also central to some ML 
+  perspectives on forecasting (cf.\ auto ML). But other authors like Stoffer
+  believe that this doesn't really work,\footnote{See
+    \url{https://github.com/nickpoison/astsa/blob/master/fun_with_astsa/fun_with_astsa.md\#arima-estimation}.}  
   and recommend more human-expert-driven model building  
 
 \item If the point is to identify the ``right'' structure, from a model
   specification point of view, then Stoffer may have a point (see R notebook 
-  examples) 
-
-\item But to HA's credit, their Chapter 9.8 does also recommend more of a 
-  human-in-the-loop procedure than simply calling \verb|ARIMA()| once, involving
-  several diagnostic steps 
+  examples). But to HA's credit, their Chapter 9.8 does also recommend more of a  
+  human-in-the-loop procedure than just calling \verb|ARIMA()| once, involving 
+  diagnostics
 
 \item The gist of the non-automated part (which is fairly standard) is as
   follows: 
@@ -1007,7 +1006,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   good  
 
 \item Forecasts from our fitted ARIMA(2,1,2) model are shown in the rop row of
-  Figure \ref{fig:car-forecasts}, for a 5-year horizon. Also plotted are
+  Figure \ref{fig:car_forecast}, for a 5-year horizon. Also plotted are
   prediction intervals around the forecast (more on this in the last 
   section). Qualitatively, the forecasts aren't very impressive at first
   glance---they look more or less like what we'd get if we used a random walk
@@ -1019,14 +1018,14 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \includegraphics[width=0.825\textwidth]{fig/car-8.pdf}
 \caption{Top row: forecasts from ARIMA(2,1,2). Bottom row: forecasts from
   ARIMA(0,1,0) with $c=0$, i.e., a random walk.}
-\label{fig:car-forecasts}
+\label{fig:car_forecast}
 \end{figure}
 
 \item However, HA comment that the prediction intervals here are narrower than
   they would be for a random walk, which is due to the contribution of the
   nontrivial AR and MA components that we've been able to pick up and model. To
   check this, we plot forecasts from ARIMA(0,1,0) in the bottom row of Figure
-  \ref{fig:car-forecasts}, and indeed you can see they have wider uncertainty 
+  \ref{fig:car_forecast}, and indeed you can see they have wider uncertainty 
   bands 
 
 \item A general note to close out our example: the \verb|ARIMA()| function in
@@ -1119,9 +1118,9 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \end{figure}
 
 \item ACF and PACF plots are displayed in the top row of Figure
-  \ref{fig:leisure-forecasts}. To be clear, these are applied to the differences
+  \ref{fig:leisure_forecast}. To be clear, these are applied to the differences
   of yearly differences ($\nabla \nabla_s x_t$, $t = 1,2,3,\dots$, as plotted in
-  the bottom row of Figure \ref{fig:leisure-forecasts}). The ACF shows two
+  the bottom row of Figure \ref{fig:leisure_forecast}). The ACF shows two
   moderate correlations at lags 1 and 2 and then a big spike at lag 12. This is
   suggestive of an nonseasonal MA(2) and a seasonal MA(1), and thus we can go
   and fit an ARIMA$(0,1,2)(0,1,1)_{12}$ model. Meanwhile, the PACF shows again
@@ -1137,7 +1136,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \includegraphics[width=0.825\textwidth]{fig/leisure-8.pdf}
 \caption{Top row: ACF and PACF functions of differences of seasonal
   differences. Bottom row: forecasts from ARIMA(2,1,2).}
-\label{fig:leisure-forecasts}
+\label{fig:leisure_forecast}
 \end{figure} 
 
 \item AICc (see the R notebook for details and diagnostics)
@@ -1149,7 +1148,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   forecasting section. For now, we'll just produce 3-year forecasts from the 
   ARIMA$(0,1,2)(0,1,1)_{12}$ model
 
-\item These are shown in the bottom row of \ref{fig:leisure-forecasts}. They
+\item These are shown in the bottom row of \ref{fig:leisure_forecast}. They
   actually seem fairly plausible and interesting. Note that the seasonality was
   nicely captured by the seasonal differencing, and the increasing trend seems
   to have been nicely captured by the nonseasonal differencing
@@ -1364,7 +1363,7 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
 \begin{itemize}
 \item The predictions \smash{$\hat{x}_{t+h | t}$} from ARIMA described above are 
     known as \emph{point forecasts}. But if you look back at Figures
-    \ref{fig:car-forecasts} and \ref{fig:leisure-forecasts}, you can see bands
+    \ref{fig:car_forecast} and \ref{fig:leisure_forecast}, you can see bands
     around the point forecasts (which are the dark lines) 
 
 \item These bands represent \emph{prediction intervals}, which are typically
