@@ -340,13 +340,19 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \item Here we note that the Holt-Winters method, either in additive or
   multiplicative form, is not just a forecaster but also provides us with an ST
   decomposition of the given time series by extracting the fitted level
-  $\ell_t$, trend $b_t$, and seasonal $s_t$ sequences  
+  $\ell_t$, trend $b_t$, and seasonal $s_t$ sequences
+
+\item There is a bit of an unfortunate clash of nomenclature here: the
+  fitted level component from Holt-Winters actually provides what we called the
+  trend component previously, and the fitted trend component from Holt-Winters
+  does not have a correspondence to anything we talked about previously in
+  decomposition methods. It reflects ``where the time series is heading'' 
 
 \item Figure \ref{fig:st_decomposition} shows an example on the holiday travel
-  data. Both additive and multiplicative methods return fairly similar component
-  estimates. The seasonal pattern also appears to be unchanging over time, which
-  is a consequence of the fact that the estimate of $\gamma$ in both models is
-  tiny (around 0.0001 in both models, as can be seen in the R notebook)
+  data. Both the additive and multiplicative methods return fairly similar
+  component estimates. The seasonal pattern also appears to be unchanging over
+  time, which is a consequence of the fact that the estimate of $\gamma$ in both
+  models is tiny (around 0.0001 in both models, as can be seen in the R notebook)
 
 \begin{figure}[p]
 \centering

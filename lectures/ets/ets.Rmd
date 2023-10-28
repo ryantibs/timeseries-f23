@@ -51,7 +51,7 @@ www_fit |> select(Damped) |> coef()
 
 # Australian holiday travel
 
-```{r holidayholiday}
+```{r holiday}
 holiday = tourism |>
   filter(Purpose == "Holiday") |>
   summarize(Trips = sum(Trips)/1e3)
@@ -90,8 +90,8 @@ holiday_fit |> select(HWAdd) |> components() |> head(10)
 # Plot the decomposition according to the components
 library(gridExtra)
 g1 = holiday_fit |> select(HWAdd) |> components() |> autoplot() +
-  labs(title = "Additive Holt-Winters") + theme_bw()
+  labs(title = "Additive Holt-Winters", subtitle = NULL) + theme_bw()
 g2 = holiday_fit |> select(HWMult) |> components() |> autoplot() +
-  labs(title = "Multiplicative Holt-Winters") + theme_bw()
-grid.arrange(g1, g2, ncol = 2)
+  labs(title = "Multiplicative Holt-Winters", subtitle = NULL) + theme_bw()
+grid.arrange(g1, g2, ncol = 2)  
 ```
