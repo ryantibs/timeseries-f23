@@ -68,9 +68,9 @@ holiday_fit |> forecast(h = "3 years") |>
        title =" Australian holiday travel") + theme_bw()
 ```
 
-# ST decomposition
+# ETS decomposition
 
-```{r st-decomposition, fig.width=8, fig.height=10}
+```{r decomposition, fig.width=8, fig.height=10}
 # Fit additive and multiplicative Holt-Winters  
 holiday_fit = holiday |>
     model(
@@ -90,8 +90,10 @@ holiday_fit |> select(HWAdd) |> components() |> head(10)
 # Plot the decomposition according to the components
 library(gridExtra)
 g1 = holiday_fit |> select(HWAdd) |> components() |> autoplot() +
-  labs(title = "Additive Holt-Winters", subtitle = NULL) + theme_bw()
+  labs(title = "Holt-Winters: additive seasonality", subtitle = NULL) + 
+  theme_bw()
 g2 = holiday_fit |> select(HWMult) |> components() |> autoplot() +
-  labs(title = "Multiplicative Holt-Winters", subtitle = NULL) + theme_bw()
+  labs(title = "Holt-Winters: multiplicative seasonality", subtitle = NULL) + 
+  theme_bw()
 grid.arrange(g1, g2, ncol = 2)  
 ```
