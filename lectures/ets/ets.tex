@@ -286,7 +286,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \end{figure}
 \end{itemize}
 
-\subsection{Multiplicative version}
+\subsection{Multiplicative seasonality}
 
 \begin{itemize}
 \item The seasonal effect in the Holt-Winters method \eqref{eq:holt-winters} is
@@ -294,9 +294,10 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   we see that the seasonal component is being added to the level and trend  
   components in order to produce the forecast 
 
-\item A \emph{multiplicative} version of Holt-Winters is also possible:
+\item A \emph{multiplicative seasonality} version of Holt-Winters is also
+  possible: 
   \begin{equation}
-  \label{eq:holt-winters-mult}
+  \label{eq:holt-winters-multiplicative}
   \begin{aligned}
   \hat{x}_{t+h | t} &= (\ell_t + b_t h) s_{t+h-mk} \\   
   \ell_t &= \alpha \frac{x_t}{s_t} + (1-\alpha) (\ell_{t-1} + b_{t-1}) \\ 
@@ -307,11 +308,11 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   The parameters are again $\alpha, \beta \in [0,1]$ and $\gamma \in [0,
   1-\alpha]$  
 
-\item The equations in \eqref{eq:holt-winters-mult} are motivated and
+\item The equations in \eqref{eq:holt-winters-multiplicative} are motivated and
   interpreted just as in \eqref{eq:holt-winters}, except that the contribution
-  of the seasonal component is multiplicative. We can see this in the forecast 
+  of the seasonal component is multiplicative. We can see this in the forecast
   equation, in the first line: we take the non-seasonal forecast (level and
-  trend) and multiply it by the seasonal component 
+  trend) and multiply it by the seasonal component  
 
 \item We can view $x_t / (\ell_{t-1} +  b_{t-1})$, in the seasonal equation, as
   the result of solving for $s^*$ in the equation: 
@@ -321,13 +322,13 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   This is again like the 1-step ahead forecast equation a time $t-1$, but where
   we replace the forecast \smash{$\hat{x}_{t | t-1}$} by the observation $x_t$
 
-\item In practice, the additive and multiplicative methods can sometimes result
-  in fairly similar component estimates---this happens with the holiday travel
-  data, for example (the next subsection gives evidence of this). But in other 
-  problems they can result in significant differences, so it is worth
-  thinking about whether the seasonal effect in the problem at hand could 
+\item In practice, the additive and multiplicative seasonal models can sometimes
+  result in fairly similar component estimates---this happens with the holiday
+  travel data, for example (the next subsection gives evidence of this). But in
+  other problems they can result in genuine differences, so it is worth thinking
+  about whether the seasonal effect in the problem at hand could
   \emph{plausibly} be multiplicative, and if so, worth trying out and evaluating
-  this formulation as well
+  this formulation as well 
 \end{itemize}
 
 \subsection{Seasonal-trend decomposition}
@@ -344,9 +345,10 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 
 \item There is a bit of an unfortunate clash of nomenclature here: the
   fitted level component from Holt-Winters actually provides what we called the
-  trend component previously, and the fitted trend component from Holt-Winters
-  does not have a correspondence to anything we talked about previously in
-  decomposition methods. It reflects ``where the time series is heading'' 
+  trend component previously in discussions of time series decomposition! And 
+  the fitted trend component from Holt-Winters does not have a correspondence to
+  anything we talked about previously. It reflects ``where the time series is
+  heading''    
 
 \item Figure \ref{fig:st_decomposition} shows an example on the holiday travel
   data. Both the additive and multiplicative methods return fairly similar
@@ -366,8 +368,44 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \section{ETS models}
 
 \begin{itemize}
-\item Multiplicative errors and trends
-\item HA do not recommend multiplicative trend?
+\item \emph{Exponential smoothing with trend and seasonality} (ETS) models are a
+  class that includes everything we've seen thus far: simple exponential
+  smoothing, Holt's linear trend method, Holt-Winters method with additive or
+  multiplicative seasonality, and all of their dampened trend versions  
+
+\item In fact, ETS includes more: we can also change the model to accomodate a  
+  \emph{multiplicative error} component (rather than an additive error
+  component, as was previously introduced). This looks will be made more precise
+  when we talk about the state space representation, below
+
+\item (While mathematically possible, HA do not recommend allowing for a
+  multiplicative trend, since they say that it can often behave poorly in
+  practice) 
+
+\item Thus we an ETS model is written ETS($x,y,z$), where 
+  \begin{itemize}
+  \item $x \in \{ \text{A}, \text{M} \}$
+  \item $x \in \{ \text{N}, \text{A}, \text{Ad} \}$
+  \item $x \in \{ \text{N}, \text{A}, \text{M} \}$
+  \end{itemize}
+  here N stands for ``none'' (no trend component or no seasonality component), A
+  stands for ``additive'', Ad stands for ``additive-dampened'', and M stands for
+  multiplicative. The \verb|ETS()| function in the \verb|fable| package allows
+  you to specify any model in this family, setting the parameters $x,y,z$ above 
+  separately, via arguments the \verb|E|, \verb|T|, \verb|S|, respectively 
+
+\item So to be clear:
+  \begin{itemize}
+  \item ETS(A,N,N) is simple exponential smoothing
+  \item ETS(A,A,N) is Holt's linear trend method
+  \item ETS(A,Ad,N) is the dampened linear trend method
+  \item ETS(A,A,A) is Holt-Winters with additive seasonality
+  \item ETS(A,A,M) is Holt-Winters with multiplicative seasonality
+  \end{itemize}
+
+\item Note: HA do not recommend combining additive errors with multiplicative
+  seasonality, saying that this can lead to numerical instability. Thus they say 
+  that ETS(A,*,M) should generally be ditched in favor of ETS(M,*,M) 
 \end{itemize}
 
 \subsection{State space representation}
