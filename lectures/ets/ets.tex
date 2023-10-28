@@ -344,7 +344,17 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 
 \item Figure \ref{fig:st_decomposition} shows an example on the holiday travel
   data. Both additive and multiplicative methods return fairly similar component
-  estimates. 
+  estimates. The seasonal pattern also appears to be unchanging over time, which
+  is a consequence of the fact that the estimate of $\gamma$ in both models is
+  tiny (around 0.0001 in both models, as can be seen in the R notebook)
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.95\textwidth]{fig/st-decomposition-1.pdf}
+\caption{Seasonal-trend decomposition on the Australian holiday travel data
+  (from HA) from the Holt-Winters method in additive and multiplication forms.}  
+\label{fig:st_decomposition}
+\end{figure}
 \end{itemize}
 
 \section{ETS models}

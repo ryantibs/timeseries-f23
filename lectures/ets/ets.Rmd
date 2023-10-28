@@ -58,7 +58,8 @@ holiday = tourism |>
 
 # Fit Holt-Winters model
 holiday_fit = holiday |>
-  model(HoltWinters = ETS(Trips ~ error("A") + trend("A") + season("A")))
+  model(HoltWinters = ETS(Trips ~ error("A") + trend("A") + 
+                            season("A", period = 4)))
 
 # Make forecasts
 holiday_fit |> forecast(h = "3 years") |>
@@ -69,15 +70,28 @@ holiday_fit |> forecast(h = "3 years") |>
 
 # ST decomposition
 
-```{r st-decomposition}
+```{r st-decomposition, fig.width=8, fig.height=10}
 # Fit additive and multiplicative Holt-Winters  
 holiday_fit = holiday |>
     model(
-      HWAdd = ETS(Trips ~ error("A") + trend("A") + season("M")),
-      HWMult = ETS(Trips ~ error("A") + trend("A") + season("A")))
+      HWAdd = ETS(Trips ~ error("A") + trend("A") + 
+                    season("A", period = 4)),
+      HWMult = ETS(Trips ~ error("A") + trend("A") + 
+                     season("M", period = 4)))
+
+# Inspect fitted coefficients---note that gamma is really tiny in both models,
+# which means that the seasonal pattern doesn't change much over time
+holiday_fit |> select(HWAdd) |> coef()
+holiday_fit |> select(HWMult) |> coef()
 
 # An example of how we would pull out the components
 holiday_fit |> select(HWAdd) |> components() |> head(10)
                             
 # Plot the decomposition according to the components
+library(gridExtra)
+g1 = holiday_fit |> select(HWAdd) |> components() |> autoplot() +
+  labs(title = "Additive Holt-Winters") + theme_bw()
+g2 = holiday_fit |> select(HWMult) |> components() |> autoplot() +
+  labs(title = "Multiplicative Holt-Winters") + theme_bw()
+grid.arrange(g1, g2, ncol = 2)
 ```
