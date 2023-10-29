@@ -92,25 +92,25 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \item Specifically, we think of a ``hidden'' level $\ell_t$ that we are tracking
   over time, that base our forecasts on:
   \begin{equation}
-  \label{eq:ses_component}
+  \label{eq:ses_comp}
   \begin{aligned}
   \hat{x}_{t+h | t} &= \ell_t \\
   \ell_t &= \alpha x_t + (1-\alpha) \ell_{t-1}
   \end{aligned}
   \end{equation}
 
-\item The representation in \eqref{eq:ses_component} may appear as kind of a
-  trivial rewriting of \eqref{eq:ses_h}, where we replace \smash{$\hat{x}_{t+1 |
-      t}$} by $\ell_t$, and \smash{$\hat{x}_{t | t-1}$} by $\ell_{t-1}$. 
-  Nonetheless, it serve as a useful jumping off point to extend the model in the 
-  next section   
+\item The representation in \eqref{eq:ses_comp} may appear as kind of a trivial
+  rewriting of \eqref{eq:ses_h}, where we replace \smash{$\hat{x}_{t+1 | t}$}
+  by $\ell_t$, and \smash{$\hat{x}_{t | t-1}$} by $\ell_{t-1}$. Nonetheless, it
+  serve as a useful jumping off point to extend the model in the next section    
 
 \item Before moving on, we give a brief example of SES from HA, to forecast
   internet useage per minute. The data and SES forecast are shown in Figure
   \ref{fig:internet}, top row. In order to carry out the forecast, we have to
-  estimate the smoothing parameter $\alpha$ in \eqref{eq:ses_component}. This is 
-  typically done by maximum likelihood (more later), and is what is implemented
-  as the default in the \verb|ETS()| function in the \verb|fable| package 
+  estimate the smoothing parameter $\alpha$ in \eqref{eq:ses_comp}. This is
+  typically done by maximum likelihood (but where does the probabilistic model
+  come from? more later ...), and is what is implemented as the default in the 
+  \verb|ETS()| function in the \verb|fable| package  
 
 \begin{figure}[p]
 \centering
@@ -132,11 +132,11 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \section{Trend extensions}
 
 \begin{itemize}
-\item An extension of the SES forecaster in \eqref{eq:ses_component} is
-  \emph{Holt's linear trend} method. This changes both the forecast equation
-  (first line) and the level equation (second line) to accomodate an estimate of
-  the slope $b_t$ of the series at time $t$. We add a trend equation to evolve
-  the slope component 
+\item An extension of the SES forecaster in \eqref{eq:ses_comp} is \emph{Holt's
+    linear trend} method. This changes both the forecast equation (first line)
+  and the level equation (second line) to accomodate an estimate of the slope
+  $b_t$ of the series at time $t$. We add a trend equation to evolve the slope
+  component  
 
 \item Precisely, Holt's linear trend method in component form (which we will
   stick to henceforth) is:
@@ -415,8 +415,8 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   for ETS models, which informs us how to carry out maximum likelihood and
   compute prediction intervals
 
-\item We'll start by writing ETS(A,N,N) or SES \eqref{eq:ses_component} in state
-  space form. This is:  
+\item We'll start by writing ETS(A,N,N) or SES \eqref{eq:ses_comp} in state
+  space form. This is:   
   \begin{equation}
   \label{eq:ann_ss}
   \begin{aligned}
@@ -433,11 +433,11 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   \eqref{eq:ann_ss} and we can do maximum likelihood in order to estimate the
   unknown parameters: here, $\alpha$ and $\ell_0$ 
 
-\item To see \eqref{eq:ann_ss} is equivalent to \eqref{eq:ses_component}, we
-  have to understand how point forecasts are generated. This will explained in
-  more detail later, but it is really the exact same story as in ARIMA: we
-  replace past errors by their residuals, and future errors by zero. Thus in
-  \eqref{eq:ann_ss}, the state equation at time $t$ becomes   
+\item To see \eqref{eq:ann_ss} is equivalent to \eqref{eq:ses_comp}, we have to
+  understand how point forecasts are generated. This will explained in more
+  detail later, but it is really the exact same story as in ARIMA: we replace
+  past errors by their residuals, and future errors by zero. Thus in
+  \eqref{eq:ann_ss}, the state equation at time $t$ becomes    
   \[
   \ell_t = \ell_{t-1} + \alpha (x_t - \ell_{t-1})
   \]
@@ -446,7 +446,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   \hat{x}_{t+1 | t} = \ell_t + 0
   \]
   Clearly, the last two equations together recreate SES as defined in
-  \eqref{eq:ses_component}   
+  \eqref{eq:ses_comp}    
 
 \item As another example, ETS(A,A,N) or Holt's linear trend \eqref{eq:holt} in 
   state space form is: 
@@ -471,10 +471,9 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   b_t &= b_{t-1} + \beta (\ell_{t-1} + b_{t-1}) \epsilon_t 
   \end{aligned}
   \end{equation}
-  The contribution of the errors in \eqref{eq:man_ss} are multiplicative: taking
-  $b_t = 0$ for all $t$ gives SES with multiplicative errors
+  Note that the contribution of errors in \eqref{eq:man_ss} are multiplicative 
 
-\item To read the details of the other state space representations, see Chapter
+\item To read the details of the other state space representations, see Chapter 
   8.5 of HA
 \end{itemize}
 
@@ -492,8 +491,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   least squares, but that is not equivalent for ETS models in general 
 
 \item In R, the \verb|ETS()| function in the \verb|fable| package allows us to
-  specify any model in the ETS family, and performs maximum likelihood by
-  default 
+  specify and fit any model in the ETS family
 
 \item Selecting a particular ETS model (additive or multiplicative errors?
   presence of trend? dampened trend? seasonality? etc.?) is pretty difficult, in
@@ -515,7 +513,49 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \subsection{Forecasting}
 
 \begin{itemize}
-\item 
+\item Point forecasts with ETS are defined directly with their original
+  formulations: \eqref{eq:ses_comp}, \eqref{eq:holt}, \eqref{eq:damped}, 
+  \eqref{eq:holt_winters}, etc.
+
+\item The state space representation provides an equivalent view, and also
+  allows us to produce prediction intervals. The general approach to forecasting
+  is analogous to that in ARIMA
+
+\item Obtaining the forecast \smash{$\hat{x}_{t+h | t}$} from an ETS model can
+  be done by iterating the following steps:  
+
+\begin{enumerate}
+\item Start with the ETS state space representation and rewrite the equation by
+  replacing $t$ with $t+h$
+
+\item Replace future observations ($x_{t+k}$, $k \geq 1$) with their forecasts,
+  future errors ($w_{t+k}$, $k \geq 1$) with zero, and past errors ($w_{t-k}$,
+  $k \geq 0$) with their ETS residuals   
+\end{enumerate}
+
+\item Obtaining prediction intervals can be done by first computing an estimate
+  \smash{$\hat\sigma^2_h$} of the variance of the ``$h$-step ahead forecast
+  distribution'' from ETS (in quotes because we have not precisely defined this,
+  but see Section 8.7 in HA for details and for precise formulae). Then we could
+  use  
+  \[
+  N\big( \hat{x}_{t+h | t}, \hat\sigma^2_h \big)
+  \]
+  as our model for the $h$-step ahead forecast distribution at time $t$, and
+  compute prediction intervals accordingly
+
+\item We could also simulate future forecast paths via the bootstrap, as
+  implemented in the \verb|fable| package's \verb|forecast()| function when 
+  \verb|bootstrap = TRUE|. The idea is just as before (as in ARIMA): in step 2,
+  instead of replacing future errors ($w_{t+k}$, $k \geq 0$) by zero, we replace
+  them by a bootstrap draw (i.e., a uniform sample with replacement) from the
+  empirical distribution of past residuals. Then, post simulation, we read off
+  sample quantiles at $t+h$ for a prediction interval     
+
+\item Neither of the above methods (nor any traditional methods) actually
+  guarantee coverage in practice. We will need to run calibration methods on
+  top if we want long-run coverage guarantees in general, which we'll cover in
+  the next (and final) lecture 
 \end{itemize}
 
 \subsection{ARIMA versus ETS}
