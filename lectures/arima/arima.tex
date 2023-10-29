@@ -1395,9 +1395,9 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
   \verb|forecast()| function when \verb|bootstrap = TRUE|. The gist of the idea
   is as follows: in step 3, instead of replacing future errors ($w_{t+k}$, $k
   \geq 0$) by zero, we replace them by a bootstrap draw (i.e., a uniform sample
-  with replacement) from the empirical distribution of past residuals. Given a
-  bunch of sample paths, we can then read off empirical quantiles at $t+h$ for a
-  prediction interval  
+  with replacement) from the empirical distribution of past residuals. Given the
+  sample paths, we can then read off sample quantiles at $t+h$ for a
+  prediction interval   
 
 \item Unfortunately, neither of these methods (nor any other traditional
   methods) for producing prediction intervals are guaranteed to actually give
