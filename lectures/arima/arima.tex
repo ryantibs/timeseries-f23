@@ -795,17 +795,18 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
     \url{https://github.com/nickpoison/astsa/blob/master/fun_with_astsa/fun_with_astsa.md\#arima-estimation}.}  
   and recommend more human-expert-driven model building  
 
-\item If the point is to identify the ``right'' structure, from a model
-  specification point of view, then Stoffer may have a point (see R notebook 
-  examples). But to HA's credit, their Chapter 9.8 does also recommend more of a  
+\item If the point is to identify the ``right'' structure, then Stoffer may have
+  a point: if the data generating model was truly a member of the ARIMA family,
+  then it would be hard to identify it reliably (see R notebook examples). But
+  to HA's credit, their Chapter 9.8 does also recommend more of a
   human-in-the-loop procedure than just calling \verb|ARIMA()| once, involving 
-  diagnostics
+  diagnostics 
 
 \item The gist of the non-automated part (which is fairly standard) is as
   follows: 
   \begin{enumerate}
-  \item[0.] Plot the data to identify (and possibly remove) any outliers. 
-   Apply data transformation (e.g., Box-Cox), if needed, to stabilize the
+  \item[0.] Plot the data to identify (and possibly remove) any outliers, and 
+   apply data transformations (e.g., Box-Cox), if needed, to stabilize the  
    variance   
   \item If the data appears nonstationary, take differences until it is
     stationary 
@@ -816,9 +817,8 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \item Step 1 is at the heart of ARIMA, which we'll cover soon. Steps 2-3 are the
   part that can be (but arguably, should not be) automated by Hyndman-Khandakar:  
-  instead of a single ARMA model, it fits a number of different ARMA models,
-  using a stepwise search procedure, and then uses an information criterion
-  (like AICc) to select a final one 
+  instead of a single ARMA model, it fits various ARMA models, and then uses an
+  information criterion (like AICc) to select a final one  
 
 \item Chapter 3.7 in SS also goes into details about a similar sequence of steps
   for building ARIMA models, with worked examples. We'll also go through an
