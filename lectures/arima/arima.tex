@@ -764,15 +764,15 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   are various approaches, typically iterative, for carrying out maximum
   likelihood, and different approaches will give different answers     
 
-\item We won't cover estimation techniques in detail at all, but we'll just note
-  that a simple approach is as follows (which dates back to Durbin in
-  1960). Start with some estimates \smash{$\hat{w}_t$} the noise variates
-  $w_t$. Then use these as covariates, i.e., regress $x_t$ on
+\item We won't cover estimation techniques in detail at all, but we note that a
+  simple approach is (due to Durbin in 1960) to start with some estimates
+  \smash{$\hat{w}_t$} the noise variates $w_t$. Then use these as covariates, 
+  and regress $x_t$ on
   \smash{$x_{t-p},\dots,x_{t-1},\hat{w}_{t-q},\dots,\hat{w}_{t-1}$}, over $t =
-  t_0+1,t_0+2,\dots,n$, where $t_0 = \max\{p,q\}$. This is like a conditional  
-  maximum likelihood approach (where we condition on the initial values
-  \smash{$x_1,\dots,x_{t_0},w_1,\dots,w_{t_0}$} and our estimates
-  \smash{$\hat{w}_t$})
+  t_0+1,\dots,n$, where $t_0 = \max\{p,q\}$. When $q = 0$, i.e., we are fitting
+  an AR($p$), we simply regress $x_t$ on $x_{t-p},\dots,x_{t-1}$, over $t = 
+  p+1,\dots,n$. This is a conditional maximum likelihood approach, where we 
+  condition on the initial values $x_1,\dots,x_p$   
 
 \item You can read about other approaches in Chapter 3.5 of SS, Chapter 9.6 of
   HA, or references therein  
@@ -832,8 +832,8 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item Since our focus is on prediction, we will adopt the following simple
   perspective (just like in regression): \emph{an ARMA model is useful if it
     predicts well}. And as before, we can assess this with time series
-  cross-validation. We'll revisit this later, and go through examples on the
-  homework 
+  cross-validation. We'll revisit this later, and you'll go through examples on
+  the homework 
 \end{itemize}
 
 \subsection{Regression with correlated errors}
