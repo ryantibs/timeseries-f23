@@ -560,7 +560,47 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 
 \subsection{ARIMA versus ETS}
 \begin{itemize}
-\item 
+\item ARIMA and ETS models bear interesting connections, and it is worth
+  discussing their similarities and differences
+
+\item Recall that there are 18 ETS models in total: 2 choices for the errors (A,
+  M) $\times$ 3 choices for trend (N, A, Ad) $\times$ 3 choices for seasonality
+  (N, A, M)
+
+\item Interesting fact: \emph{the 6 fully additive ETS models: ETS(A,N,N), 
+    ETS(A,A,N), ETS(A,N,A), ETS(A,A,A), ETS(A,Ad,N), and ETS(A,Ad,A), are each  
+    special cases of ARIMA models}
+
+\item We showed at the end of the last lecture that ARIMA(0,1,1) was actually
+  the same as SES. Similar proofs are possible for the other fully additive ETS
+  models. An important note: in each case here, the I component in the
+  equivalent ARIMA model is nontrivial ($d \not= 0$), which means that all ETS 
+  models are nonstationary  
+
+\item Meanwhile, each of the other 12 ETS models with a multiplicative component  
+  is not a special case of ARIMA 
+
+\item And lastly, some ARIMA models are stationary: precisely, ARMA models ($d =
+  0$), whereas all ETS models are nonstationary, as just noted above
+
+\item This is all nicely summarized by Figure \ref{fig:arima_ets} which is taken
+  from Chapter 9.10 of HA
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.85\textwidth]{arima_ets.png}
+\caption{Summary of similarities and differences between ARIMA and ETS (from
+  HA).} 
+\label{fig:arima_ets}
+\end{figure}
+
+\item Conceptually, ARIMA and ETS are born out of different lines of motivation:
+  ARIMA stems from modeling autocorrelations, in either the process itself (AR)
+  or the errors (MA), whereas ETS stems from a modeling components of the time
+  series (level, trend, seasonal)
+
+\item Both classes can lead to useful forecasters, and we will typically fit one
+  or more models from each class and use time series CV to compare    
 \end{itemize}
 
 \section{Theta model}
