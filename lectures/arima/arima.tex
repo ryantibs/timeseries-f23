@@ -27,20 +27,20 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item Precisely, an AR model of order $p \geq 0$, denoted AR($p$), is of the
   form 
   \begin{equation}
-  \label{eq:ar-p}
+  \label{eq:ar_p}
   x_t = \sum_{j=1}^p \phi_j x_{t-j} + w_t
   \end{equation}
   where $w_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is a white noise
   sequence. Note that we allow the time index to be negative here (we extend
   time back to $-\infty$), which will useful in what follows 
 
-\item The coefficients $\phi_1,\dots,\phi_p$ in \eqref{eq:ar-p} are fixed
+\item The coefficients $\phi_1,\dots,\phi_p$ in \eqref{eq:ar_p} are fixed
   (nonrandom), and we assume $\phi_p \not= 0$ (otherwise the order here would
-  effectively be less than $p$). Note that in \eqref{eq:ar-p}, we have $\E(x_t)
+  effectively be less than $p$). Note that in \eqref{eq:ar_p}, we have $\E(x_t)
   = 0$ for all $t$
 
 \item If we wanted to allow for a nonzero but constant mean, then we could add
-  an intercept to the model in \eqref{eq:ar-p}. We'll omit this for simplicity
+  an intercept to the model in \eqref{eq:ar_p}. We'll omit this for simplicity
   in this lecture  
 
 \item A useful tool for expressing and working with AR models is the
@@ -56,21 +56,21 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   B^k x_t = x_{t-k} 
   \]
 
-\item Returning to \eqref{eq:ar-p}, note now that we can rewrite this as 
+\item Returning to \eqref{eq:ar_p}, note now that we can rewrite this as 
   \[
   x_t - \phi_1 x_{t-1} - \phi_2 - x_{t-2} - \cdots - \phi_p x_{t-p} = w_t  
   \]
   or in other words, using backshift notation 
   \begin{equation}
-  \label{eq:ar-p-backshift}
+  \label{eq:ar_p_backshift}
   \Big(1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p \Big) x_t = w_t 
   \end{equation}
 
-\item Hence \eqref{eq:ar-p-backshift} is just a compact way to represent the
-  AR($p$) model \eqref{eq:ar-p} using the backshift operator $B$. Often, authors
+\item Hence \eqref{eq:ar_p_backshift} is just a compact way to represent the
+  AR($p$) model \eqref{eq:ar_p} using the backshift operator $B$. Often, authors
   will write this model even more compactly as  
   \begin{equation}
-  \label{eq:ar-p-operator}
+  \label{eq:ar_p_operator}
   \phi(B) x_t = w_t 
   \end{equation}
   where $\phi(B) = 1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p$ is called
@@ -91,19 +91,19 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \begin{itemize}
 \item A key question for us will be: \emph{under what conditions does the AR
-    model  in \eqref{eq:ar-p}, or equivalently \eqref{eq:ar-p-operator}, define
+    model  in \eqref{eq:ar_p}, or equivalently \eqref{eq:ar_p_operator}, define
     a stationary process?} 
 
 \item The answer will turn out to be fairly sophisticated, but we can glean some
   intuition by starting with the AR(1) case: 
   \begin{equation}
-  \label{eq:ar-1}
+  \label{eq:ar_1}
   x_t = \phi x_{t-1} + w_t 
   \end{equation}
 
 \item Note that a random walk is the special case with $\phi = 1$. We already
   know (from previous lectures) that this is nonstationary, so certainly
-  \eqref{eq:ar-1} cannot be stationary for any $\phi$
+  \eqref{eq:ar_1} cannot be stationary for any $\phi$
 
 \item Unraveling the iterations, we get
   \begin{align*}
@@ -116,11 +116,11 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item If $|\phi| < 1$, then we can send $k \to \infty$ in the last display to 
   get 
   \begin{equation}
-  \label{eq:ar-1-stationary}
+  \label{eq:ar_1_stationary}
   x_t = \sum_{j=0}^\infty \phi^j w_{t-j} 
   \end{equation}
   This is called the \emph{stationary representation} of the AR(1) process
-  \eqref{eq:ar-1} 
+  \eqref{eq:ar_1} 
 
 \item Why is it called this? We can compute the auto-covariance function,
   writing $\sigma^2 = \Var(w_t)$ for the noise variance, as
@@ -134,14 +134,14 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   &= \sum_{j=0}^\infty \phi^j \phi^{j+h} \sigma^2 \\
   \nonumber
   &= \sigma^2 \phi^h \sum_{j=0}^\infty \phi^{2j} \\
-  \label{eq:ar-1-auto-cov}
+  \label{eq:ar_1_auto_cov}
   &= \sigma^2 \frac{\phi^h}{1 - \phi^2}    
   \end{align}
   where we used the fact that \smash{$\sum_{j=0}^\infty b^j = 1/(1-b)$} for $|b|
   < 1$. Since the auto-covariance in the last line only depends on $h$, we can
   see that the AR(1) process is indeed stationary
 
-\item To reiterate, the representation \eqref{eq:ar-1-stationary}, and the
+\item To reiterate, the representation \eqref{eq:ar_1_stationary}, and the
   auto-covariance calculation just given, would have not been possible unless
   $|\phi| < 1$. This condition is required in order for the AR(1) process to
   have a stationary representation. We will see later that we can generalize
@@ -169,7 +169,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   coefficients such that \smash{$\sum_{j=0}^\infty |\psi_j| < \infty$}  
 
 \item You should think of this as a generalization of
-  \eqref{eq:ar-1-stationary}, where we allow for arbitrary coefficients
+  \eqref{eq:ar_1_stationary}, where we allow for arbitrary coefficients
   $\psi_0,\psi_1,\psi_2,\dots$, subject to an absolute summability condition  
 
 \item It is straightforward to check that causality actually implies
@@ -207,26 +207,26 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item Precisely, an MA model of order $q \geq 0$, denoted MA($q$), is of the
   form 
   \begin{equation}
-  \label{eq:ma-q}
+  \label{eq:ma_q}
   x_t = w_t + \sum_{j=1}^q \theta_j w_{t-j} 
   \end{equation}
   where $w_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is a white noise
   sequence
 
-\item The coefficients $\theta_1,\dots,\theta_q$ in \eqref{eq:ma-q} are fixed
+\item The coefficients $\theta_1,\dots,\theta_q$ in \eqref{eq:ma_q} are fixed
   (nonrandom), and we assume $\theta_q \not= 0$ (otherwise the order here would 
-  effectively be less than $q$). Note that in \eqref{eq:ma-q}, we have $\E(x_t)
+  effectively be less than $q$). Note that in \eqref{eq:ma_q}, we have $\E(x_t)
   = 0$ for all $t$ 
 
-\item Again, we can rewrite \eqref{eq:ma-q}, using backshift notation, as 
+\item Again, we can rewrite \eqref{eq:ma_q}, using backshift notation, as 
   \begin{equation}
-  \label{eq:ma-q-backshift}
+  \label{eq:ma_q_backshift}
   x_t = \Big(1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q \Big) w_t   
   \end{equation}
 
-\item Often, authors will write \eqref{eq:ma-q-backshift} even more compactly as   
+\item Often, authors will write \eqref{eq:ma_q_backshift} even more compactly as   
   \begin{equation}
-  \label{eq:ma-q-operator}
+  \label{eq:ma_q_operator}
   x_t = \theta(B) w_t 
   \end{equation}
   where $\theta(B) = 1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q$ is
@@ -246,7 +246,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \subsection{Stationarity}
 
 \begin{itemize}
-\item Unlike AR processes, an MA process \eqref{eq:ma-q} is stationary \emph{for
+\item Unlike AR processes, an MA process \eqref{eq:ma_q} is stationary \emph{for
     any values of the parameters $\theta_1,\dots,\theta_q$}
 
 \item To check this, we compute the auto-covariance function using a similar
@@ -258,7 +258,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   \sum_{\ell=0}^q \theta_\ell w_{t+h-\ell} \bigg) \\
   \nonumber
   &= \sum_{j,\ell=0}^q \theta_j \theta_\ell \Cov( w_{t-j}, w_{t+h-\ell} ) \\
-  \label{eq:ma-q-auto-cov}
+  \label{eq:ma_q_auto_cov}
   &= \sum_{j \,:\, 0 \leq j,  j +h \leq q} \theta_j \theta_{j+h} \sigma^2
   \end{align}
   Since this only depends on $h$, we can see that the process is indeed
@@ -267,7 +267,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item The similarity in these calculations brings us to pause to emphasize the
   following connection: \emph{an AR(1) model with $|\phi| < 1$ is also a
     particular infinite-order MA model}, as we saw in the stationary
-  representation \eqref{eq:ar-1-stationary}. We will see later that there are
+  representation \eqref{eq:ar_1_stationary}. We will see later that there are
   more general connections to be made
 \end{itemize}
 
@@ -276,14 +276,14 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \begin{itemize}
 \item Consider the MA(1) model:
   \begin{equation}
-  \label{eq:ma-1}
+  \label{eq:ma_1}
   x_t = w_t + \theta w_{t-1}
   \end{equation}
 
-\item According to \eqref{eq:ma-q-auto-cov}, we can compute its auto-covariance 
+\item According to \eqref{eq:ma_q_auto_cov}, we can compute its auto-covariance 
   simply (recalling $\theta_0 = 1$) as
   \begin{equation}
-  \label{eq:ma-1-auto-cov}  
+  \label{eq:ma_1_auto_cov}  
   \gamma_x(h) = \begin{cases}
   (1+\theta^2) \sigma^2 & h = 0 \\
   \theta \sigma^2 & |h| = 1 \\
@@ -303,7 +303,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item If we look carefully, then we can see a problem lurking here: the
   auto-correlation function is unchanged if we replace $\theta$ by $1/\theta$
 
-\item And in fact, the auto-covariance function \eqref{eq:ma-1-auto-cov} is
+\item And in fact, the auto-covariance function \eqref{eq:ma_1_auto_cov} is
   unchanged if we replace $\theta$ and $\sigma^2$ with $1/\theta$ and $\sigma^2
   \theta^2$; e.g., try $\theta = 5$ and $\sigma^2 = 1$, and $\theta = 1/5$ and
   $\sigma^2 = 25$, you'll find that the auto-covariance function is the same in
@@ -324,14 +324,14 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   w_t = -\theta w_{t-1} + x_t 
   \]
   which is like an AR(1) process with the roles of $x_t$ and $w_t$
-  reversed. Thus by the same arguments that led to \eqref{eq:ar-1-stationary},
+  reversed. Thus by the same arguments that led to \eqref{eq:ar_1_stationary},
   when $|\theta| < 1$, we now have 
   \begin{equation}
-  \label{eq:ma-1-invertible}
+  \label{eq:ma_1_invertible}
   w_t = \sum_{j=0}^\infty (-\theta)^j x_{t-j} 
   \end{equation}
   This is called the \emph{invertible representation} of the MA(1) process
-  \eqref{eq:ma-1} 
+  \eqref{eq:ma_1} 
 
 \item We will see soon that we can generalize this to a condition that applies
   to a general MA($q$), yielding an analogous conclusion. The conclusion we will
@@ -356,7 +356,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   we set $\pi_0 = 1$
 
 \item You should think of this as a generalization of
-  \eqref{eq:ma-1-invertible}, where we allow for arbitrary coefficients
+  \eqref{eq:ma_1_invertible}, where we allow for arbitrary coefficients
   $\pi_1,\pi_2,\dots$, subject to an absolute summability condition   
 
 \item And of course, note how invertibility \eqref{eq:invertible} is kind of an
@@ -370,7 +370,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   of an AR model generally decays away from $h=0$, whereas that for an MA
   process has finite support---in other words, at a certain lag, variates along
   an MA sequence are completely uncorrelated. You can compare
-  \eqref{eq:ar-1-auto-cov} and \eqref{eq:ma-1-auto-cov} for the AR(1) and MA(1)
+  \eqref{eq:ar_1_auto_cov} and \eqref{eq:ma_1_auto_cov} for the AR(1) and MA(1)
   models
 
 \item (The spectral perspective, by the way, provides another nice way of
@@ -390,28 +390,28 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item Precisely, an ARMA model of orders $p,q \geq 0$, denoted ARMA($p,q$), is
   of the form 
   \begin{equation}
-  \label{eq:arma-pq}
+  \label{eq:arma_pq}
   x_t = \sum_{j=1}^p \phi_j x_{t-j} + \sum_{j=0}^q \theta_j w_{t-j}  
   \end{equation}
   where $w_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is a white noise sequence 
 
 \item The coefficients $\phi_1,\dots,\phi_p,\theta_0,\dots,\theta_q$ in
-  \eqref{eq:arma-pq} are fixed (nonrandom), and we assume $\phi_p,\theta_q \not=
-  0$, and we set $\theta_0 = 1$. Note that in \eqref{eq:arma-pq}, we have
+  \eqref{eq:arma_pq} are fixed (nonrandom), and we assume $\phi_p,\theta_q \not=
+  0$, and we set $\theta_0 = 1$. Note that in \eqref{eq:arma_pq}, we have
   $\E(x_t) = 0$ for all $t$ 
 
 \item As before, we can represent an ARMA model more compactly using backshift 
-  notation, rewriting \eqref{eq:arma-pq} as
+  notation, rewriting \eqref{eq:arma_pq} as
   \begin{equation}
-  \label{eq:arma-pq-backshift}
+  \label{eq:arma_pq_backshift}
   \Big(1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p \Big) x_t = 
   \Big(1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q \Big) w_t   
   \end{equation}
 
-\item Often, authors will write \eqref{eq:arma-pq-backshift} even more compactly
+\item Often, authors will write \eqref{eq:arma_pq_backshift} even more compactly
   as    
   \begin{equation}
-  \label{eq:arma-pq-operator}
+  \label{eq:arma_pq_operator}
   \phi(B) x_t = \theta(B) w_t  
   \end{equation}
   where $\phi(B) = 1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p$ and
@@ -424,7 +424,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \begin{itemize}
 \item For ARMA models, there is an issue of parameter redundancy, just like
   there are for MA models. If $\eta(B)$ is any (invertible) operator, then we
-  can transform \eqref{eq:arma-pq-operator} by applying $\eta(B)$ on both sides,  
+  can transform \eqref{eq:arma_pq_operator} by applying $\eta(B)$ on both sides,  
   \[
   \eta(B) \phi(B) x_t = \eta(B) \theta(B) w_t  
   \]
@@ -440,11 +440,11 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
  
 \item How do we resolve this issue? Doing so requires introducing another
   concept. The \emph{AR and MA polynomials} associated with the ARMA process
-  \eqref{eq:arma-pq} are 
+  \eqref{eq:arma_pq} are 
   \begin{align}
-  \label{eq:ar-p-polynomial}
+  \label{eq:ar_p_polynomial}
   \phi(z) &= 1 - \phi_1 z - \phi_2 z^2 - \cdots - \phi_p z^p \\
-  \label{eq:ma-q-polynomial}
+  \label{eq:ma_q_polynomial}
   \theta(z) &= 1 + \theta_1 z + \theta_2 z^2 + \cdots + \theta_q z^q
   \end{align}
   respectively. To be clear, these are polynomials over \emph{complex numbers}
@@ -455,7 +455,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   derived by placing conditions on the AR and MA polynomials. Here we'll see the
   first one, to deal with parameter redundancy: \emph{when we speak of an ARMA
     model, we implicitly assume that the AR and MA polynomials $\phi(z)$ and
-    $\theta(z)$, in \eqref{eq:ar-p-polynomial} and \eqref{eq:ma-q-polynomial},
+    $\theta(z)$, in \eqref{eq:ar_p_polynomial} and \eqref{eq:ma_q_polynomial},
     have no common factors}. This rules out a case like   
   \[
   x_t = \frac{1}{2} x_{t-1} + w_t - \frac{1}{2} w_{t-1}
@@ -480,9 +480,9 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   complex modulus of $z$ (recall $|z|^2 = \mathrm{Re}\{z\}^2 +
   \mathrm{Im}\{z\}^2$)     
 
-\item The first property: \emph{the ARMA process \eqref{eq:arma-pq} has a causal
+\item The first property: \emph{the ARMA process \eqref{eq:arma_pq} has a causal
     representation \eqref{eq:causal} if and only if all roots of the AR
-    polynomial \eqref{eq:ar-p-polynomial} lie outside of the unit circle}. The
+    polynomial \eqref{eq:ar_p_polynomial} lie outside of the unit circle}. The
   coefficients $\psi_0,\psi_1,\psi_2,\dots$ in the causal representation can be
   determined by solving  
   \[
@@ -492,9 +492,9 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   \text{for $|z| < 1$}
   \]
 
-\item The second property: \emph{the ARMA process \eqref{eq:arma-pq} is
+\item The second property: \emph{the ARMA process \eqref{eq:arma_pq} is
     invertible \eqref{eq:invertible} if and only if all roots of the MA
-    polynomial \eqref{eq:ma-q-polynomial} lie outside of the unit circle}. The  
+    polynomial \eqref{eq:ma_q_polynomial} lie outside of the unit circle}. The  
   coefficients $\pi_1,\pi_2,\dots$ in the invertible representation can be 
   determined by solving   
   \[
@@ -545,11 +545,11 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \begin{itemize}
 \item The auto-covariance for an MA($q$) model was already given in
-  \eqref{eq:ma-q-auto-cov}. We can see that it is zero when $|h| > q$: this is a
+  \eqref{eq:ma_q_auto_cov}. We can see that it is zero when $|h| > q$: this is a
   signature structure of the MA($q$) model 
 
 \item The auto-covariance for a causal AR(1) model was given in
-  \eqref{eq:ar-1-auto-cov}. We can see that it decays away from $h=0$: this is 
+  \eqref{eq:ar_1_auto_cov}. We can see that it decays away from $h=0$: this is 
   a signature structure of AR models. But what does the precise auto-covariance
   look like for a general causal AR($p$) model? How about a general causal
   ARMA($p,q$) model?  
@@ -558,7 +558,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   precisely. We'll do it first for an AR($p$) model, and then look at an
   ARMA($p,q$) model, which will have an analogous behavior 
 
-\item For an AR($p$) model \eqref{eq:ar-p}, assumed causal (i.e., all roots of
+\item For an AR($p$) model \eqref{eq:ar_p}, assumed causal (i.e., all roots of
   $\phi(z)$ are outside of the unit circle), we can focus on the auto-covariance  
   at lags $ h \geq 0$ (without a loss of generality, because $\gamma_x$ is
   symmetric around zero), 
@@ -595,7 +595,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   the 
   last display and get
   \begin{equation}
-  \label{eq:ar-p-auto-cov}
+  \label{eq:ar_p_auto_cov}
   \gamma_x(h) = P_1(h) z_1^{-h} + \cdots + P_r(h) z_r^{-h}
   \end{equation}
   where each $P_j$ is a polynomial, and each $z_j$ is a root of the AR
@@ -605,7 +605,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   happen is that the auto-covariance will dampen to zero but in doing so
   oscillate in a sinusoidal fashion
 
-\item Now what about an ARMA($p,q$) model \eqref{eq:arma-pq}, assumed
+\item Now what about an ARMA($p,q$) model \eqref{eq:arma_pq}, assumed
   causal? Similarly, we can focus on the auto-covariance a lags $h \geq 0$, 
   \[
   \Cov(x_t, x_{t+h}) = \sum_{j=1}^p \phi_j \Cov(x_t, x_{t+h-j}) + \sum_{j=0}^q 
@@ -631,10 +631,10 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item This is again a difference equation of order $p$ that determines
   $\gamma_x$, but the boundary condition (what happens when $h \leq q$) is more
   complicated. Nonetheless, the solution is still the form
-  \eqref{eq:ar-p-auto-cov}, and the qualitative behavior is still the same as in 
+  \eqref{eq:ar_p_auto_cov}, and the qualitative behavior is still the same as in 
   the AR($p$) case   
 
-\item Figure \ref{fig:auto-cor}, top row, shows sample auto-correlation
+\item Figure \ref{fig:auto_cor}, top row, shows sample auto-correlation
   functions for simple MA and AR models 
 
 \begin{figure}[htb]
@@ -643,7 +643,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \caption{Top row: sample auto-correlation functions for data from AR(2) and
   MA(3) models. Bottom row: sample partial auto-correlation functions for these
   same data.} 
-\label{fig:auto-cor}
+\label{fig:auto_cor}
 \end{figure}
 \end{itemize}
 
@@ -655,12 +655,12 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   for lags $h>q$, if we were to compute a sample version based on data, then by
   seeing where the sample auto-correlation ``cuts off'', we could roughly
   identify the order $q$ of the underlying MA process (see top right of Figure 
-  \ref{fig:auto-cor} again)   
+  \ref{fig:auto_cor} again)   
 
 \item For an AR (or ARMA) model, this is not the case. As we saw from
-  \eqref{eq:ar-p-auto-cov}, the auto-covariance decays to zero, but this tells
+  \eqref{eq:ar_p_auto_cov}, the auto-covariance decays to zero, but this tells
   us little about the AR order of dependence $p$ (see also top left of Figure 
-  \ref{fig:auto-cor}). Thus it is worth pursuing a type of \emph{modified}
+  \ref{fig:auto_cor}). Thus it is worth pursuing a type of \emph{modified}
   correlation function for the AR model that behaves like the auto-correlation
   does for the MA model 
 
@@ -723,7 +723,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item That is, the \emph{partial auto-correlation function for an AR($p$) model
   is exactly zero at all lags $h > p$}
 
-\item Figure \ref{fig:auto-cor}, bottom row, shows sample partial
+\item Figure \ref{fig:auto_cor}, bottom row, shows sample partial
   auto-correlation functions for AR and MA models
 
 \item The table below summarizes the behavior of the auto-correlation function
@@ -754,7 +754,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \begin{itemize}
 \item Estimation in an ARMA($p,q$) model---estimating the coefficients
-  $\phi_1,\dots,\phi_p,\theta_1,\dots\theta_q$ in \eqref{eq:arma-pq}---is in 
+  $\phi_1,\dots,\phi_p,\theta_1,\dots\theta_q$ in \eqref{eq:arma_pq}---is in 
   general fairly complicated. Much more so than in linear regression 
 
 \item Estimation is usually performed by maximum likelihood (assuming Gaussian
@@ -925,7 +925,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   \geq 0$: this is a model for $x_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ such
   that $\nabla^d x_t$ follows an ARMA($p,q$) model, i.e., 
   \begin{equation}
-  \label{eq:arima-pdq}
+  \label{eq:arima_pdq}
   \phi(B) \nabla^d x_t = \theta(B) w_t
   \end{equation}
   where $w_t$, $t = 0, \pm 1, \pm 2, \pm 3, \dots$ is a white noise sequence,
@@ -944,10 +944,10 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item Below is a summary of some of the basic models that the ARIMA framework
   encompasses. We write $c$ for the intercept in the model, as in 
   \begin{equation}
-  \label{eq:arima-pdq-c}
+  \label{eq:arima_pdq_c}
   \phi(B) \nabla^d x_t = c + \theta(B) w_t
   \end{equation}
-  Recall, this was assumed zero in \eqref{eq:arima-pdq}, and throughout, only
+  Recall, this was assumed zero in \eqref{eq:arima_pdq}, and throughout, only
   for simplicity---in general, we allow it 
 
   \begin{center} \smallskip
@@ -972,7 +972,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \item Now we walk through an example from HA on using ARIMA to model (and
   forecast) Central African Republic exports. The data is shown in Figure
-  \ref{fig:car-exploratory}, top row. It does not look stationary  
+  \ref{fig:car_exploratory}, top row. It does not look stationary  
 
 \item Taking first differences of the data, as shown in the second row, renders
   the data reasonably stationary-looking 
@@ -986,11 +986,11 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \caption{Top row: exports (as a percentage of GDP) for Central African
   Republic (from HA). Middle row: first differences of exports. Bottom row: ACF 
   and PACF functions of first differences.}
-\label{fig:car-exploratory}
+\label{fig:car_exploratory}
 \end{figure}
 
 \item ACF and PACF plots are shown in the third row of Figure
-  \ref{fig:car-exploratory}. To be clear, these are applied to first differences
+  \ref{fig:car_exploratory}. To be clear, these are applied to first differences
   of the data. They are suggestive of MA(3) and AR(2) dynamics,
   respectively. Thus we can go and fit each model: ARIMA(2,1,0) and ARIMA(0,1,3)
   (note that these are ARIMA models with $d=1$, since we are going to specify
@@ -1046,7 +1046,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   model with orders $P,Q \geq 0$ and period $s$, denoted ARMA$(P,Q)_s$, is of 
   the form   
   \begin{equation}
-  \label{eq:pure-sarma-pq}
+  \label{eq:pure_sarma_pq}
   \Phi(B^s) x_t = \Theta(B^s) w_t  
   \end{equation}
   where $\Phi(B^s) = 1 - \Phi_1 B^s - \Phi_2 B^{2s} - \cdots - \Phi_P B^{Ps}$
@@ -1062,7 +1062,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   the original scale, which leads to a \emph{seasonal ARMA} model of orders 
   $p,q,P,Q \geq 0$ and period $s$, denoted ARMA$(p,q)(P,Q)_s$,   
   \begin{equation}
-  \label{eq:sarma-pq}
+  \label{eq:sarma_pq}
   \phi(B) \Phi(B^s) x_t = \theta(B) \Theta(B^s) w_t  
   \end{equation}
   where $\phi(B) = 1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p$ and
@@ -1080,11 +1080,11 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   Then define the \emph{seasonal ARIMA} (SARIMA) model of orders $p,d,q,P,D,Q 
   \geq 0$ and period $s$, denoted ARIMA$(p,d,q)(P,D,Q)_s$, 
   \begin{equation}
-  \label{eq:sarima-pdq}
+  \label{eq:sarima_pdq}
   \phi(B) \Phi(B^s) \nabla^d \nabla_s^D x_t = \theta(B) \Theta(B^s) w_t  
   \end{equation}
   As usual, we are omitting an intercept $c$ for simplicity, but in general we
-  could include this on the right-hand side in \eqref{eq:sarima-pdq}. (Phew!
+  could include this on the right-hand side in \eqref{eq:sarima_pdq}. (Phew!
   That's the full beast. We've maxed out in complexity, at least for this
   lecture ...) 
 
@@ -1094,17 +1094,17 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item We won't go into any further details than what we have discussed already,
   but will walk through an example from HA to model (and forecast) US
   employment numbers in leisure/hospitality. The data is shown in Figure
-  \ref{fig:leisure-exploratory}, top row. It has a clear seasonal pattern with
+  \ref{fig:leisure_exploratory}, top row. It has a clear seasonal pattern with
   (safe guess) a 1 year period  
 
 \item Taking seasonal differences (i.e., applying $\nabla_s$ with $s = 12$,
   since this is monthly data) has removed the seasonality, but the result, in
-  the middle row of Figure \ref{fig:leisure-exploratory}, is still very clearly
+  the middle row of Figure \ref{fig:leisure_exploratory}, is still very clearly
   nonstationary   
 
 \item Additionally taking monthly differences (i.e., applying the composite 
   operator $\nabla \nabla_s$), in the bottom row of Figure
-  \ref{fig:leisure-exploratory}, is reasonably stationary-looking    
+  \ref{fig:leisure_exploratory}, is reasonably stationary-looking    
 
 \begin{figure}[p]
 \centering
@@ -1114,7 +1114,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \caption{Top row: number of US jobs (in millions) in leisure/hospitality (from
   HA). Middle row: seasonal (yearly) differences. Bottom row: differences of
   seasonal differences.} 
-\label{fig:leisure-exploratory}
+\label{fig:leisure_exploratory}
 \end{figure}
 
 \item ACF and PACF plots are displayed in the top row of Figure
@@ -1257,7 +1257,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 
 \item It is important to have a qualitative sense of what long-term forecasts
   look like in ARIMA. Again, we borrow this nice explanation from HA. Starting
-  with \eqref{eq:arima-pdq-c}, a nonseasonal ARIMA model, we can break down the
+  with \eqref{eq:arima_pdq_c}, a nonseasonal ARIMA model, we can break down the
   explanation into cases (recall $c$ is the intercept, and $d$ is the
   differencing order):  
 
@@ -1422,7 +1422,7 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
   often abbreviated ARIMAX 
 
 \item Formally, an ARIMAX($p,d,q$) model is an extension of the ARIMA model 
-  \eqref{eq:arima-pdq} of the form 
+  \eqref{eq:arima_pdq} of the form 
   \[
   \phi(B) \nabla^d x_t = \beta^\T u_t + \theta(B) w_t
   \]
@@ -1463,7 +1463,7 @@ this to fit ARIMA($p,d,q$) and make forecasts in time series CV \smallskip}
   \]
 
 \item Because $\alpha < 1$, this has an invertible representation: writing $y_t
-  = x_t - x_{t-1}$, recall what we developed in \eqref{eq:ma-1-invertible},
+  = x_t - x_{t-1}$, recall what we developed in \eqref{eq:ma_1_invertible},
   which yields 
   \[
   w_t = \sum_{j=0}^\infty (1-\alpha)^j y_{t-j} 
