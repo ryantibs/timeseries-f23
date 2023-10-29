@@ -42,7 +42,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   we did in the ARIMA lecture (but now in the opposite direction), this can also
   be written as    
   \begin{equation}
-  \label{eq:ses-exp}
+  \label{eq:ses_exp}
   \hat{x}_{t+1 | t} = \alpha x_t + \alpha (1-\alpha) x_{t-1} + \alpha
   (1-\alpha)^2 x_{t-2} + \dots
   \end{equation}
@@ -52,7 +52,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \item  (Note: we are being intentionally vague here about the boundary 
   condition. In ARIMA, to develop the theory cleanly, we let time extend back to
   $-\infty$. In  exponential smoothing, we instead usually index time starting
-  at $t = 0$, in which case the right-hand side in \eqref{eq:ses-exp} would end
+  at $t = 0$, in which case the right-hand side in \eqref{eq:ses_exp} would end
   with $\alpha (1-\alpha)^t x_0$)
 
 \item To make $h$-step ahead forecasts, we iterate \eqref{eq:ses}, where (as 
@@ -60,7 +60,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   yields \smash{$\hat{x}_{t+2 | t} = \alpha \hat{x}_{t+1 | t} + (1-\alpha)
     \hat{x}_{t+1 | t} = \hat{x}_{t+1 | t}$}, and in general, 
   \begin{equation}
-  \label{eq:ses-h}
+  \label{eq:ses_h}
   \hat{x}_{t+h | t} = \alpha x_t + (1-\alpha) \hat{x}_{t | t-1}
   \end{equation}
   for all horizons $h \geq 1$. That is, SES generates \emph{flat} forecast
@@ -70,37 +70,37 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   different way, as follows. The \emph{naive flatline forecaster} produces
   forecasts via
   \begin{equation}
-  \label{eq:flatline-h}
+  \label{eq:flatline_h}
   \hat{x}_{t+h | t} = x_t 
   \end{equation}
   i.e., it just propogates the last observation forward. Meanwhile, the
   \emph{naive average forecaster} produces forecasts via
   \begin{equation}
-  \label{eq:average-h}
+  \label{eq:average_h}
   \hat{x}_{t+h | t} = \frac{1}{t} \sum_{i=1}^t x_i
   \end{equation}
   Often we want something in between these two extremes, and that something is  
-  given to us by exponential smoothing, recalling the form in \eqref{eq:ses-exp} 
+  given to us by exponential smoothing, recalling the form in \eqref{eq:ses_exp} 
 \end{itemize}
 
 \subsection{Component form}
 
 \begin{itemize}
 \item For the developments that follow, it is helpful to rewrite the SES forecast
-  \eqref{eq:ses-h} in what is known as \emph{component form}
+  \eqref{eq:ses_h} in what is known as \emph{component form}
 
 \item Specifically, we think of a ``hidden'' level $\ell_t$ that we are tracking
   over time, that base our forecasts on:
   \begin{equation}
-  \label{eq:ses-component}
+  \label{eq:ses_component}
   \begin{aligned}
   \hat{x}_{t+h | t} &= \ell_t \\
   \ell_t &= \alpha x_t + (1-\alpha) \ell_{t-1}
   \end{aligned}
   \end{equation}
 
-\item The representation in \eqref{eq:ses-component} may appear as kind of a
-  trivial rewriting of \eqref{eq:ses-h}, where we replace \smash{$\hat{x}_{t+1 |
+\item The representation in \eqref{eq:ses_component} may appear as kind of a
+  trivial rewriting of \eqref{eq:ses_h}, where we replace \smash{$\hat{x}_{t+1 |
       t}$} by $\ell_t$, and \smash{$\hat{x}_{t | t-1}$} by $\ell_{t-1}$. 
   Nonetheless, it serve as a useful jumping off point to extend the model in the 
   next section   
@@ -108,7 +108,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \item Before moving on, we give a brief example of SES from HA, to forecast
   internet useage per minute. The data and SES forecast are shown in Figure
   \ref{fig:internet}, top row. In order to carry out the forecast, we have to
-  estimate the smoothing parameter $\alpha$ in \eqref{eq:ses-component}. This is 
+  estimate the smoothing parameter $\alpha$ in \eqref{eq:ses_component}. This is 
   typically done by maximum likelihood (more later), and is what is implemented
   as the default in the \verb|ETS()| function in the \verb|fable| package 
 
@@ -123,7 +123,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 
 \item The forecast from SES is not very impressive, and honestly, in general,
   SES should probably only be viewed as a small step up from the naive
-  forecasters \eqref{eq:flatline-h}, \eqref{eq:average-h} 
+  forecasters \eqref{eq:flatline_h}, \eqref{eq:average_h} 
 
 \item The forecast trajectory from SES is flat, by construction (as previously
   noted). Next we'll see how to extend the method to accommodate a linear trend  
@@ -132,7 +132,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \section{Trend extensions}
 
 \begin{itemize}
-\item An extension of the SES forecaster in \eqref{eq:ses-component} is
+\item An extension of the SES forecaster in \eqref{eq:ses_component} is
   \emph{Holt's linear trend} method. This changes both the forecast equation
   (first line) and the level equation (second line) to accomodate an estimate of
   the slope $b_t$ of the series at time $t$. We add a trend equation to evolve
@@ -239,7 +239,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   every $m$ time points share a common (but unknown) seasonal effect. The
   Holt-Winters method is then:  
   \begin{equation}
-  \label{eq:holt-winters}
+  \label{eq:holt_winters}
   \begin{aligned}
   \hat{x}_{t+h | t} &= \ell_t + b_t h + s_{t+h-mk} \\  
   \ell_t &= \alpha (x_t - s_t) + (1-\alpha) (\ell_{t-1} + b_{t-1}) \\ 
@@ -256,7 +256,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   last period). This is equivalent to seeking $mk \in [h, h+m]$. You can check
   that this is accomplished by setting \smash{$k = \lceil h/m \rceil$} 
 
-\item The interpretation of Holt-Winters \eqref{eq:holt-winters} is similar to 
+\item The interpretation of Holt-Winters \eqref{eq:holt_winters} is similar to 
   Holt's method \eqref{eq:holt}, except that we \emph{seasonally-adjust} the 
   observations in the level and trend equations. The seasonal equation updates
   $s_t$ as a $\gamma$-weighted combination of $x_t - \ell_{t-1} -  b_{t-1}$ and
@@ -270,7 +270,7 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   This is like the 1-step ahead forecast equation a time $t-1$, but where we
   replace the forecast \smash{$\hat{x}_{t |  t-1}$} by the observation $x_t$ 
 
-\item Note: we can also introduce dampening into \eqref{eq:holt-winters}, which
+\item Note: we can also introduce dampening into \eqref{eq:holt_winters}, which
   is just as in \eqref{eq:damped}, but do not write this out for brevity
 
 \item Figure \ref{fig:holiday} shows an example of Holt-Winters in action, on 
@@ -289,15 +289,15 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \subsection{Multiplicative seasonality}
 
 \begin{itemize}
-\item The seasonal effect in the Holt-Winters method \eqref{eq:holt-winters} is
+\item The seasonal effect in the Holt-Winters method \eqref{eq:holt_winters} is
   \emph{additive}. If we look at the forecast equation, in the first line, then
   we see that the seasonal component is being added to the level and trend  
   components in order to produce the forecast 
 
-\item A \emph{multiplicative seasonality} version of Holt-Winters is also
+\item A version of Holt-Winters with \emph{multiplicative seasonality} is also 
   possible: 
   \begin{equation}
-  \label{eq:holt-winters-multiplicative}
+  \label{eq:holt_winters_mult}
   \begin{aligned}
   \hat{x}_{t+h | t} &= (\ell_t + b_t h) s_{t+h-mk} \\   
   \ell_t &= \alpha \frac{x_t}{s_t} + (1-\alpha) (\ell_{t-1} + b_{t-1}) \\ 
@@ -308,8 +308,8 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
   The parameters are again $\alpha, \beta \in [0,1]$ and $\gamma \in [0,
   1-\alpha]$  
 
-\item The equations in \eqref{eq:holt-winters-multiplicative} are motivated and
-  interpreted just as in \eqref{eq:holt-winters}, except that the contribution
+\item The equations in \eqref{eq:holt_winters_mult} are motivated and
+  interpreted just as in \eqref{eq:holt_winters}, except that the contribution 
   of the seasonal component is multiplicative. We can see this in the forecast
   equation, in the first line: we take the non-seasonal forecast (level and
   trend) and multiply it by the seasonal component  
@@ -374,8 +374,8 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 
 \item In fact, ETS includes more: we can also change the model to accomodate a  
   \emph{multiplicative error} component (rather than an additive error
-  component, as was previously introduced). This looks will be made more precise
-  when we talk about the state space representation, below
+  component, as was previously introduced). This will be made more precise when
+  we talk about the state space representation, below 
 
 \item (While mathematically possible, HA do not recommend allowing for a
   multiplicative trend, since they say that it can often behave poorly in
@@ -384,8 +384,8 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 \item Thus we an ETS model is written ETS($x,y,z$), where 
   \begin{itemize}
   \item $x \in \{ \text{A}, \text{M} \}$
-  \item $x \in \{ \text{N}, \text{A}, \text{Ad} \}$
-  \item $x \in \{ \text{N}, \text{A}, \text{M} \}$
+  \item $y \in \{ \text{N}, \text{A}, \text{Ad} \}$
+  \item $z \in \{ \text{N}, \text{A}, \text{M} \}$
   \end{itemize}
   here N stands for ``none'' (no trend component or no seasonality component), A
   stands for ``additive'', Ad stands for ``additive-dampened'', and M stands for
@@ -412,12 +412,72 @@ Related reading: Chapters 8, 9.10, 12.2, and 12.4 of Hyndman and Athanasopoulos
 
 \begin{itemize}
 \item A useful way to represent (and think about) ETS models is what is called
-  a \emph{state space} formulation. This provides a statistical framework for
-  ETS models: it provides equivalent point forecasts \smash{$\hat{x}_{t+h |
-      t}$}, and importantly, goes beyond this, and provides us with a way to
-  compute prediction intervals    
+  a \emph{state space} formulation. This gives equivalent point forecasts 
+  \smash{$\hat{x}_{t+h | t}$}, but moreover provides a probabilistic framework 
+  for ETS models, which informs us how to carry out maximum likelihood and
+  compute prediction intervals
 
-\item 
+\item We'll start by writing ETS(A,N,N) or SES \eqref{eq:ses_component} in state
+  space form. This is:  
+  \begin{equation}
+  \label{eq:ann_ss}
+  \begin{aligned}
+  x_t &= \ell_{t-1} + \epsilon_t \\
+  \ell_t &= \ell_{t-1} + \alpha \epsilon_t
+  \end{aligned}
+  \end{equation}
+  The first equation is typically called the observation (or measurement)
+  equation, and the second is called the state equation
+  
+\item In \eqref{eq:ann_ss}, and all state space formulations henceforth, each
+  error $\epsilon_t$ is i.i.d.\ taken to be $N(0, \sigma^2)$. Thus the joint
+  distribution of the observations $x_1,\dots,x_t$ is fully specified by
+  \eqref{eq:ann_ss} and we can do maximum likelihood in order to estimate the
+  unknown parameters: here, $\alpha$ and $\ell_0$ 
+
+\item To see \eqref{eq:ann_ss} is equivalent to \eqref{eq:ses_component}, we
+  have to understand how point forecasts are generated. This will explained in
+  more detail later, but it is really the exact same story as in ARIMA: we
+  replace past errors by their residuals, and future errors by zero. Thus in
+  \eqref{eq:ann_ss}, the state equation at time $t$ becomes   
+  \[
+  \ell_t = \ell_{t-1} + \alpha (x_t - \ell_{t-1})
+  \]
+  and the observation equation at time $t+1$ gives us the forecast:
+  \[
+  \hat{x}_{t+1 | t} = \ell_t + 0
+  \]
+  Clearly, the last two equations together recreate SES as defined in
+  \eqref{eq:ses_component}   
+
+\item As another example, ETS(A,A,N) or Holt's linear trend \eqref{eq:holt} in 
+  state space form is: 
+  \begin{equation}
+  \label{eq:aan_ss}
+  \begin{aligned}
+  x_t &= \ell_{t-1} + b_{t-1} + \epsilon_t \\
+  \ell_t &= \ell_{t-1} + b_{t-1} + \alpha \epsilon_t \\
+  b_t &= b_{t-1} + \beta \epsilon_t
+  \end{aligned}
+  \end{equation}
+  For convenience, we have redefined the product $\alpha \beta$ (with $\beta$ as
+  originally defined in \eqref{eq:holt}) as simply $\beta$ in \eqref{eq:aan_ss},
+  which is commonly done in the literature  
+
+\item As another example, ETS(M,A,N) in state space form is: 
+  \begin{equation}
+  \label{eq:man_ss}
+  \begin{aligned}
+  x_t &= (\ell_{t-1} + b_{t-1})(1 + \epsilon_t) \\
+  \ell_t &= (\ell_{t-1} + b_{t-1})(1 + \alpha \epsilon_t) \\
+  b_t &= b_{t-1} + \beta (\ell_{t-1} + b_{t-1}) \epsilon_t 
+  \end{aligned}
+  \end{equation}
+  The contribution of the errors in \eqref{eq:man_ss} are multiplicative: taking
+  $b_t = 0$ for all $t$ gives SES with multiplicative errors
+
+\item To read the details of the other state space representations, see Chapter
+  8.5 of HA
 \end{itemize}
 
 \subsection{Estimation and selection}
