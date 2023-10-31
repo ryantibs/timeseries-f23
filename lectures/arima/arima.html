@@ -338,7 +338,7 @@ forecast::auto.arima(x)  </code></pre>
 ## AIC=2808.01   AICc=2808.05   BIC=2827.64</code></pre>
 <pre class="r"><code># Newer fable package, same result (input must be a tsibble)
 dat = tsibble(data.frame(x, Time = 1:length(x)), index = Time)
-dat |&gt; model(arima = fable::ARIMA(x ~ pdq())) |&gt; report()</code></pre>
+dat |&gt; model(arima = ARIMA(x ~ pdq())) |&gt; report()</code></pre>
 <pre><code>## Series: x 
 ## Model: ARIMA(2,0,1) 
 ## 
@@ -433,7 +433,7 @@ oh_no = car |&gt;
   model(model1 = ARIMA(Exports ~ pdq(2,0,0)),
         model2 = ARIMA(Exports ~ 0 + pdq(2,0,0) + PDQ(0,0,0)))
 
-# Thought you clearly specified as AN(2) model in the first line, right? WRONG. 
+# Thought you clearly specified as AR(2) model in the first line, right? WRONG. 
 # Take a look. You&#39;ll see it decided to include a constant ...
 oh_no |&gt; select(model1) |&gt; report()</code></pre>
 <pre><code>## Series: Exports 

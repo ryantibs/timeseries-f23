@@ -82,7 +82,7 @@ forecast::auto.arima(x)
 
 # Newer fable package, same result (input must be a tsibble)
 dat = tsibble(data.frame(x, Time = 1:length(x)), index = Time)
-dat |> model(arima = fable::ARIMA(x ~ pdq())) |> report()
+dat |> model(arima = ARIMA(x ~ pdq())) |> report()
 
 # Uh oh! This is basically a redundant parametrization of white noise
 ```
@@ -155,7 +155,7 @@ oh_no = car |>
   model(model1 = ARIMA(Exports ~ pdq(2,0,0)),
         model2 = ARIMA(Exports ~ 0 + pdq(2,0,0) + PDQ(0,0,0)))
 
-# Thought you clearly specified as AN(2) model in the first line, right? WRONG. 
+# Thought you clearly specified as AR(2) model in the first line, right? WRONG. 
 # Take a look. You'll see it decided to include a constant ...
 oh_no |> select(model1) |> report()
 
