@@ -1148,10 +1148,11 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
   forecasting section. For now, we'll just produce 3-year forecasts from the 
   ARIMA$(0,1,2)(0,1,1)_{12}$ model
 
-\item These are shown in the bottom row of \ref{fig:leisure_forecast}. They
-  actually seem fairly plausible and interesting. Note that the seasonality was
-  nicely captured by the seasonal differencing, and the increasing trend seems
-  to have been nicely captured by the nonseasonal differencing
+\item These are shown in the bottom row of Figure
+  \ref{fig:leisure_forecast}. They actually seem fairly plausible and
+  interesting. Note that the seasonality was nicely captured by the seasonal
+  differencing, and the increasing trend seems to have been nicely captured by
+  the nonseasonal differencing 
 \end{itemize}
 
 \section{Forecasting}
@@ -1194,7 +1195,7 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item It helps to walk through an example. Consider forecasting with a fitted 
   ARIMA(3,1,1) model, which we start by writing as
   \[
-  (1 - \hat\phi_1 B - \hat\phi_2 B^2 - \hat\phi_3 B^2) (x_t - x_{t-1}) = \hat{c}
+  (1 - \hat\phi_1 B - \hat\phi_2 B^2 - \hat\phi_3 B^3) (x_t - x_{t-1}) = \hat{c}
   + (1 + \hat\theta_1 B) w_t
   \]
 
@@ -1295,10 +1296,9 @@ Chapters 9.1--9.5 and 9.8--9.9 of Hyndman and Athanasopoulos (HA).
 \item They apply exactly as described in the regression lecture: to recap, in
   split-sample validation, we pick a time $t_0$, train our model (regression,
   ARIMA, whatever) on data up through $t_0$, and then we evaluate forecasts  
-  \smash{$\hat{x}_{t |  t_0}$} over times $t > t_0$:
+  \smash{$\hat{x}_t$} over times $t > t_0$:
   \[
-  \SplitMSE = \frac{1}{n-t_0} \sum_{t = t_0+1}^n \big( \hat{x}_{t | t_0} - x_t
-  \big)^2   
+  \SplitMSE = \frac{1}{n-t_0} \sum_{t = t_0+1}^n (\hat{x}_t - x_t)^2    
   \]
   In time series CV, we use data before $t_0$ as a burn-in period (usually we
   would choose a smaller $t_0$ here than for split-sample) to ensure the initial
