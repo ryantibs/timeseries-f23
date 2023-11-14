@@ -240,7 +240,7 @@ Related reading: Chapter 8 of Athanasopoulos (HA).
   \label{eq:holt_winters}
   \begin{aligned}
   \hat{x}_{t+h | t} &= \ell_t + b_t h + s_{t+h-mk} \\  
-  \ell_t &= \alpha (x_t - s_t) + (1-\alpha) (\ell_{t-1} + b_{t-1}) \\ 
+  \ell_t &= \alpha (x_t - s_{t-m}) + (1-\alpha) (\ell_{t-1} + b_{t-1}) \\ 
   b_t &= \beta (\ell_t - \ell_{t-1}) + (1-\beta) b_{t-1} \\
   s_t &= \gamma (x_t - \ell_{t-1} - b_{t-1}) + (1-\gamma) s_{t-m} 
   \end{aligned}
@@ -298,7 +298,7 @@ Related reading: Chapter 8 of Athanasopoulos (HA).
   \label{eq:holt_winters_mult}
   \begin{aligned}
   \hat{x}_{t+h | t} &= (\ell_t + b_t h) s_{t+h-mk} \\   
-  \ell_t &= \alpha \frac{x_t}{s_t} + (1-\alpha) (\ell_{t-1} + b_{t-1}) \\ 
+  \ell_t &= \alpha \frac{x_t}{s_{t-m}} + (1-\alpha) (\ell_{t-1} + b_{t-1}) \\ 
   b_t &= \beta (\ell_t - \ell_{t-1}) + (1-\beta) b_{t-1} \\
   s_t &= \gamma \frac{x_t}{\ell_{t-1} - b_{t-1}} + (1-\gamma) s_{t-m} 
   \end{aligned}
