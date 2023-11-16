@@ -94,14 +94,20 @@ we did in the regression lecture (weeks 3-4: "Regression and prediction").
 
     For each horizon (1-4 weeks ahead), report the mean absolute scaled error 
 (MASE) from time series CV, averaged over all states. Plot the state-averaged 
-MASE from the AR models as a function of horizon. Bonus: draw +/- 1 standard 
-error bands around the average curve.
+MASE from the AR models as a function of horizon. 
 
 ```{r}
 # CODE GOES HERE
 ```
 
-3. (4 pts)
+3. (Bonus) 
+Draw +/- 1 standard error bands around the average curve.
+
+```{r}
+# CODE GOES HERE
+```
+
+4. (4 pts)
 Repeat the same as in Q2, but now using an ARX model, which forecasts deaths in 
 a given state using 1-3 week lagged deaths, and also 1-3 week lagged cases (this 
 is the exogenous, or "X" part). The rest should be the same: in the end, plot 
@@ -112,13 +118,18 @@ this result to what you saw in Q2.
 # CODE GOES HERE
 ```
 
-4. (4 pts)
+5. (4 pts)
 Refit the models AR and ARX models from Q2 and Q3 so that they each use trailing 
 training windows of 12 weeks. Compare their state-averaged MASE curves relative
 to what you saw in Q2 and Q3. 
 
-    Bonus: disaggregate the MASE by major pandemic waves: the summer 2021 wave, 
-Delta wave, and Omicron wave. You can choose the tine boundaries by eye by 
+```{r}
+# CODE GOES HERE
+```
+
+6. (Bonus) 
+Disaggregate the MASE by major pandemic waves: the summer 2021 wave, 
+Delta wave, and Omicron wave. You can choose the time boundaries by eye by 
 looking at national data (sum of all state deaths). Thus you should get three
 separate MASE comparisons between the 4 models. 
 
@@ -128,7 +139,7 @@ separate MASE comparisons between the 4 models.
 
 # ARIMA and ETS 
 
-5. (8 pts)
+7. (8 pts)
 Use the start of the data through March 27, 2021 in order to choose an ARIMA
 model. You should follow the diagnostic steps that we discussed in class. Fit 
 this ARIMA model on each state, using `ARIMA()` from the `fable` package, and 
@@ -143,7 +154,7 @@ as a function of horizon.
 # CODE GOES HERE
 ```
 
-6. (6 pts) 
+8. (6 pts) 
 Fit two ETS models, using `ETS()` from the `fable` package: Holt's linear trend 
 and damped linear trend (each with additive errors). Evaluate them using time 
 series CV, just as in Q5, plotting the state-averaged MASE as a function of 
@@ -154,21 +165,27 @@ far.
 # CODE GOES HERE
 ```
 
-7. (4 pts)
+9. (4 pts)
 Compute the coverage of the 80\% prediction intervals from the ARIMA and ETS
 forecasting models from Q5 and Q6, averaged over states, as a function of 
 horizon. 
 
-    Bonus: plot coverage as a function of target date, averaged over all states, 
+```{r}
+# CODE GOES HERE
+```
+
+10. (Bonus) 
+Plot coverage as a function of target date, averaged over all states, 
 for each of 1-4 week ahead forecasts. When do large dips in coverage occur?
 
 ```{r}
 # CODE GOES HERE
 ```
 
+
 # Bonus: geo pooling
 
-8. (Bonus)
+11. (Bonus)
 Refit the AR and ARX models from Q3, with trailing training windows, but now 
 pooling the data over all states. Thus, for each of 1-4 week ahead forecasting,
 you will just fit a single AR or ARX model. In order for this to make sense (as
@@ -188,7 +205,7 @@ geo-pooled models, as a function of horizon?
 
 # Bonus: other forecasters
 
-9. (Bonus)
+12. (Bonus)
 Fit whatever other forecasters you want, and evaluate them with time series CV,
 over the same time period as in the previous questions. Make sure you only use
 the winter 2020 wave for diagonistic and exploratory work. Explain why you chose
@@ -200,7 +217,7 @@ the models that you did, and what discuss the MASE curves.
 
 # Ensembling
 
-10. (6 pts)
+13. (6 pts)
 For each of 1-4 week ahead forecasts, ensemble the predictions from the 7+
 models you have fit thus far (2 AR models, 2 ARX models, 1 ARIMA model, 2 ETS 
 models, plus any other forecasters you fit in Q9). Do so in two ways: by taking
@@ -217,7 +234,7 @@ ARX models). What do you see?
 # CODE GOES HERE
 ```
 
-11. (Bonus)
+14. (Bonus)
 Finally, compare the MASE and coverage of the COVIDhub ensemble model, whose
 1-4 week ahead forecasts can be found in the `forecasts` data frame, to those 
 from your ensembles. Recall that the COVIDhub ensemble was created in real-time
