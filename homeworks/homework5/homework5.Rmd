@@ -64,9 +64,8 @@ states = c("ca", "ny", "pa")
 
 ggplot() +
   geom_line(
-    data = cases_deaths |> filter(geo_value %in%states), 
-    aes(x = date, y = deaths), color = "gray", alpha = 0.5) + 
-  geom_vline(xintercept = fc_date, linetype = 2) +
+    data = cases_deaths |> filter(geo_value %in%states),
+    aes(x = date, y = deaths, alpha = ifelse(date <= fc_date, 1, 0.8))) + 
   geom_ribbon(
     data = forecasts |> filter(geo_value %in% states) |>
       mutate(forecast_date = target_date - ahead * 7) |>
