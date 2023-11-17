@@ -65,8 +65,10 @@ states = c("ca", "ny", "pa")
 ggplot() +
   geom_line(
     data = cases_deaths |> filter(geo_value %in%states) |>
-      mutate(alpha = ifelse(date <= fc_date, 1, 0.8)),
+      mutate(alpha = ifelse(date <= fc_date-7, 1, 0.8)), # account for plotting
+    # quirk here: line color for a segment assigned to the point on the left
     aes(x = date, y = deaths, alpha = alpha)) + 
+  geom_vline(xintercept = fc_date, linetype = 2) +
   geom_ribbon(
     data = forecasts |> filter(geo_value %in% states) |>
       mutate(forecast_date = target_date - ahead * 7) |>
