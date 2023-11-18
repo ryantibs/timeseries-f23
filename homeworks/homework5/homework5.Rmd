@@ -103,10 +103,13 @@ Discuss what you see in these plots.
 # AR and ARX models
 
 2. (8 pts)
-For each state, separately, fit an AR model to forecast 1-week ahead deaths with
-lags 1, 2, and 3 weeks. Also, fit 3 more AR models to forecast 2-week, 3-week, 
-and 4-week ahead deaths. Thus, you will fit a total of 4 models per state, one 
-for each of the 1-4 week forecast horizons. 
+For each state, separately, fit an AR model to directly forecast the death count 
+at a horizon $h$ from the latest three values: 
+\[
+\hat{y}_{t+h|t} = \sum_{k=0}^2 \hat\alpha_{h,k} \, y_{t-k}
+\]
+Do this for horizons $h=1,2,3,4$, i.e., 1-4 weeks ahead. Note that you will thus 
+fit 4 separate models per state.
 
     Use time series cross-validation (CV) to evaluate forecasts from these AR 
 models starting at a target date of April 3, 2021 and going through the end of 
@@ -130,11 +133,15 @@ Draw +/- 1 standard error bands around the average curve.
 ```
 
 4. (4 pts)
-Repeat the same as in Q2, but now using an ARX model, which forecasts deaths in 
-a given state using 1-3 week lagged deaths, and also 1-3 week lagged cases (this 
-is the exogenous, or "X" part). The rest should be the same: in the end, plot 
-the state-averaged MASE from the ARX models as a function of horizon. Compare 
-this result to what you saw in Q2. 
+Repeat the same as in Q2, but now use an ARX model to forecast deaths at horizon
+$h$ from the latest three values, and also the latest three case counts (this is 
+the the exogenous, or "X" part):
+\[
+\hat{y}_{t+h|t} = \sum_{k=0}^2 \hat\alpha_{h,k} \, y_{t-k} + 
+\sum_{k=0}^2 \hat\beta_{h,k} \, x_{t-k}.
+\]
+The rest should be the same: in the end, plot the state-averaged MASE from the 
+ARX models as a function of horizon. Compare this result to what you saw in Q2. 
 
 ```{r}
 # CODE GOES HERE
