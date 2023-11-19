@@ -142,7 +142,7 @@ plot(cmort, xlim = c(min(time(cmort)), max(time(cmort)) + k * delta),
 lines(max(time(cmort)) + (1:k) * delta, yhat, col = 2)
 ```
 
-# Slit-sample forecasts
+# Split-sample forecasts
 
 ```{r cardio-split, fig.width=8, fig.height=3.5}
 # To validate them, we can refit the regression on the first half of the time
