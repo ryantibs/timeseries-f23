@@ -10,7 +10,7 @@ output:
 knitr::opts_chunk$set(cache = TRUE, autodep = TRUE, cache.comments = TRUE)
 ```
 
-The total number of points possible for this homework is 38. The number of 
+The total number of points possible for this homework is 46 The number of 
 points for each question is written below, and questions marked as "bonus" are 
 optional. Submit the **knitted html file** from this Rmd to Gradescope. 
 
@@ -33,10 +33,6 @@ they had access to preliminary data that was subject to revisions, sometimes
 very large and irregular ones, making forecasting much harder. You can see, for 
 example, [McDonald et al. (2021)](https://www.pnas.org/doi/10.1073/pnas.2111453118), 
 for a discussion of this.
-
-Finally, there are two sections prefixed with "Option A" and "Option B". You 
-only have to do one of these two, it's your choice. But make that very clear in
-your submitted solution.
 
 # COVID-19 cases and deaths
 
@@ -90,9 +86,9 @@ ggplot() +
   theme_bw() + theme(legend.position = "none")
 ```
 
-# Option A: AR and ARX models
+# AR and ARX models
 
-1. (6 pts)
+1. (4 pts)
 For each state, compute the sample auto-correlation function for COVID-19 deaths 
 over the time period July 04, 2020 through March 27, 2021. This period captures 
 the "winter 2020 wave". Average the auto-correlation (take an average per lag)
@@ -106,7 +102,7 @@ Discuss what you see in these plots.
 # CODE GOES HERE
 ```
 
-2. (16 pts)
+2. (8 pts)
 For each state, separately, fit an AR model to directly forecast the death count 
 at a horizon $h$ from the latest three values: 
 \[
@@ -129,7 +125,7 @@ MASE from the AR models as a function of horizon.
 # CODE GOES HERE
 ```
 
-3. (6 pts)
+3. (4 pts)
 Repeat the same as in Q2, but now use an ARX model to forecast deaths at horizon
 $h$ from the latest three values, and also the latest three case counts (this is 
 the the exogenous, or "X" part):
@@ -154,7 +150,7 @@ for why the ARX model performs worse.
 # CODE GOES HERE
 ```
 
-5. (8 pts)
+5. (4 pts)
 Refit the models AR and ARX models from Q2 and Q3 so that they each use trailing 
 training windows of 12 weeks. Compare their state-averaged MASE curves relative
 to what you saw in Q2 and Q3. 
@@ -173,9 +169,9 @@ comparisons between the 4 models.
 # CODE GOES HERE
 ```
 
-# Option B: ARIMA and ETS 
+# ARIMA and ETS 
 
-7. (16 pts)
+7. (8 pts)
 Use the start of the data through March 27, 2021 in order to choose an ARIMA
 model. You should follow the diagnostic steps that we discussed in class (weeks
 9-11: "Autoregressive integrated moving average models"), and it is easiest to 
@@ -192,7 +188,7 @@ of horizon.
 # CODE GOES HERE
 ```
 
-8. (12 pts) 
+8. (6 pts) 
 Fit two ETS models, using `ETS()` from the `fable` package: Holt's linear trend 
 and damped linear trend (each with additive errors). Evaluate them using time 
 series CV, just as in Q7, plotting the state-averaged MASE as a function of 
@@ -203,7 +199,7 @@ far.
 # CODE GOES HERE
 ```
 
-9. (10 pts)
+9. (4 pts)
 Compute the coverage of the 80\% prediction intervals from the ARIMA and ETS
 forecasting models from Q7 and Q8, averaged over all states, as a function of 
 horizon. 
@@ -254,9 +250,9 @@ the models that you did, and discuss the MASE curves.
 # CODE GOES HERE
 ```
 
-# Bonus: ensembling
+#  Ensembling
 
-13. (Bonus)
+13. (6 pts)
 For each of 1-4 week ahead forecasts, ensemble the predictions from the models 
 you have fit thus far (2 AR models, 2 ARX models, 1 ARIMA model, 2 ETS models, 
 plus any other forecasters you may have fit in Q12). Do so in two ways: take an
