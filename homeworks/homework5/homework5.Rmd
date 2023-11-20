@@ -10,7 +10,7 @@ output:
 knitr::opts_chunk$set(cache = TRUE, autodep = TRUE, cache.comments = TRUE)
 ```
 
-The total number of points possible for this homework is 46 The number of 
+The total number of points possible for this homework is 46. The number of 
 points for each question is written below, and questions marked as "bonus" are 
 optional. Submit the **knitted html file** from this Rmd to Gradescope. 
 
