@@ -10,7 +10,7 @@ output:
 knitr::opts_chunk$set(cache = TRUE, autodep = TRUE, cache.comments = TRUE)
 ```
 
-The total number of points possible for this homework is 46 The number of 
+The total number of points possible for this homework is 38. The number of 
 points for each question is written below, and questions marked as "bonus" are 
 optional. Submit the **knitted html file** from this Rmd to Gradescope. 
 
@@ -33,6 +33,10 @@ they had access to preliminary data that was subject to revisions, sometimes
 very large and irregular ones, making forecasting much harder. You can see, for 
 example, [McDonald et al. (2021)](https://www.pnas.org/doi/10.1073/pnas.2111453118), 
 for a discussion of this.
+
+Finally, there are two sections prefixed with "Option A" and "Option B". You 
+only have to do one of these two, it's your choice. But make that very clear in
+your submitted solution.
 
 # COVID-19 cases and deaths
 
@@ -64,7 +68,7 @@ states = c("ca", "ny", "pa")
 
 ggplot() +
   geom_line(
-    data = cases_deaths |> filter(geo_value %in%states) |>
+    data = cases_deaths |> filter(geo_value %in% states) |>
       mutate(alpha = ifelse(date <= fc_date-7, 1, 0.8)), # account for plotting
     # quirk here: line color for a segment assigned to the point on the left
     aes(x = date, y = deaths, alpha = alpha)) + 
@@ -86,6 +90,8 @@ ggplot() +
   theme_bw() + theme(legend.position = "none")
 ```
 
+# Option A: AR and ARX models
+
 1. (6 pts)
 For each state, compute the sample auto-correlation function for COVID-19 deaths 
 over the time period July 04, 2020 through March 27, 2021. This period captures 
@@ -100,9 +106,7 @@ Discuss what you see in these plots.
 # CODE GOES HERE
 ```
 
-# AR and ARX models
-
-2. (8 pts)
+2. (16 pts)
 For each state, separately, fit an AR model to directly forecast the death count 
 at a horizon $h$ from the latest three values: 
 \[
@@ -125,14 +129,7 @@ MASE from the AR models as a function of horizon.
 # CODE GOES HERE
 ```
 
-3. (Bonus) 
-Draw +/- 1 standard error bands around the average curve.
-
-```{r}
-# CODE GOES HERE
-```
-
-4. (4 pts)
+3. (6 pts)
 Repeat the same as in Q2, but now use an ARX model to forecast deaths at horizon
 $h$ from the latest three values, and also the latest three case counts (this is 
 the the exogenous, or "X" part):
@@ -147,10 +144,20 @@ ARX models as a function of horizon. Compare this result to what you saw in Q2.
 # CODE GOES HERE
 ```
 
-5. (4 pts)
+4. (2 pts)
+Surprised to see the forecasts from the ARX models perform worse? Plot the (say)
+1-week ahead forecasts for California from the AR and the ARX model, overlaid on
+top of the reported death counts, and use this to derive a plausible explanation 
+for why the ARX model performs worse.
+
+```{r}
+# CODE GOES HERE
+```
+
+5. (8 pts)
 Refit the models AR and ARX models from Q2 and Q3 so that they each use trailing 
 training windows of 12 weeks. Compare their state-averaged MASE curves relative
-to what you saw in Q2 and Q4. 
+to what you saw in Q2 and Q3. 
 
 ```{r}
 # CODE GOES HERE
@@ -166,9 +173,9 @@ comparisons between the 4 models.
 # CODE GOES HERE
 ```
 
-# ARIMA and ETS 
+# Option B: ARIMA and ETS 
 
-7. (8 pts)
+7. (16 pts)
 Use the start of the data through March 27, 2021 in order to choose an ARIMA
 model. You should follow the diagnostic steps that we discussed in class (weeks
 9-11: "Autoregressive integrated moving average models"), and it is easiest to 
@@ -185,7 +192,7 @@ of horizon.
 # CODE GOES HERE
 ```
 
-8. (6 pts) 
+8. (12 pts) 
 Fit two ETS models, using `ETS()` from the `fable` package: Holt's linear trend 
 and damped linear trend (each with additive errors). Evaluate them using time 
 series CV, just as in Q7, plotting the state-averaged MASE as a function of 
@@ -196,7 +203,7 @@ far.
 # CODE GOES HERE
 ```
 
-9. (4 pts)
+9. (10 pts)
 Compute the coverage of the 80\% prediction intervals from the ARIMA and ETS
 forecasting models from Q7 and Q8, averaged over all states, as a function of 
 horizon. 
@@ -247,14 +254,14 @@ the models that you did, and discuss the MASE curves.
 # CODE GOES HERE
 ```
 
-# Ensembling
+# Bonus: ensembling
 
-13. (6 pts)
-For each of 1-4 week ahead forecasts, ensemble the predictions from the 7+
-models you have fit thus far (2 AR models, 2 ARX models, 1 ARIMA model, 2 ETS 
-models, plus any other forecasters you fit in Q12). Do so in two ways: by taking
-an average or median of forecasts (always for a single target). Compare the MASE 
-of these ensemble models from time series CV on the same time period as in the 
+13. (Bonus)
+For each of 1-4 week ahead forecasts, ensemble the predictions from the models 
+you have fit thus far (2 AR models, 2 ARX models, 1 ARIMA model, 2 ETS models, 
+plus any other forecasters you may have fit in Q12). Do so in two ways: take an
+average or median of forecasts (always for a single target). Compare the MASE of 
+these ensemble models from time series CV on the same time period as in the 
 previous questions. What do you see?
 
     Now instead of simply reporting the average MASE over all states, plot the 
