@@ -77,16 +77,25 @@ Ryan Tibshirani}
     \hat{b}_0 t$} forward in time if $\theta = 0$
 
 \item \citet{assimakopoulos2000theta} make the following general recommendation:
-\begin{itemize}
-\item produce forecasts \smash{$\hat{y}_{0,t+h|t}$} with $\theta = 0$ (recall
-  this is just extending the line \smash{$\hat{a}_0 + \hat{b}_0 t$});
-\item produce forecasts \smash{$\hat{y}_{2,t+h|t}$} with $\theta = 2$ (recall
-  this is given by just running SES on \smash{$\hat{y}_{2,t}$}) 
-\item return their average: \smash{$\hat{y}_{t+h|t} = (\hat{y}_{0,t+h|t} +
-    \hat{y}_{2,t+h|t}) / 2$}. 
-\end{itemize}
-Seasonality, if present, is estimated and removed before running this procedure,
-and added back in at the end
+  \begin{itemize}
+  \item produce forecasts \smash{$\hat{y}_{0,t+h|t}$} with $\theta = 0$ (recall 
+    this is just extending the line \smash{$\hat{a}_0 + \hat{b}_0 t$});
+  \item produce forecasts \smash{$\hat{y}_{2,t+h|t}$} with $\theta = 2$ (recall 
+    this is given by just running SES on \smash{$\hat{y}_{2,t}$}) 
+  \item return their average: \smash{$\hat{y}_{t+h|t} = (\hat{y}_{0,t+h|t} +
+      \hat{y}_{2,t+h|t}) / 2$}. 
+  \end{itemize}
+  Seasonality, if present, is estimated and removed before running this
+  procedure, and added back in at the end. Figure \ref{fig:theta} gives a
+  visualization of the canonical ``Theta lines'': \smash{$\hat{y}_{0,t}$} and 
+  \smash{$\hat{y}_{2,t}$}, for $\theta = 0,2$
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.6\textwidth]{theta.png}
+\caption{The canonical ``Theta lines'', from \citet{dudek2019short}.}      
+\label{fig:theta}
+\end{figure}
 
 \item \citet{hyndman2003unmasking} show that this procedure is quite similar to
   running Holt's linear trend method with an estimated slope \smash{$\hat{b}_0 /
@@ -206,9 +215,17 @@ and added back in at the end
   prediction intervals) 
 
 \item So, how does the Prophet model compare to ARIMA and ETS? It depends on who
-  you ask. In their original paper, \citet{taylor2018forecasting} find ARIMA and
-  ETS models to be too rigid in their motivating examples---take a look at
-  Figure 3 in their paper, and compare Figure 4, which displays Prophet forecasts
+  you ask. In their original paper, \citet{taylor2018forecasting} find that
+  ARIMA and ETS models are too rigid in their motivating examples---take a look
+  at Figure 3 in their paper, and compare Figure \ref{fig:prophet}, which
+  displays Prophet forecasts on the same data
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.95\textwidth]{prophet.png}
+\caption{Prophet forecasts, from \citet{taylor2018forecasting}.}
+\label{fig:prophet}
+\end{figure}
 
 \item Indeed, in their traditional forms, ARIMA and ETS models lack the
   flexibility of the Prophet model, particularly the flexibility exhibited in
@@ -266,19 +283,30 @@ and added back in at the end
 \item What we described above is actually just a particular type of neural
   network architecture, and indeed, the simplest kind, called a
   \emph{feedforward} neural network. Many other architectures are possible, and
-  some more appropriate for time series data, such as the \emph{long short-term
+  some more appropriate for time series data, such as the \emph{long short term
     memory} (LSTM) network, a type of recurrent neural network
 
 \item A popular time series forecaster based on LSTMs is called \emph{DeepAR},
   proposed by \citet{salinas2020deep}, from Amazon. Relative to all other
   methods you have learned thus far, DeepAR is quite complicated to describe
-  precisely (and to train). However, like many deep learning methods, it can
-  work very well in data-rich prediction problems that have a high
-  signal-to-noise ratio. (Another strength it is often cited as having is that
-  it can learn rich, joint correlation structures between \emph{multiple} time
-  series---think of spatiotemporal data, where we have one time series per
-  location, and many locations---and it can and produce forecasts which respect
-  this correlation structure)   
+  precisely (and to train). Figure \ref{fig:deepar} gives a schematic: the left
+  column for training, and the right for forecasting
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.95\textwidth]{deepar.png}
+\caption{Schematic of DeepAR network, from \citet{salinas2020deep}, where each
+  $h_{i,t}$ is the output of a recurrent neural network with LSTM cells.} 
+\label{fig:deepar}
+\end{figure}
+
+\item However, like many deep learning methods, it can work very well in
+  data-rich prediction problems that have a high signal-to-noise ratio. Another
+  strength it is often cited as having is that it can learn rich, joint
+  correlation structures between \emph{multiple} time series---think of 
+  spatiotemporal data, where we have one time series per location, and many 
+  locations---and it can and produce forecasts which respect this correlation
+  structure 
 
 \item Perhaps not surprisingly, some authors are now re-purposing transformers 
   in order to turn them into time series forecasters. As deep learning continues
@@ -289,22 +317,22 @@ and added back in at the end
 \section{Ensembling}
 
 \begin{itemize}
-\item So, you now have lagged regression, ARIMA, ETS, Theta, Prophet, and DeepAR
-  in your forecasting toolkit. You have data in front of you, and you're unsure 
-  which model(s) will work best. What do you do?
+\item So, you have lagged regression, ARIMA, ETS, Theta, Prophet, and DeepAR in
+  your forecast toolkit. You have data in front of you, and you're unsure which
+  model(s) will work best. What do you do?    
 
 \item The answer we have given all semester: \emph{use time series CV}. That is,
-  move the time index back to $t = t_0$, train each of them on the past, make
+  move the time index back to $t = t_0$, train each model on the past, make 
   forecasts, compare to the unseen target values, march the time index forward
-  sequentially, and repeat. In doing so, we can compute our favorite accuracy
-  metric (MAE, MASE, etc.) for each one, and choose the model that emerges as
+  sequentially, and repeat. In doing so, we can compute our chosen accuracy
+  metric (MAE, MASE, etc.) for each model, and choose the one that emerges as 
   the most accurate, perhaps using Occam's razor to help decide between models
   that perform similarly
 
-\item Here is an alternative that can often be advantageous: use the
-  out-of-sample predictions from time series CV to inform how to best 
-  \emph{combine} the models, rather than to select in between them    
-
+\item Here is an alternative that can often be advantageous: \emph{combine} the
+  models, which can be informed by their out-of-sample predictions from time 
+  series CV, rather than using CV to select one of them
+  
 \item The combination of prediction models is often called \emph{ensembling}, or
   \emph{aggregation}. It has a long history in statistics and machine learning,
   including in forecasting. Still, it seems perhaps people don't quite
@@ -315,31 +343,32 @@ and added back in at the end
   base models (also called constituent models) without consideration of
   their individual past performance. Meanwhile, a trained ensemble combines the
   base models in a way that reflects their performance, typically upweighting
-  accurate base models 
+  more accurate base models 
 
 \item At a high level, an ideal ensemble model would satisfy the following two
   properties:
   \begin{enumerate}
-  \item \emph{do no harm}: the ensemble should not do much worse than model
-    selection, i.e., not much worse than the best constituent model
-  \item \emph{robustness}: the ensemble should have much more robust performance
-    (fewer wild errors) than the typical constituent model 
+  \item \emph{compete-with-best}: the ensemble should have accuracy that is
+    competitive with the best indvidual constituent model 
+  \item \emph{robustness-over-all}: the ensemble should have greater robustness
+    (make fewer large errors) than any individual constituent model  
   \end{enumerate}
 
 \item Interestingly (though perhaps not surprisingly), these two are somewhat at 
   odds. Untrained ensembles can be \emph{very} robust, but typically cannot 
   compete with the best constituent model. On the other hand, trained ensembles 
   can compete with the best constituent model (and even outperform it, if the
-  ensemble is flexible enough), but ``heavier'' training tends to hurt
+  ensemble is flexible enough), but ``heavier'' training schemes tend to hurt 
   robustness 
 \end{itemize}
 
 \subsection{Untrained methods}
 
 \begin{itemize}
-\item The simplest untrained method is just to take a straight average of all
-  constituent model forecasts. Denote these by \smash{$\hat{x}^j_{t+h|t}$}, for
-  $j = 1,\dots,p$. Then the simple average ensemble forecast is
+\item The simplest untrained ensemble method is just to take a straight average
+  of all constituent model forecasts. Denote these by
+  \smash{$\hat{x}^j_{t+h|t}$}, for $j = 1,\dots,p$. Then the simple average
+  ensemble forecast is 
   \[
   \hat{x}^{\text{avg}}_{t+h|t} = \frac{1}{p} \sum_{j=1}^p \hat{x}^j_{t+h|t} 
   \] 
@@ -353,11 +382,11 @@ and added back in at the end
 
 \item Despite their simplicity, these methods can be very effective, especially
   when we have a diverse set of constituent models (which have a healthy degree
-  of diversity in their errors), which can lead to very robust average or median
-  ensembles
+  of diversity in their errors), as this can lead to very robust average or
+  median ensembles
 
 \item Figure \ref{fig:cramer} shows a striking example of this, from 1- though
-  4-week ahead Covid-19 death forecasting. The COVIDHub-ensemble model was (for
+  4-week ahead Covid-19 death forecasting. The COVIDhub-ensemble model was (for
   most of the pandemic) a simple median ensemble of all forecasts submitted to
   the US Covid-19 Forecast Hub which met a certain very basic set of inclusion
   criteria (ruling out truly wild or unrealistic forecasts). This ensemble model
@@ -370,10 +399,10 @@ and added back in at the end
   as follows. For a given forecast task (given state, given target date, and
   given horizon), we rank all available forecasts using an accuracy measure
   called WIS (a generalization of absolute error for quantile-based forecasts)
-  figure. We assign a standardized rank of 1 means to the most accurate forecast
-  of all available, and 0 to the least accurate forecast. Then, for each
-  forecast model, we average these standardized ranks over all forecast tasks,
-  and a histogram of their standardized rank distribution is plotted
+  figure. We assign a standardized rank of 1 for the most accurate forecast of
+  all available forecasts for that task, and 0 to the least accurate. Then for
+  each forecaster, we average these standardized ranks over all forecast tasks,
+  and plot a histogram of their standardized rank distribution 
 
 \item As we can see in Figure \ref{fig:cramer}, the distribution of the ensemble is
   \emph{very} different from all others---in particular, look at its thin left
@@ -387,7 +416,7 @@ and added back in at the end
 \centering
 \includegraphics[width=\textwidth]{cramer.pdf}
 \caption{Comparison of Covid-19 death forecast models, from
-  \citet{cramer2022evaluation}.}   
+  \citet{cramer2022evaluation}.}    
 \label{fig:cramer}
 \end{figure}
 \end{itemize}
@@ -422,11 +451,10 @@ and added back in at the end
   fact that our second-level model is linear in the features (it is a linear
   regression subject to constraints)  
 
-\item Instead of completely re-solving the optimization problem above, at each
-  forecast time $t$, we could also incrementally update the learned weights over
-  time. In fact, a method called (online) \emph{mirror descent} applied to the
-  above optimization problem yields the following intuitive weight updates, at
-  time $t$:   
+\item Instead of re-solving the optimization problem above at each forecast time
+  $t$, we could also incrementally update the learned weights over time. A
+  method called (online) \emph{mirror descent} applied to the above optimization
+  problem yields the following intuitive weight updates, at time $t$:    
   \begin{align*}
   \tilde{w}^t_j &= \hat{w}^{t-1}_j \exp\bigg\{ \eta \cdot \hat{x}^j_{t|t-h}
     \bigg( x_t -  \sum_{j=1}^p \hat{w}^{t-1}_j \cdot \hat{x}^j_{t|t-h} \bigg)
@@ -438,22 +466,24 @@ and added back in at the end
   forecaster's latest prediction \smash{$\hat{x}^j_{t|t-h}$} is correlated with
   the ensemble's latest residual \smash{$x_t -  \sum_{j=1}^p \hat{w}^{t-1}_j
     \cdot \hat{x}^j_{t|t-h}$}, then it is underrepresented in the ensemble, and
-  we increase its weight
+  we increase its weight. This is related to a general class of online learning 
+  algorithms called \emph{exponential weights} algorithms; and there is a 
+  huge literature on related schemes
 
 \item Stacking---especially more flexible second-level models that are
   nonlinear, or use weights that depend on features---can lead to impressive
   accuracy in practice. Figure \ref{fig:fakoor} shows a nice example of this
-  (albeit in a batch prediction, rather than a time series context). The figure
-  shows a specific deep neural network ensemble, called DQA (deep quantile
-  aggregation) that is trained as a second-layer model on top of many
-  constituent models, including some very flexible ones (such as deep neural
-  networks themselves). Across 35 data sets, ordered by their signal-to-noise
-  ratio along the x-axis, the WIS (recall this is a generalization of absolute
-  error for quantile-based predictions) of all of the constituent models and
-  other ensemble methods is compared to that of DQA. No method really
-  outperforms DQA (nothing really below the red horizontal line at 1) and for
-  problems with more signal, towards the right end of the x-axis, we can see
-  that DQA improves massively on a lot of the other models 
+  (albeit in a batch prediction context, rather than time series). The figure
+  shows a neural network ensemble model called \emph{deep quantile aggregation}
+  (DQA), that is trained as a second-layer model on top of many constituent
+  models, including some very flexible ones (such as deep neural
+  networks). Across 35 data sets, ordered by their signal-to-noise ratio along 
+  the x-axis, the WIS (recall this is a generalization of absolute error for
+  quantile-based predictions) of all of the constituent models and other
+  ensemble methods is compared to that of DQA. We can see that no method
+  outperforms DQA (nothing below the red horizontal line), and for problems with
+  more signal, towards the right end of the x-axis, DQA improves massively on a
+  lot of the other models   
 
 \begin{figure}[htb]
 \centering
