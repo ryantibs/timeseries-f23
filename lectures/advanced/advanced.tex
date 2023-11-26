@@ -92,14 +92,15 @@ Ryan Tibshirani}
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.6\textwidth]{theta.png}
+\includegraphics[width=0.55\textwidth]{theta.png}
 \caption{The canonical ``Theta lines'', from \citet{dudek2019short}.}      
 \label{fig:theta}
 \end{figure}
 
 \item \citet{hyndman2003unmasking} show that this procedure is quite similar to
-  running Holt's linear trend method with an estimated slope \smash{$\hat{b}_0 /
-    2$} and with $\beta = 0$ (no evolution of the slope over time) 
+  running SES with an added linear trend, whose slope is \smash{$\hat{b}_0 /
+    2$}. This is like a special case of Holt's linear trend method with $\beta =
+  0$ (no evolution of the slope over time)   
 
 \item They also compare the Theta method with Holt's linear trend method on the
   daa from the M3 forecasting challenge (where the Theta method performed well
@@ -124,12 +125,11 @@ Ryan Tibshirani}
   and speed. But make sure to read on, especially to the end of this subsection,
   for further discussion of this 
 
-\item The Prophet model is a particular type of signal plus noise model, where
-  we decompose the signal into three components, 
+\item The Prophet model is a particular type of signal plus noise model, 
   \[
   x_t = g_t + s_t + h_t + \epsilon_t
   \]
-  Here $\epsilon_t$, $t = 1,2,3,\dots$ is a white noise sequence, and:
+  where $\epsilon_t$, $t = 1,2,3,\dots$ is a white noise sequence, and:
   \begin{itemize}
   \item $g_t$ represents a trend component
   \item $s_t$ represents a seasonal component
@@ -426,11 +426,12 @@ Ryan Tibshirani}
 \begin{itemize}
 \item One of the simplest trained ensemble methods is to directly fit a weighted 
   combination of constituent forecasts in order to optimize accuracy (MSE, MAE,
-  etc.). For example, going by MSE, to form the ensemble at time $t$ (for a
-  forecast of the target value at time $t+h$), we would first solve  
+  etc.). For example, going by MSE, and fixing $h=1$ for simplicity, to form the
+  ensemble at time $t$ (for a forecast of the target value at time $t+1$), we
+  would first solve:
   \begin{alignat*}{2}
   &\min_{w \in \R^p} && \hspace{-6pt} \sum_{s=t_0+1}^t \bigg( x_s - \sum_{j=1}^p
-  w_j \cdot \hat{x}^j_{s|s-h} \bigg)^2 \\   
+  w_j \cdot \hat{x}^j_{s|s-1} \bigg)^2 \\   
   &\st \quad && \sum_{j=1}^p w_j = 1, \;\;\text{and} \;\; w_j \geq 0, \;
   j=1,\dots,p   
   \end{alignat*}
@@ -441,8 +442,8 @@ Ryan Tibshirani}
 \item After obtaining the solution \smash{$\hat{w}^t_j$}, $j = 1,\dots,p$, we
   then form the weighted ensemble to make forecasts 
   \[
-  \hat{x}^{\text{stack}}_{t+h|t} = \sum_{j=1}^p \hat{w}^t_j \cdot
-  \hat{x}^j_{t+h|t} 
+  \hat{x}^{\text{stack}}_{t+1|t} = \sum_{j=1}^p \hat{w}^t_j \cdot
+  \hat{x}^j_{t+1|t} 
   \]
 
 \item This is sometimes called \emph{linear stacking}: here ``stacking'' refers
@@ -456,16 +457,16 @@ Ryan Tibshirani}
   method called (online) \emph{mirror descent} applied to the above optimization
   problem yields the following intuitive weight updates, at time $t$:    
   \begin{align*}
-  \tilde{w}^t_j &= \hat{w}^{t-1}_j \exp\bigg\{ \eta \cdot \hat{x}^j_{t|t-h}
-    \bigg( x_t -  \sum_{j=1}^p \hat{w}^{t-1}_j \cdot \hat{x}^j_{t|t-h} \bigg)
+  \tilde{w}^t_j &= \hat{w}^{t-1}_j \exp\bigg\{ \eta \cdot \hat{x}^j_{t|t-1}
+    \bigg( x_t -  \sum_{j=1}^p \hat{w}^{t-1}_j \cdot \hat{x}^j_{t|t-1} \bigg)
     \bigg\}, \quad j = 1,\dots,p \\
   \hat{w}^t_j &= \tilde{w}^t_j \bigg/ \sum_{\ell=1}^p \tilde{w}^t_\ell, \quad j =
     1,\dots,p 
   \end{align*}
   Here $\eta > 0$ is a parameter called the learning rate. In words, if a
-  forecaster's latest prediction \smash{$\hat{x}^j_{t|t-h}$} is correlated with
+  forecaster's latest prediction \smash{$\hat{x}^j_{t|t-1}$} is correlated with
   the ensemble's latest residual \smash{$x_t -  \sum_{j=1}^p \hat{w}^{t-1}_j
-    \cdot \hat{x}^j_{t|t-h}$}, then it is underrepresented in the ensemble, and
+    \cdot \hat{x}^j_{t|t-1}$}, then it is underrepresented in the ensemble, and
   we increase its weight. This is related to a general class of online learning 
   algorithms called \emph{exponential weights} algorithms; and there is a 
   huge literature on related schemes
@@ -501,15 +502,15 @@ Ryan Tibshirani}
   produce \emph{prediction intervals}, which reflect uncertainty in the
   predictions that are made, useful for downstream decision-making   
 
-\item How do we measure the accuracy of such prediction intervals? Let's fix a 
-  horizon $h$ henceforth. Denote by \smash{$I^{1-\alpha}_ {t+h|t}$} denote the
-  level $1-\alpha$ prediction interval made by our forecaster at time $t$, for
-  the target variable $x_{t+h}$ at time $t+h$  
+\item How can we measure the ``fidelity'' of such prediction intervals? Fixing a
+  horizon $h$, denote by \smash{$I^{1-\alpha}_ {t+h|t}$} denote the level
+  $1-\alpha$ prediction interval made by our forecaster at time $t$, for the
+  target variable $x_{t+h}$ at time $t+h$    
 
-\item Recall, for a 90\% level, this is often (though not necessarily) of the
-  form   
+\item Recall, for (say) a 90\% prediction interval, this is often (though not
+  necessarily) of the form:
   \[
-  I^{1-\alpha}_{ t+h|t} = 
+  I^{1-\alpha}_{t+h|t} = 
   \big[\hat{x}_{t+h|t} - \hat\sigma_h q_{0.95}, \, \hat{x}_{t+h|t} +  
   \hat\sigma_h q_{0.95} \big]
   \]
@@ -518,8 +519,8 @@ Ryan Tibshirani}
   ahead forecast distribution, and $q_{0.95}$ is the 0.95 quantile of the
   standard normal distritbuion  
 
-\item Given these intervals, we can measure their empirical \emph{coverage}, in
-  a time series CV sense: 
+\item Given such intervals, we can measure their empirical \emph{coverage}, in a
+  time series CV sense:  
   \[
   \mathrm{Coverage} = \frac{1}{n-t_0} \sum_{t=t_0+1}^n 1\big\{ x_t \in 
   I^{1-\alpha}_{t|t-h} \big\}
@@ -528,9 +529,175 @@ Ryan Tibshirani}
   targets. Of course, we want the coverage of our prediction intervals to
   roughly match the nominal level, $\mathrm{Coverage} \approx 1-\alpha$ 
   
+\item Sadly, traditional methods for producing prediction intervals will not
+  always yield empirical coverage that hovers around the nominal level. This is 
+  because the methods for producing these intervals rely on assumptions that are
+  often violated in practice
 
-n important topic in probabilistic forecasting which we have not really
-  covered thus far is \emph{calibration}.
+\item See Figure \ref{fig:ens_cov} for an example of the empirical coverage of
+  the COVIDhub-ensemble model for forecasting cases, hospitalizations, and
+  deaths. These are very difficult forecasting problems (especially cases and
+  hospitalizations)    
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.8\textwidth]{ens_cov.pdf}
+\caption{Empirical coverage of Covid-19 ensemble forecasts, from
+  \url{https://delphi.cmu.edu/blog/2021/09/30/on-the-predictability-of-covid-19/}.} 
+\label{fig:ens_cov}
+\end{figure}
+
+\item In what remains of this lecture, we'll learn about a simple and generic
+  method for adjusting prediction intervals online, so that their empirical 
+  coverage tracks the nominal level more faithfully. Then we'll learn about how
+  to generalize the concept of coverage (which applies to a prediction interval)
+  so that we can measure the fidelity of an entire predicted distribution. This 
+  brings us to a topic called \emph{calibration} 
+\end{itemize}
+
+\subsection{Quantile tracking}
+
+\begin{itemize}
+\item We briefly describe a method due to \citet{angelopoulos2023conformal},
+  called \emph{quantile tracking} (also called conformal P-control, in that
+  paper). Fix $h=1$ for simplicity, and denote by \smash{$\hat{q}^{1-\alpha}_t$}
+  a predicted level $1-\alpha$ quantile of the distribution of $e_t$, the
+  absolute forecast error at time $t$:   
+  \[
+  e_t = \big| x_t - \hat{x}_{t|t-1} \big|
+  \]
+
+\item Note that a level $1-\alpha$ prediction interval for $x_t$ could then be
+  formed via: 
+  \[
+  I^{1-\alpha}_{t|t-1} = \big[ \hat{x}_{t|t-1} - \hat{q}^{1-\alpha}_t, \,
+  \hat{x}_{t|t-1} + \hat{q}^{1-\alpha}_t \big]
+  \]
+
+\item The motivation is as follows: $e_t \leq \hat{q}^{1-\alpha}_t \iff x_t \in 
+  I^{1-\alpha}_{t|t-1}$, so if \smash{$\hat{q}^{1-\alpha}_t$} were a proper
+  level $1-\alpha$ quantile in the long-run frequency sense:
+  \[
+  \frac{1}{T} \sum_{t=t_0+1}^{t_0+T} 1 \big\{ e_t \leq \hat{q}^{1-\alpha}_t
+  \big\} \approx 1-\alpha
+  \]
+  for large $T$,  then we would indeed have empirical coverage: 
+  \[
+  \frac{1}{T} \sum_{t=t_0+1}^{t_0+T} 1 \big\{ x_t \in
+    I^{1-\alpha}_{t|t-1} \big\} \approx 1-\alpha
+  \]
+  for large $T$
+
+\item \citet{angelopoulos2023conformal} propose the following online quantile 
+  update: 
+  \[
+  \hat{q}^{1-\alpha}_{t+1} =
+  \begin{cases}
+  \hat{q}^{1-\alpha}_t + \eta (1-\alpha) & \text{if $x_t \notin
+    I^{1-\alpha}_{t|t-1}$} \\
+  \hat{q}^{1-\alpha}_t - \eta \alpha & \text{if $x_t \in I^{1-\alpha}_{t|t-1}$}  
+  \end{cases}
+  \]
+  where $\eta > 0$ is a parameter called the learning rate. In words, if the
+  latest interval does not cover, then we \emph{increase} the quantile by 
+  $\eta(1-\alpha)$ (make the next interval \emph{wider}), whereas if the latest 
+  interval covered, then we \emph{decrease} the quantile by $\eta\alpha$ (make
+  the next interval \emph{narrower}). This is very intuitive, and it turns out
+  to be equivalent to online gradient descent run on a particular loss function 
+  (which sums the quantile loss between $e_t$ and \smash{$\hat{q}^{1-\alpha}_t$}
+  over all time $t$). See also \citet{gibbs2021adaptive} for an earlier, related
+  idea 
+
+\item \citet{angelopoulos2023conformal} prove that if the forecast errors are
+  bounded, $e_t \leq b$ for all $t$ and some $b < \infty$ (note that we do not
+  need to know the bounded $b$ in order to run the algorithm), then quantile
+  tracking results in long-run coverage: 
+  \[
+  \frac{1}{T} \sum_{t=t_0+1}^{t_0+T} 1 \big\{ x_t \in I^{1-\alpha}_{t|t-1}
+  \big\} \to 1-\alpha, \quad \text{as $T \to \infty$} 
+  \]
+  for any $t_0$ and $\eta$. Importantly, this holds \emph{with no assumptions}
+  on the distribution of the data or the forecast errors (or the forecaster
+  itself)
+
+\item You can read the paper for many interesting examples, extensions to
+  unbounded scores, and prospective corrections to forecast errors (driven by a
+  connection to control theory)   
+\end{itemize}
+
+\subsection{PIT calibration}
+
+\begin{itemize}
+\item Last but not least, we arrive at calibration. Unfortunately, this is a
+  term that is often used ambiguously, to mean different things. Here we use  it
+  to mean a precise way of measuring the fidelity of an entire \emph{predicted
+    distribution}, rather than just a prediction interval  
+
+\item That is, suppose that our forecaster produces an entire distribution
+  $F_{t|t-h}$ for the target $x_t$ at time $t$. Generally, we think of
+  $F_{t|t-h}$ as a cumulative distribution function (CDF); note that, from
+  $F_{t|t-h}$, we could obviously produce prediction intervals for $x_t$ (at any
+  levels that we desire)
+
+\item For notational simplicity, we will hide the forecast time $t-h$, and
+  simply denote $F_{t|t-h}$ by $F_t$ in what follows
+
+\item Now, there are numerous different definitions of what it means for a
+  probabilistic forecaster (which produces $F_t$) to be calibrated, and these
+  definitions are not generally equivalent. (This contributes to the frequent
+  ambiguity in the use of the term ``calibration''.) See, e.g.,
+  \citet{gneiting2022regression} for a recent nice overview of different
+  definitions and their relationships
+
+\item We will stick with one particular definition. The forecaster that produces
+  the sequence of predicted CDFs $F_t$ is said to be \emph{PIT calibrated}
+  provided:  
+  \begin{multline*}
+  \text{the empirical distribution of $F_t(x_t)$, $t = 1,\dots,T$ converges} \\ 
+  \text{to the standard uniform distribution, $\mathrm{Unif}(0,1)$, as $T \to
+  \infty$} 
+  \end{multline*}
+
+\item Equivalently, this means:  
+  \[
+  \frac{1}{T} \sum_{t=1}^T 1\{ F_t(x_t) \leq \tau \} \to \tau, \quad \text{as $T
+    \to \infty$, for all $\tau \in [0,1]$} 
+  \]
+
+\item Note that this is even stronger than coverage of prediction intervals:
+  assuming, as we will do throughout for simplicity, that each $F_t$ is
+  continuous and hence invertible, we have:
+  \[
+  \frac{1}{T} \sum_{t=1}^T 1\{ x_t \leq F^{-1}_t(\tau) \} \to \tau, \quad
+  \text{as $T \to \infty$, for all $\tau \in [0,1]$} 
+  \]
+  In other words, each $F^{-1}_t(\tau)$ is a proper level $\tau$ quantile in the
+  long-run frequency sense, and we can use \smash{$[F^{-1}_t(\alpha/2), 
+    F^{-1}_t(1-\alpha/2)]$} to form a valid $1-\alpha$ prediction interval 
+
+\item To get intuition as to where the definition of PIT calibration comes from 
+  (including its name), recall that for a random variable $X$, with CDF $F$
+  (assumed continuous and hence invertible), its \emph{probability integral
+    transform} (PIT) is $F(X)$. A key property of the PIT: $F(X) \sim
+  \mathrm{Unif}(0,1)$. The proof of this fact is elementary: for any $\tau$, 
+  \[
+  \P(F(X) \leq \tau) = \P(X \leq F^{-1}(\tau)) = F(F^{-1}(\tau)) = \tau
+  \]
+  Hence the random variable $F(X)$ has the CDF of a standard uniform, and must
+  itself be uniformly distributed 
+
+\item We can now think of PIT calibration as seeking the uniform property of 
+  the PIT transform, when we apply this idea along the sequence $t =
+  1,2,3,\dots$. Somewhat more precisely, if $F$ denotes a \emph{random} CDF, 
+  drawn uniformly at random from the collection of CDFs $F_t$, $t =
+  1,2,3,\dots$, and $X$ is a random target variable, again drawn uniformly at
+  random from the collection of target values $x_t$, $t = 1,2,3,\dots$, then PIT
+  calibration requires that $F(X) \sim \mathrm{Unif}(0,1)$   
+
+\item Being more general than coverage, it is also harder to achieve PIT
+  calibration in practice (certainly in a distribution-lean sense, without many
+  assumptions). However, this is an active area of research, and we will likely
+  see new advances in the next few years
 \end{itemize}
 
 \bibliographystyle{plainnat}
