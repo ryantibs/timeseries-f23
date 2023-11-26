@@ -3,8 +3,8 @@
 \def\ParSkip{} 
 \input{../../common/ryantibs}
 
-\title{Lecture 8: Advanced Topics: Advanced Forecasting Methods, Calibration,
-  Scoring, and Ensembling \\ \smallskip
+\title{Lecture 8: Advanced Topics: Advanced Forecasting Methods, Ensembling,
+  and Calibration \\ \smallskip 
 \large Introduction to Time Series, Fall 2023 \\ \smallskip
 Ryan Tibshirani}
 \date{}
@@ -50,9 +50,8 @@ Ryan Tibshirani}
   \Delta^2 y_{\theta,t} = \theta \Delta^2 x_t 
   \]
   Here $\Delta^2 = (1-B)^2$ is the second-order difference operator, just like
-  in our ARIMA lecture, and $\theta \geq 0$ is a parameter
-
-\item The solution to the above is given by 
+  in our ARIMA lecture, and $\theta \geq 0$ is a parameter. The solution to the 
+  above is given by  
   \[
   y_{\theta,t} = a_\theta + b_\theta t + \theta x_t
   \]
@@ -83,7 +82,8 @@ Ryan Tibshirani}
   this is just extending the line \smash{$\hat{a}_0 + \hat{b}_0 t$});
 \item produce forecasts \smash{$\hat{y}_{2,t+h|t}$} with $\theta = 2$ (recall
   this is given by just running SES on \smash{$\hat{y}_{2,t}$}) 
-\item return their average: \smash{$(\hat{y}_{0,t+h|t} + \hat{y}_{2,t+h|t}) / 2$}.
+\item return their average: \smash{$\hat{y}_{t+h|t} = (\hat{y}_{0,t+h|t} +
+    \hat{y}_{2,t+h|t}) / 2$}. 
 \end{itemize}
 Seasonality, if present, is estimated and removed before running this procedure,
 and added back in at the end
@@ -98,11 +98,11 @@ and added back in at the end
   performs competitively  
 
 \item It is worth knowing about the close connections between Theta and
-  exponential smoothing, because much of the literature on the Theta model does
-  not seem to emphasize this aspect. There has been more recent work on the
-  Theta model (which may further distinguish it from exponential smoothing---we
-  cannot say, because we have not followed it) that you may be interested in
-  reading    
+  exponential smoothing, as much of the literature on the Theta model does not
+  seem to emphasize this aspect. There has been more recent work on the Theta
+  model (which may further distinguish it from exponential smoothing---we cannot
+  say, because we have not followed it) that you may be interested in reading up
+  on    
 \end{itemize}
 
 \subsection{Prophet model}
@@ -116,11 +116,11 @@ and added back in at the end
   for further discussion of this 
 
 \item The Prophet model is a particular type of signal plus noise model, where
-  we model the given time series as
+  we decompose the signal into three components, 
   \[
   x_t = g_t + s_t + h_t + \epsilon_t
   \]
-  where $\epsilon_t$, $t = 1,2,3,\dots$ is a white noise sequence, and:
+  Here $\epsilon_t$, $t = 1,2,3,\dots$ is a white noise sequence, and:
   \begin{itemize}
   \item $g_t$ represents a trend component
   \item $s_t$ represents a seasonal component
@@ -158,9 +158,10 @@ and added back in at the end
   g_t = \frac{C(t)}{1 + \exp\Big( c_0 + c_1 t + \alpha \sum_{j=1}^r \beta_j
     \cdot (t-t_j)_+\Big)} 
   \]
-  Here $C(t)$ is a (possibly) time-varying capacity, which it appears
-  \citet{taylor2018forecasting} recommend be set externally (e.g., based on 
-  market sizes considerations)
+  where $u_+ = \max\{u,0\}$ denotes the positive-part of $u$.
+  Here $C(t)$ is a (possibly) time-varying capacity, which it appears 
+  \citet{taylor2018forecasting} recommend be set externally (e.g., based on  
+  market size considerations)
 
 \item For \emph{non-saturating} trends, \citet{taylor2018forecasting}
   propose to model $g_t$ using a piecewise linear trend directly: 
@@ -170,10 +171,10 @@ and added back in at the end
 
 \item In either case (saturating or non-saturating), $\beta_j$, $j = 1,\dots,r$
   are coefficients to be estimated. Also, $t_j$, $j = 1,\dots,r$ are knots
-  (where the slope changes), which, in the simplest case, can be fixed ahead of 
-  time. Instead, \citet{taylor2018forecasting} recommend that knots be selected
-  using $\ell_1$ penalization from a large initial set of locations. That is,
-  they use the $\ell_1$ penalty 
+  (locations where the slope changes), which, in the simplest case, could be
+  fixed ahead of time. Instead, \citet{taylor2018forecasting} recommend that
+  knots be selected using $\ell_1$ penalization from a large initial set of 
+  locations. That is, they use the $\ell_1$ penalty 
   \[
   \sum_{j=1}^r |\beta_j|
   \]
@@ -182,8 +183,8 @@ and added back in at the end
   on $\beta_j$, $j = 1,\dots,r$ here is actually equivalent to reparametrizing
   the entire sequence as $g_t = \theta_t$, and then using an $\ell_1$ penalty on  
   second differences of $\theta_t$; recall, this is the penalization scheme used
-  in \emph{trend filtering}, which you learned about earlier in the course when
-  we covered smoothing)  
+  in \emph{trend filtering}, which you learned earlier in the course when we
+  covered smoothing)   
 
 \item Altogether, the Prophet model is fit by minimizing the sum of squared
   errors to the observed data, over all parameters
@@ -214,9 +215,9 @@ and added back in at the end
   the latter's trend component. However, both ARIMA and ETS can be extended to
   accommodate more sophisticated trends. With ARIMA, you have actually already
   seen a way to do this: we can phrase the problem as \emph{regression with
-    correlated errors} (where we use an ARIMA model for the errors), and we can
-  use time for the regressor and create flexible basis functions to model trends
-  just like Prophet does    
+    correlated errors} (where we use an ARIMA model for the errors), and can
+  then use time for the regressor and invoke a flexible basis representation to
+  model trends just like Prophet does    
 
 \item Hyndman and Athanasopoulos (HA) call this a \emph{dynamic regression
     model} and study it in Chapter 10 of their book. The advantage this has over 
@@ -230,8 +231,9 @@ and added back in at the end
 \subsection{Neural network autoregression}
 
 \begin{itemize}
-\item A \emph{neural network} is a class of models that make predictions $f(x)$
-  from an input (feature vector) $x \in \R^p$ of the form:
+\item A \emph{neural network} describes a class of models that make real-valued
+  predictions $f(x) \in \R$ from an input feature vector $x \in \R^p$ of the
+  form:  
   \begin{align*}
   f_1(x) &= \rho(W_1 x + b_1) \\
   f_\ell(x) &= \rho \Big( W_{\ell-1} f_{\ell-1}(x) + b_{\ell-1} \Big), \quad
@@ -250,7 +252,7 @@ and added back in at the end
   predictions on the training data 
 
 \item The function $\rho$ is a nonlinear \emph{activation function} that is 
-  interpreted as being applied componentwise, and user-chosen; common choices
+  interpreted as being applied componentwise. It is user-chosen; common choices 
   are $\rho(u) = u_+$ and $\rho(u) = 1/(1+e^{-u})$
 
 \item Lastly, $L$ here is the number of layers, also a design choice, and often 
@@ -272,44 +274,236 @@ and added back in at the end
   methods you have learned thus far, DeepAR is quite complicated to describe
   precisely (and to train). However, like many deep learning methods, it can
   work very well in data-rich prediction problems that have a high
-  signal-to-noise ratio 
+  signal-to-noise ratio. (Another strength it is often cited as having is that
+  it can learn rich, joint correlation structures between \emph{multiple} time
+  series---think of spatiotemporal data, where we have one time series per
+  location, and many locations---and it can and produce forecasts which respect
+  this correlation structure)   
 
 \item Perhaps not surprisingly, some authors are now re-purposing transformers 
   in order to turn them into time series forecasters. As deep learning continues
-  to grow, we will continue to see spillover into time series forecasting 
-\end{itemize}
-
-\section{Calibration}
-
-\begin{itemize}
-\item 
-\end{itemize}
-
-\section{Scoring}
-
-\begin{itemize}
-\item 
+  to move forward, we will continue to see spillover into time series
+  forecasting  
 \end{itemize}
 
 \section{Ensembling}
 
 \begin{itemize}
-\item 
+\item So, you now have lagged regression, ARIMA, ETS, Theta, Prophet, and DeepAR
+  in your forecasting toolkit. You have data in front of you, and you're unsure 
+  which model(s) will work best. What do you do?
+
+\item The answer we have given all semester: \emph{use time series CV}. That is,
+  move the time index back to $t = t_0$, train each of them on the past, make
+  forecasts, compare to the unseen target values, march the time index forward
+  sequentially, and repeat. In doing so, we can compute our favorite accuracy
+  metric (MAE, MASE, etc.) for each one, and choose the model that emerges as
+  the most accurate, perhaps using Occam's razor to help decide between models
+  that perform similarly
+
+\item Here is an alternative that can often be advantageous: use the
+  out-of-sample predictions from time series CV to inform how to best 
+  \emph{combine} the models, rather than to select in between them    
+
+\item The combination of prediction models is often called \emph{ensembling}, or
+  \emph{aggregation}. It has a long history in statistics and machine learning,
+  including in forecasting. Still, it seems perhaps people don't quite
+  appreciate enough just how effective it can be
+
+\item Roughly speaking, there are two types of ensembles: \emph{untrained} and
+  \emph{trained} ones. An untrained ensemble simply combines a given set of 
+  base models (also called constituent models) without consideration of
+  their individual past performance. Meanwhile, a trained ensemble combines the
+  base models in a way that reflects their performance, typically upweighting
+  accurate base models 
+
+\item At a high level, an ideal ensemble model would satisfy the following two
+  properties:
+  \begin{enumerate}
+  \item \emph{do no harm}: the ensemble should not do much worse than model
+    selection, i.e., not much worse than the best constituent model
+  \item \emph{robustness}: the ensemble should have much more robust performance
+    (fewer wild errors) than the typical constituent model 
+  \end{enumerate}
+
+\item Interestingly (though perhaps not surprisingly), these two are somewhat at 
+  odds. Untrained ensembles can be \emph{very} robust, but typically cannot 
+  compete with the best constituent model. On the other hand, trained ensembles 
+  can compete with the best constituent model (and even outperform it, if the
+  ensemble is flexible enough), but ``heavier'' training tends to hurt
+  robustness 
 \end{itemize}
 
 \subsection{Untrained methods}
 
 \begin{itemize}
-\item 
+\item The simplest untrained method is just to take a straight average of all
+  constituent model forecasts. Denote these by \smash{$\hat{x}^j_{t+h|t}$}, for
+  $j = 1,\dots,p$. Then the simple average ensemble forecast is
+  \[
+  \hat{x}^{\text{avg}}_{t+h|t} = \frac{1}{p} \sum_{j=1}^p \hat{x}^j_{t+h|t} 
+  \] 
+
+\item Another option is to take a median of point forecasts from the constituent
+  models,
+  \[
+  \hat{x}^{\text{med}}_{t+h|t} = \mathrm{median}\Big\{ \hat{x}^j_{t+h|t} : j =
+  1,\dots,p \Big\} 
+  \]
+
+\item Despite their simplicity, these methods can be very effective, especially
+  when we have a diverse set of constituent models (which have a healthy degree
+  of diversity in their errors), which can lead to very robust average or median
+  ensembles
+
+\item Figure \ref{fig:cramer} shows a striking example of this, from 1- though
+  4-week ahead Covid-19 death forecasting. The COVIDHub-ensemble model was (for
+  most of the pandemic) a simple median ensemble of all forecasts submitted to
+  the US Covid-19 Forecast Hub which met a certain very basic set of inclusion
+  criteria (ruling out truly wild or unrealistic forecasts). This ensemble model
+  was the basis for all official CDC communications on short-term Covid-19 
+  forecasting. The number of constituent models fluctuated up and down over
+  time, in between about 25 to 50  
+
+\item For state-level forecasts made over a 1.5 year period during the pandemic, 
+  the figure considers a notion called \emph{standardized rank} that is defined
+  as follows. For a given forecast task (given state, given target date, and
+  given horizon), we rank all available forecasts using an accuracy measure
+  called WIS (a generalization of absolute error for quantile-based forecasts)
+  figure. We assign a standardized rank of 1 means to the most accurate forecast
+  of all available, and 0 to the least accurate forecast. Then, for each
+  forecast model, we average these standardized ranks over all forecast tasks,
+  and a histogram of their standardized rank distribution is plotted
+
+\item As we can see in Figure \ref{fig:cramer}, the distribution of the ensemble is
+  \emph{very} different from all others---in particular, look at its thin left
+  tail. It is the only forecast model that was in the top half of forecasters 
+  (standardized rank $\geq 0.5$) for 75\% of the forecast tasks. Interestingly,
+  we can also see that it is not in the top quartile of forecasters
+  (standardized rank $\geq 0.75$) as often as the best constituent models,
+  hinting at the tradeoff described above  
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\textwidth]{cramer.pdf}
+\caption{Comparison of Covid-19 death forecast models, from
+  \citet{cramer2022evaluation}.}   
+\label{fig:cramer}
+\end{figure}
 \end{itemize}
 
 \subsection{Trained methods}
 
 \begin{itemize}
-\item 
+\item One of the simplest trained ensemble methods is to directly fit a weighted 
+  combination of constituent forecasts in order to optimize accuracy (MSE, MAE,
+  etc.). For example, going by MSE, to form the ensemble at time $t$ (for a
+  forecast of the target value at time $t+h$), we would first solve  
+  \begin{alignat*}{2}
+  &\min_{w \in \R^p} && \hspace{-6pt} \sum_{s=t_0+1}^t \bigg( x_s - \sum_{j=1}^p
+  w_j \cdot \hat{x}^j_{s|s-h} \bigg)^2 \\   
+  &\st \quad && \sum_{j=1}^p w_j = 1, \;\;\text{and} \;\; w_j \geq 0, \;
+  j=1,\dots,p   
+  \end{alignat*}
+  Note that this is simply a regression of the target values (response) on the
+  forecasts made by constituent models (features), where we constrain the
+  coefficients to be nonnegative and sum to 1
+
+\item After obtaining the solution \smash{$\hat{w}^t_j$}, $j = 1,\dots,p$, we
+  then form the weighted ensemble to make forecasts 
+  \[
+  \hat{x}^{\text{stack}}_{t+h|t} = \sum_{j=1}^p \hat{w}^t_j \cdot
+  \hat{x}^j_{t+h|t} 
+  \]
+
+\item This is sometimes called \emph{linear stacking}: here ``stacking'' refers
+  to the fact that we have stacked the predictions made by our constituent
+  models into features for a second-level model, and ``linear'' refers to the
+  fact that our second-level model is linear in the features (it is a linear
+  regression subject to constraints)  
+
+\item Instead of completely re-solving the optimization problem above, at each
+  forecast time $t$, we could also incrementally update the learned weights over
+  time. In fact, a method called (online) \emph{mirror descent} applied to the
+  above optimization problem yields the following intuitive weight updates, at
+  time $t$:   
+  \begin{align*}
+  \tilde{w}^t_j &= \hat{w}^{t-1}_j \exp\bigg\{ \eta \cdot \hat{x}^j_{t|t-h}
+    \bigg( x_t -  \sum_{j=1}^p \hat{w}^{t-1}_j \cdot \hat{x}^j_{t|t-h} \bigg)
+    \bigg\}, \quad j = 1,\dots,p \\
+  \hat{w}^t_j &= \tilde{w}^t_j \bigg/ \sum_{\ell=1}^p \tilde{w}^t_\ell, \quad j =
+    1,\dots,p 
+  \end{align*}
+  Here $\eta > 0$ is a parameter called the learning rate. In words, if a
+  forecaster's latest prediction \smash{$\hat{x}^j_{t|t-h}$} is correlated with
+  the ensemble's latest residual \smash{$x_t -  \sum_{j=1}^p \hat{w}^{t-1}_j
+    \cdot \hat{x}^j_{t|t-h}$}, then it is underrepresented in the ensemble, and
+  we increase its weight
+
+\item Stacking---especially more flexible second-level models that are
+  nonlinear, or use weights that depend on features---can lead to impressive
+  accuracy in practice. Figure \ref{fig:fakoor} shows a nice example of this
+  (albeit in a batch prediction, rather than a time series context). The figure
+  shows a specific deep neural network ensemble, called DQA (deep quantile
+  aggregation) that is trained as a second-layer model on top of many
+  constituent models, including some very flexible ones (such as deep neural
+  networks themselves). Across 35 data sets, ordered by their signal-to-noise
+  ratio along the x-axis, the WIS (recall this is a generalization of absolute
+  error for quantile-based predictions) of all of the constituent models and
+  other ensemble methods is compared to that of DQA. No method really
+  outperforms DQA (nothing really below the red horizontal line at 1) and for
+  problems with more signal, towards the right end of the x-axis, we can see
+  that DQA improves massively on a lot of the other models 
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\textwidth]{fakoor.pdf}
+\caption{Deep stacking of quantile prediction models, from 
+  \citet{fakoor2023flexible}.}   
+\label{fig:fakoor}
+\end{figure}
+\end{itemize}
+
+\section{Calibration}
+
+\begin{itemize}
+\item Beyond point forecasts, all of the methods that we have learned thus far
+  produce \emph{prediction intervals}, which reflect uncertainty in the
+  predictions that are made, useful for downstream decision-making   
+
+\item How do we measure the accuracy of such prediction intervals? Let's fix a 
+  horizon $h$ henceforth. Denote by \smash{$I^{1-\alpha}_ {t+h|t}$} denote the
+  level $1-\alpha$ prediction interval made by our forecaster at time $t$, for
+  the target variable $x_{t+h}$ at time $t+h$  
+
+\item Recall, for a 90\% level, this is often (though not necessarily) of the
+  form   
+  \[
+  I^{1-\alpha}_{ t+h|t} = 
+  \big[\hat{x}_{t+h|t} - \hat\sigma_h q_{0.95}, \, \hat{x}_{t+h|t} +  
+  \hat\sigma_h q_{0.95} \big]
+  \]
+  where \smash{$\hat{x}_{t+h|t}$} is a point forecast of $x_{t+h}$ made a time
+  $t$, \smash{$\hat\sigma^2_h$} is an estimate of the variance of the $h$-step  
+  ahead forecast distribution, and $q_{0.95}$ is the 0.95 quantile of the
+  standard normal distritbuion  
+
+\item Given these intervals, we can measure their empirical \emph{coverage}, in
+  a time series CV sense: 
+  \[
+  \mathrm{Coverage} = \frac{1}{n-t_0} \sum_{t=t_0+1}^n 1\big\{ x_t \in 
+  I^{1-\alpha}_{t|t-h} \big\}
+  \]
+  In words, this the fraction of times that our prediction intervals cover their
+  targets. Of course, we want the coverage of our prediction intervals to
+  roughly match the nominal level, $\mathrm{Coverage} \approx 1-\alpha$ 
+  
+
+n important topic in probabilistic forecasting which we have not really
+  covered thus far is \emph{calibration}.
 \end{itemize}
 
 \bibliographystyle{plainnat}
-\bibliography{advanced}
+\bibliography{advanced, ../../common/ryantibs}
 
 \end{document}
