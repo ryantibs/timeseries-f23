@@ -146,7 +146,7 @@ Ryan Tibshirani}
   $\omega_j$, $j = 1,\dots,p$ (equivalently, periods $1/\omega_j$, $j =
   1,\dots,p$), recall, this is:  
   \[
-  g_t = \sum_{j=1}^p \Big( a_j \cos(2\pi \omega_j t) + b_j \sin(2\pi \omega_j t)
+  s_t = \sum_{j=1}^p \Big( a_j \cos(2\pi \omega_j t) + b_j \sin(2\pi \omega_j t)
   \Big) 
   \]
   for coefficients $a_j, b_j$, $j = 1,\dots,p$
@@ -164,8 +164,8 @@ Ryan Tibshirani}
   is for \emph{saturating} trends. For this, \citet{taylor2018forecasting}
   propose to model $g_t$ using a sigmoid function with a piecewise growth rate:  
   \[
-  g_t = \frac{C(t)}{1 + \exp\Big( c_0 + c_1 t + \alpha \sum_{j=1}^r \beta_j
-    \cdot (t-t_j)_+\Big)} 
+  g_t = \frac{C(t)}{1 + \exp\Big( -c_0 - c_1 t - \sum_{j=1}^r \beta_j \cdot
+    (t-t_j)_+\Big)}  
   \]
   where $u_+ = \max\{u,0\}$ denotes the positive-part of $u$.
   Here $C(t)$ is a (possibly) time-varying capacity, which it appears 
@@ -175,7 +175,7 @@ Ryan Tibshirani}
 \item For \emph{non-saturating} trends, \citet{taylor2018forecasting}
   propose to model $g_t$ using a piecewise linear trend directly: 
   \[
-  g_t = c_0 + c_1 t + \alpha \sum_{j=1}^r \beta_j \cdot (t-t_j)_+ 
+  g_t = c_0 + c_1 t + \sum_{j=1}^r \beta_j \cdot (t-t_j)_+ 
   \]
 
 \item In either case (saturating or non-saturating), $\beta_j$, $j = 1,\dots,r$
