@@ -176,12 +176,12 @@ Related reading: Chapter 8 of Athanasopoulos (HA).
   \ref{fig:internet} (as evidenced by the wide prediction intervals) and this
   wasn't even a super long horizon ...
 
-\item As a kind of regularization, we can \emph{dampen} the forecasts from
+\item As a kind of regularization, we can \emph{damp} the forecasts from
   Holt's linear trend method. This is often called \emph{damped Holt's} or the
   \emph{damped linear trend} method 
 
 \item In addition to $\alpha,\beta \in [0,1]$ as in \eqref{eq:holt}, we
-  introduce a third parameter $\phi \in [0,1]$, to dampen the forecast
+  introduce a third parameter $\phi \in [0,1]$, to damp the forecast
   trajectory: 
   \begin{equation}
   \label{eq:damped}
@@ -209,7 +209,7 @@ Related reading: Chapter 8 of Athanasopoulos (HA).
   For example, when $\phi = 0.9$, this limit is $\ell_t + 9 b_t$
 
 \item HA say that a practical range for $\phi$ is usually 0.8 to 0.98; when
-  $\phi$ is below 0.8, the dampening is too strong (and short-term forecasts are
+  $\phi$ is below 0.8, the damping is too strong (and short-term forecasts are
   not ``trended'' enough); when $\phi$ is above 0.98, it is too weak (and you
   cannot distinguish the forecasts from Holt's linear trend method for
   reasonably horizons). In fact, the \verb|ETS()| function limits the range of
@@ -220,7 +220,7 @@ Related reading: Chapter 8 of Athanasopoulos (HA).
   $\alpha,\beta,\phi$ are estimated from the data. We can see a weak downward
   trend, that is quickly attenuated. The prediction intervals are also much 
   narrower. Inspection of the fitted model (see the R notebook) shows that we
-  the dampening coeffcient estimate is \smash{$\hat\phi = 0.81$}, so it has
+  the damping coeffcient estimate is \smash{$\hat\phi = 0.81$}, so it has
   quite a pronounced effect here
 \end{itemize}
 
@@ -268,7 +268,7 @@ Related reading: Chapter 8 of Athanasopoulos (HA).
   This is like the 1-step ahead forecast equation a time $t-1$, but where we
   replace the forecast \smash{$\hat{x}_{t |  t-1}$} by the observation $x_t$ 
 
-\item Note: we can also introduce dampening into \eqref{eq:holt_winters}, which
+\item Note: we can also introduce damping into \eqref{eq:holt_winters}, which
   is just as in \eqref{eq:damped}, but do not write this out for brevity
 
 \item Figure \ref{fig:holiday} shows an example of Holt-Winters in action, on 
@@ -368,7 +368,7 @@ Related reading: Chapter 8 of Athanasopoulos (HA).
 \item \emph{Exponential smoothing with trend and seasonality} (ETS) models are a
   class that includes everything we've seen thus far: simple exponential
   smoothing, Holt's linear trend method, Holt-Winters method with additive or
-  multiplicative seasonality, and all of their dampened trend versions  
+  multiplicative seasonality, and all of their damped trend versions  
 
 \item In fact, ETS includes more: we can also change the model to accomodate a  
   \emph{multiplicative error} component (rather than an additive error
@@ -386,14 +386,14 @@ Related reading: Chapter 8 of Athanasopoulos (HA).
   \item $z \in \{ \text{N}, \text{A}, \text{M} \}$
   \end{itemize}
   here N stands for ``none'' (no trend component or no seasonality component), A
-  stands for ``additive'', Ad stands for ``additive-dampened'', and M stands for
+  stands for ``additive'', Ad stands for ``additive-damped'', and M stands for
   multiplicative
 
 \item So to be clear:
   \begin{itemize}
   \item ETS(A,N,N) is simple exponential smoothing
   \item ETS(A,A,N) is Holt's linear trend method
-  \item ETS(A,Ad,N) is the dampened linear trend method
+  \item ETS(A,Ad,N) is the damped linear trend method
   \item ETS(A,A,A) is Holt-Winters with additive seasonality
   \item ETS(A,A,M) is Holt-Winters with multiplicative seasonality
   \end{itemize}
@@ -492,7 +492,7 @@ Related reading: Chapter 8 of Athanasopoulos (HA).
   specify and fit any model in the ETS family
 
 \item Selecting a particular ETS model (additive or multiplicative errors?
-  presence of trend? dampened trend? seasonality? etc.?) is pretty difficult, in
+  presence of trend? damped trend? seasonality? etc.?) is pretty difficult, in
   one sense, just like order selection in ARIMA is difficult. Here, we refer to
   difficulty in the sense of model identification: supposing there were one true
   data generating model among the ETS state space family, it would be hard to
