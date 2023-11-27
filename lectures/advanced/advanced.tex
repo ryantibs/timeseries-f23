@@ -62,7 +62,7 @@ Ryan Tibshirani}
   minimizing the sum of squared errors to the original sequence  
   \[
   \min_{a_\theta, b_\theta} \, \sum_{t=1}^n (x_t - y_{\theta,t})^2 \iff
-  \min_{a_\theta, b_\theta} \, \sum_{t=1}^n \Big( (1-\theta) x_t - a_\theta +
+  \min_{a_\theta, b_\theta} \, \sum_{t=1}^n \Big( (1-\theta) x_t - a_\theta -
   b_\theta t  \Big)^2 
   \]
   which is simply a linear regression of $(1-\theta) x_t$ on time $t$ 
