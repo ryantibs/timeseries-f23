@@ -694,6 +694,39 @@ Ryan Tibshirani}
   random from the collection of target values $x_t$, $t = 1,2,3,\dots$, then PIT
   calibration requires that $F(X) \sim \mathrm{Unif}(0,1)$   
 
+\item The observed PIT values $F_t(x_t)$, $t = 1,2,3,\dots$ can be used as a
+  diagnostic tool. These values always lie in $[0,1]$, and we can form an
+  empirical density (histogram) of these PIT values as we collect them. If the 
+  forecaster is PIT calibrated, then these will look uniform, i.e., a flat PIT
+  density. If the forecaster is \emph{underconfident}, then the PIT density will
+  actually look U-shaped. If the forecaster is \emph{overconfident}, then the
+  PIT density will have an upside-down U-shape. This can be confirmed with
+  simple examples with normal densities, see Figure \ref{fig:rumack1}. An
+  example of real PIT densities from short-term Flu forecasters is given in
+  Figure \ref{fig:rumack2} 
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.7\textwidth]{rumack1.png}
+\vspace{-15pt}
+\caption{Densities of PIT distributions for several simple normal forecasters,
+  when the true target distribution is $N(0,1)$, from
+  \citet{rumack2022recalibrating}.}  
+\label{fig:rumack1}   
+
+\bigskip\medskip
+
+\includegraphics[width=0.85\textwidth]{rumack2.png}
+\caption{Densities of PIT distributions from 27 forecasters submitted to the
+  annual FluSight challenges, from \citet{rumack2022recalibrating}. These are
+  seasonal influenza forecasting challenges held by CDC, spanning 9 seasons
+  (2010-11 to 2018-19). The PIT densities fall mostly into one of two
+  categories: overdispersed with a peak around 0.5, and underdispersed with
+  peaks at around 0 and 1. (The outlier with a peak at 0.1 is the PIT density of
+  a simple baseline forecaster.).}            
+\label{fig:rumack2}
+\end{figure}
+
 \item Being more general than coverage, it is also harder to achieve PIT
   calibration in practice (certainly in a distribution-lean sense, without many
   assumptions). However, this is an active area of research, and we will likely
